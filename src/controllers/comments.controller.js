@@ -31,7 +31,7 @@ exports.createComment = async (req, res, next) => {
 
     return res.status(201).json({ message: "댓글 생성 완료", comment: newComment });
   } catch (err) {
-    console.error("Create Comment Error:", err);
+    req.log.error("Create Comment Error:", { error: err });
     return next(err);
   }
 };
@@ -86,7 +86,7 @@ exports.getComments = async (req, res, next) => {
       comments,
     });
   } catch (err) {
-    console.error("Get Comments Error:", err);
+    req.log.error("Get Comments Error:", { error: err });
     return next(err);
   }
 };
@@ -116,7 +116,7 @@ exports.getCommentById = async (req, res, next) => {
 
     return res.json(comment);
   } catch (err) {
-    console.error("Get Comment Error:", err);
+    req.log.error("Get Comment Error:", { error: err });
     return next(err);
   }
 };
@@ -152,7 +152,7 @@ exports.updateComment = async (req, res, next) => {
 
     return res.json({ message: "댓글 수정 완료", comment: updated });
   } catch (err) {
-    console.error("Update Comment Error:", err);
+    req.log.error("Update Comment Error:", { error: err });
     return next(err);
   }
 };
@@ -184,7 +184,7 @@ exports.deleteComment = async (req, res, next) => {
 
     return res.json({ message: "댓글 삭제 완료" });
   } catch (err) {
-    console.error("Delete Comment Error:", err);
+    req.log.error("Delete Comment Error:", { error: err });
     return next(err);
   }
 };
@@ -214,7 +214,7 @@ exports.getCommentLikes = async (req, res, next) => {
 
     return res.json({ commentId: id, count: likes.length, likes });
   } catch (err) {
-    console.error("Get Comment Likes Error:", err);
+    req.log.error("Get Comment Likes Error:", { error: err });
     return next(err);
   }
 };

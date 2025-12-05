@@ -60,7 +60,7 @@ exports.login = async (req, res, next) => {
       refreshToken,
     });
   } catch (err) {
-    console.error("Login Error:", err);
+    req.log.error("Login Error:", { error: err });
     return next(err);
   }
 };
@@ -109,7 +109,7 @@ exports.refresh = async (req, res, next) => {
       accessToken: newAccessToken,
     });
   } catch (err) {
-    console.error("Refresh Error:", err);
+    req.log.error("Refresh Error:", { error: err });
     return next(err);
   }
 };

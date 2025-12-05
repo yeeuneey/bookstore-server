@@ -77,7 +77,7 @@ exports.getBooks = async (req, res, next) => {
       books,
     });
   } catch (err) {
-    console.error("Get Books Error:", err);
+    req.log.error("Get Books Error:", { error: err });
     return next(err);
   }
 };
@@ -108,7 +108,7 @@ exports.getBookById = async (req, res, next) => {
 
     return res.json(book);
   } catch (err) {
-    console.error("Get Book Error:", err);
+    req.log.error("Get Book Error:", { error: err });
     return next(err);
   }
 };
@@ -157,7 +157,7 @@ exports.createBook = async (req, res, next) => {
 
     return res.status(201).json({ message: "도서 생성 완료", book });
   } catch (err) {
-    console.error("Create Book Error:", err);
+    req.log.error("Create Book Error:", { error: err });
     return next(err);
   }
 };
@@ -209,7 +209,7 @@ exports.updateBook = async (req, res, next) => {
 
     return res.json({ message: "도서 수정 완료", book });
   } catch (err) {
-    console.error("Update Book Error:", err);
+    req.log.error("Update Book Error:", { error: err });
     return next(err);
   }
 };
@@ -230,7 +230,7 @@ exports.deleteBook = async (req, res, next) => {
 
     return res.json({ message: "도서 삭제 완료" });
   } catch (err) {
-    console.error("Delete Book Error:", err);
+    req.log.error("Delete Book Error:", { error: err });
     return next(err);
   }
 };
@@ -257,7 +257,7 @@ exports.getBookReviews = async (req, res, next) => {
 
     return res.json({ bookId: id, count: reviews.length, reviews });
   } catch (err) {
-    console.error("Get Book Reviews Error:", err);
+    req.log.error("Get Book Reviews Error:", { error: err });
     return next(err);
   }
 };
@@ -278,7 +278,7 @@ exports.getBookCategories = async (req, res, next) => {
 
     return res.json(categories);
   } catch (err) {
-    console.error("Get Book Categories Error:", err);
+    req.log.error("Get Book Categories Error:", { error: err });
     return next(err);
   }
 };
@@ -299,7 +299,7 @@ exports.getBookAuthors = async (req, res, next) => {
 
     return res.json(authors);
   } catch (err) {
-    console.error("Get Book Authors Error:", err);
+    req.log.error("Get Book Authors Error:", { error: err });
     return next(err);
   }
 };

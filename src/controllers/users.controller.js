@@ -24,7 +24,7 @@ exports.getMe = async (req, res, next) => {
 
     return res.json(me);
   } catch (err) {
-    console.error("Get Me Error:", err);
+    req.log.error("Get Me Error:", { error: err });
     return next(err);
   }
 };
@@ -60,7 +60,7 @@ exports.createUser = async (req, res, next) => {
 
     return res.status(201).json({ message: "회원가입 성공", user });
   } catch (err) {
-    console.error("Create User Error:", err);
+    req.log.error("Create User Error:", { error: err });
     return next(err);
   }
 };
@@ -127,7 +127,7 @@ exports.getUsers = async (req, res, next) => {
       users,
     });
   } catch (err) {
-    console.error("Get Users Error:", err);
+    req.log.error("Get Users Error:", { error: err });
     return next(err);
   }
 };
@@ -156,7 +156,7 @@ exports.getUserById = async (req, res, next) => {
 
     return res.json({ user });
   } catch (err) {
-    console.error("Get User Error:", err);
+    req.log.error("Get User Error:", { error: err });
     return next(err);
   }
 };
@@ -188,7 +188,7 @@ exports.updateUser = async (req, res, next) => {
 
     return res.json({ message: "사용자 정보 수정 성공", user: updated });
   } catch (err) {
-    console.error("Update User Error:", err);
+    req.log.error("Update User Error:", { error: err });
     return next(err);
   }
 };
@@ -209,7 +209,7 @@ exports.deleteUser = async (req, res, next) => {
 
     return res.json({ message: "사용자 삭제 완료" });
   } catch (err) {
-    console.error("Delete User Error:", err);
+    req.log.error("Delete User Error:", { error: err });
     return next(err);
   }
 };
@@ -236,7 +236,7 @@ exports.getUserReviews = async (req, res, next) => {
 
     return res.json({ userId: id, count: reviews.length, reviews });
   } catch (err) {
-    console.error("Get User Reviews Error:", err);
+    req.log.error("Get User Reviews Error:", { error: err });
     return next(err);
   }
 };
@@ -263,7 +263,7 @@ exports.getUserComments = async (req, res, next) => {
 
     return res.json({ userId: id, count: comments.length, comments });
   } catch (err) {
-    console.error("Get User Comments Error:", err);
+    req.log.error("Get User Comments Error:", { error: err });
     return next(err);
   }
 };
@@ -293,7 +293,7 @@ exports.getUserReviewLikes = async (req, res, next) => {
 
     return res.json({ userId: id, count: likes.length, likes });
   } catch (err) {
-    console.error("Get User ReviewLikes Error:", err);
+    req.log.error("Get User ReviewLikes Error:", { error: err });
     return next(err);
   }
 };
@@ -323,7 +323,7 @@ exports.getUserCommentLikes = async (req, res, next) => {
 
     return res.json({ userId: id, count: likes.length, likes });
   } catch (err) {
-    console.error("Get User CommentLikes Error:", err);
+    req.log.error("Get User CommentLikes Error:", { error: err });
     return next(err);
   }
 };
@@ -349,7 +349,7 @@ exports.getUserFavorites = async (req, res, next) => {
 
     return res.json({ userId: id, count: favorites.length, favorites });
   } catch (err) {
-    console.error("Get User Favorites Error:", err);
+    req.log.error("Get User Favorites Error:", { error: err });
     return next(err);
   }
 };
@@ -375,7 +375,7 @@ exports.getUserCarts = async (req, res, next) => {
 
     return res.json({ userId: id, count: carts.length, carts });
   } catch (err) {
-    console.error("Get User Carts Error:", err);
+    req.log.error("Get User Carts Error:", { error: err });
     return next(err);
   }
 };
@@ -406,7 +406,7 @@ exports.getUserOrders = async (req, res, next) => {
 
     return res.json({ userId: id, count: orders.length, orders });
   } catch (err) {
-    console.error("Get User Orders Error:", err);
+    req.log.error("Get User Orders Error:", { error: err });
     return next(err);
   }
 };

@@ -31,7 +31,7 @@ exports.createReview = async (req, res, next) => {
 
     return res.status(201).json({ message: "리뷰 작성 완료", review });
   } catch (err) {
-    console.error("Create Review Error:", err);
+    req.log.error("Create Review Error:", { error: err });
     return next(err);
   }
 };
@@ -88,7 +88,7 @@ exports.getReviews = async (req, res, next) => {
       reviews,
     });
   } catch (err) {
-    console.error("Get Reviews Error:", err);
+    req.log.error("Get Reviews Error:", { error: err });
     return next(err);
   }
 };
@@ -114,7 +114,7 @@ exports.getReviewById = async (req, res, next) => {
 
     return res.json(review);
   } catch (err) {
-    console.error("Get Review Error:", err);
+    req.log.error("Get Review Error:", { error: err });
     return next(err);
   }
 };
@@ -146,7 +146,7 @@ exports.updateReview = async (req, res, next) => {
 
     return res.json({ message: "리뷰 수정 완료", review: updated });
   } catch (err) {
-    console.error("Update Review Error:", err);
+    req.log.error("Update Review Error:", { error: err });
     return next(err);
   }
 };
@@ -174,7 +174,7 @@ exports.deleteReview = async (req, res, next) => {
 
     return res.json({ message: "리뷰 삭제 완료" });
   } catch (err) {
-    console.error("Delete Review Error:", err);
+    req.log.error("Delete Review Error:", { error: err });
     return next(err);
   }
 };
@@ -201,7 +201,7 @@ exports.getReviewComments = async (req, res, next) => {
 
     return res.json({ reviewId: id, count: comments.length, comments });
   } catch (err) {
-    console.error("Get Review Comments Error:", err);
+    req.log.error("Get Review Comments Error:", { error: err });
     return next(err);
   }
 };
@@ -227,7 +227,7 @@ exports.getReviewLikes = async (req, res, next) => {
 
     return res.json({ reviewId: id, count: likes.length, likes });
   } catch (err) {
-    console.error("Get Review Likes Error:", err);
+    req.log.error("Get Review Likes Error:", { error: err });
     return next(err);
   }
 };

@@ -64,7 +64,7 @@ exports.createOrder = async (req, res, next) => {
 
     return res.status(201).json({ message: "주문 생성 완료", order });
   } catch (err) {
-    console.error("Create Order Error:", err);
+    req.log.error("Create Order Error:", { error: err });
     return next(err);
   }
 };
@@ -125,7 +125,7 @@ exports.getOrders = async (req, res, next) => {
       orders,
     });
   } catch (err) {
-    console.error("Get Orders Error:", err);
+    req.log.error("Get Orders Error:", { error: err });
     return next(err);
   }
 };
@@ -161,7 +161,7 @@ exports.getOrderById = async (req, res, next) => {
     }
     return res.json(order);
   } catch (err) {
-    console.error("Get Order Error:", err);
+    req.log.error("Get Order Error:", { error: err });
     return next(err);
   }
 };
@@ -192,7 +192,7 @@ exports.updateOrder = async (req, res, next) => {
 
     return res.json({ message: "주문 상태 변경 완료", order: updated });
   } catch (err) {
-    console.error("Update Order Error:", err);
+    req.log.error("Update Order Error:", { error: err });
     return next(err);
   }
 };
@@ -220,7 +220,7 @@ exports.deleteOrder = async (req, res, next) => {
 
     return res.json({ message: "주문 삭제 완료" });
   } catch (err) {
-    console.error("Delete Order Error:", err);
+    req.log.error("Delete Order Error:", { error: err });
     return next(err);
   }
 };
@@ -251,7 +251,7 @@ exports.getUserOrders = async (req, res, next) => {
 
     return res.json({ userId, count: orders.length, orders });
   } catch (err) {
-    console.error("Get User Orders Error:", err);
+    req.log.error("Get User Orders Error:", { error: err });
     return next(err);
   }
 };

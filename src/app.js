@@ -2,7 +2,6 @@
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
-const morgan = require("morgan");
 require("dotenv").config();
 const prisma = require("./lib/prisma");
 const authRouter = require("./routes/auth.routes");
@@ -15,13 +14,14 @@ const commentsRouter = require("./routes/comments.routes");
 const usersRouter = require("./routes/users.routes");
 const errorHandler = require("./middlewares/errorHandler");
 const { swaggerUi, swaggerSpec } = require("./docs/swagger");
+const requestLogger = require("./middlewares/requestLogger");
 
 const app = express();
 
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use(morgan("dev"));
+app.use(requestLogger);
 app.use("/auth", authRouter);
 app.use("/books", booksRouter);
 app.use("/carts", cartsRouter);
@@ -100,7 +100,7 @@ app.get("/health/db", async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error("DB connection failed:", error);
+    req.log.error("DB connection failed:", { error });
     res.status(500).json({
       status: "error",
       database: "disconnected",

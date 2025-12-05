@@ -45,7 +45,7 @@ exports.createCartItem = async (req, res, next) => {
 
     return res.status(201).json({ message: "장바구니 추가 완료", item });
   } catch (err) {
-    console.error("Create Cart Error:", err);
+    req.log.error("Create Cart Error:", { error: err });
     return next(err);
   }
 };
@@ -100,7 +100,7 @@ exports.getCartItems = async (req, res, next) => {
       items,
     });
   } catch (err) {
-    console.error("Get Cart Items Error:", err);
+    req.log.error("Get Cart Items Error:", { error: err });
     return next(err);
   }
 };
@@ -137,7 +137,7 @@ exports.getCartItemById = async (req, res, next) => {
 
     return res.json(item);
   } catch (err) {
-    console.error("Get Cart Item Error:", err);
+    req.log.error("Get Cart Item Error:", { error: err });
     return next(err);
   }
 };
@@ -173,7 +173,7 @@ exports.updateCartItem = async (req, res, next) => {
 
     return res.json({ message: "장바구니 수정 완료", item: updated });
   } catch (err) {
-    console.error("Update Cart Item Error:", err);
+    req.log.error("Update Cart Item Error:", { error: err });
     return next(err);
   }
 };
@@ -205,7 +205,7 @@ exports.deleteCartItem = async (req, res, next) => {
 
     return res.json({ message: "장바구니 항목 삭제 완료" });
   } catch (err) {
-    console.error("Delete Cart Item Error:", err);
+    req.log.error("Delete Cart Item Error:", { error: err });
     return next(err);
   }
 };
@@ -232,7 +232,7 @@ exports.getUserCartItems = async (req, res, next) => {
 
     return res.json({ userId, count: items.length, items });
   } catch (err) {
-    console.error("Get User Cart Error:", err);
+    req.log.error("Get User Cart Error:", { error: err });
     return next(err);
   }
 };

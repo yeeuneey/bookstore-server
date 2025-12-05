@@ -1,29 +1,32 @@
 // src/middlewares/errorHandler.js
 const AppError = require("../utils/AppError");
 const { ERROR_CODES } = require("../utils/errorCodes");
+const logger = require("../utils/logger");
 
-module.exports = (err, _req, res, _next) => {
-  console.error("Global Error:", err);
+module.exports = (err, req, res, _next) => {
+  const isAppError = err instanceof AppError;
+  const status = isAppError ? err.status : 500;
+  const code = isAppError ? err.code : ERROR_CODES.INTERNAL_SERVER_ERROR;
+  const message = err.message || "서버 오류가 발생했습니다.";
 
-  if (err instanceof AppError) {
-    return res.status(err.status).json({
-      success: false,
-      error: {
-        code: err.code,
-        message: err.message,
-        status: err.status,
-        details: err.details || undefined,
-      },
-    });
-  }
+  logger.error("request_error", {
+    requestId: req.requestId,
+    method: req.method,
+    path: req.originalUrl,
+    status,
+    code,
+    message,
+    details: err.details,
+    error: err,
+  });
 
-  return res.status(500).json({
+  return res.status(status).json({
     success: false,
     error: {
-      code: ERROR_CODES.INTERNAL_SERVER_ERROR,
-      message: err.message || "서버 내부 오류가 발생했습니다.",
-      status: 500,
+      code,
+      message,
+      status,
+      details: err.details || undefined,
     },
   });
 };
-

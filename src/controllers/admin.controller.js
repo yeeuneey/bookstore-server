@@ -26,7 +26,7 @@ exports.getAllUsers = async (req, res, next) => {
 
     return res.json({ count: users.length, users });
   } catch (err) {
-    console.error("Admin Get Users Error:", err);
+    req.log.error("Admin Get Users Error:", { error: err });
     return next(err);
   }
 };
@@ -69,7 +69,7 @@ exports.banUser = async (req, res, next) => {
 
     return res.json({ message: "정지 처리 완료", user: updated });
   } catch (err) {
-    console.error("Ban User Error:", err);
+    req.log.error("Ban User Error:", { error: err });
     return next(err);
   }
 };
@@ -116,7 +116,7 @@ exports.getOrderStatistics = async (req, res, next) => {
       topBooks: mergedTopBooks,
     });
   } catch (err) {
-    console.error("Order Statistics Error:", err);
+    req.log.error("Order Statistics Error:", { error: err });
     return next(err);
   }
 };
