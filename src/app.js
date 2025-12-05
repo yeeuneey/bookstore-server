@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
 const prisma = require('./lib/prisma');
+const adminRouter = require("./routes/admin.routes");
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+app.use("/admin", adminRouter);
 
 // 기존 헬스 체크
 app.get('/health', (req, res) => {

@@ -151,7 +151,9 @@ exports.getOrderById = async (req, res) => {
 
     if (!order)
       return res.status(404).json({ message: "주문을 찾을 수 없습니다." });
-
+    if (req.user.role !== "ADMIN" && order.userId !== req.user.id) {
+      return res.status(403).json({ message: "본인 또는 관리자만 조회할 수 있습니다." });
+    }
     return res.json(order);
   } catch (err) {
     console.error("Get Order Error:", err);
@@ -174,7 +176,9 @@ exports.updateOrder = async (req, res) => {
     const exists = await prisma.order.findUnique({ where: { id } });
     if (!exists)
       return res.status(404).json({ message: "주문을 찾을 수 없습니다." });
-
+    if (req.user.role !== "ADMIN" && order.userId !== req.user.id) {
+      return res.status(403).json({ message: "본인 또는 관리자만 조회할 수 있습니다." });
+    }
     const updated = await prisma.order.update({
       where: { id },
       data: { orderStatus },
@@ -197,6 +201,9 @@ exports.deleteOrder = async (req, res) => {
     const exists = await prisma.order.findUnique({ where: { id } });
     if (!exists)
       return res.status(404).json({ message: "주문을 찾을 수 없습니다." });
+    if (req.user.role !== "ADMIN" && order.userId !== req.user.id) {
+      return res.status(403).json({ message: "본인 또는 관리자만 조회할 수 있습니다." });
+    }
 
     await prisma.order.delete({ where: { id } });
 

@@ -6,11 +6,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id           Int        @id @default(autoincrement())
   email        String     @unique
   password     String
   name         String
+  Role         Role       @default(USER)
+  refreshToken String?
   birthDate    DateTime?
   gender       Gender?
   address      String?
@@ -18,7 +25,8 @@ model User {
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   deletedAt    DateTime?
-
+  bannedAt     DateTime?
+  
   // Relations
   reviews      Review[]
   comments     Comment[]

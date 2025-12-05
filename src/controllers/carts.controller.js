@@ -117,6 +117,9 @@ exports.getCartItemById = async (req, res) => {
     if (!item) {
       return res.status(404).json({ message: "장바구니 항목을 찾을 수 없습니다." });
     }
+    if (req.user.role !== "ADMIN" && item.userId !== req.user.id) {
+      return res.status(403).json({ message: "본인 또는 관리자만 접근할 수 있습니다." });
+    }
 
     return res.json(item);
   } catch (err) {
@@ -141,6 +144,9 @@ exports.updateCartItem = async (req, res) => {
     if (!exists) {
       return res.status(404).json({ message: "장바구니 항목을 찾을 수 없습니다." });
     }
+    if (req.user.role !== "ADMIN" && item.userId !== req.user.id) {
+      return res.status(403).json({ message: "본인 또는 관리자만 접근할 수 있습니다." });
+    }
 
     const updated = await prisma.cart.update({
       where: { id },
@@ -164,6 +170,9 @@ exports.deleteCartItem = async (req, res) => {
     const exists = await prisma.cart.findUnique({ where: { id } });
     if (!exists) {
       return res.status(404).json({ message: "장바구니 항목을 찾을 수 없습니다." });
+    }
+    if (req.user.role !== "ADMIN" && item.userId !== req.user.id) {
+      return res.status(403).json({ message: "본인 또는 관리자만 접근할 수 있습니다." });
     }
 
     await prisma.cart.delete({ where: { id } });

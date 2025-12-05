@@ -7,6 +7,26 @@ const bcrypt = require("bcrypt");
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
 
+exports.getMe = async (req, res) => {
+  try {
+    const me = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        createdAt: true,
+      },
+    });
+
+    return res.json(me);
+  } catch (err) {
+    console.error("Get Me Error:", err);
+    return res.status(500).json({ message: "서버 오류" });
+  }
+};
+
 /* ==================================================
    1) 회원가입 (POST /users)
 ================================================== */

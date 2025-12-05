@@ -2,15 +2,17 @@
 const express = require("express");
 const router = express.Router();
 const reviewsController = require("../controllers/reviews.controller");
+const { authMiddleware } = require("../middlewares/auth");
+const { selfOrAdminByBody } = require("../middlewares/ownership");
 
 // ------------------
 // 기본 CRUD
 // ------------------
-router.post("/", reviewsController.createReview);                        // 리뷰 작성
-router.get("/", reviewsController.getReviews);                           // 리뷰 목록(검색/정렬/페이지네이션)
-router.get("/:id", reviewsController.getReviewById);                     // 단일 리뷰 조회
-router.patch("/:id", reviewsController.updateReview);                    // 리뷰 수정
-router.delete("/:id", reviewsController.deleteReview);                   // 리뷰 삭제
+router.post("/", authMiddleware, selfOrAdminByBody("userId"), reviewsController.createReview);                        // 리뷰 작성
+router.get("/", reviewsController.getReviews);                                                                        // 리뷰 목록
+router.get("/:id", reviewsController.getReviewById);                                                                  // 단일 리뷰 조회
+router.patch("/:id", authMiddleware, reviewsController.updateReview);                                                 // 리뷰 수정
+router.delete("/:id", authMiddleware, reviewsController.deleteReview);                                                // 리뷰 삭제
 
 // ------------------
 // 관계형 Sub-resource

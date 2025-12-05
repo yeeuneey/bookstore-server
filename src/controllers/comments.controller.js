@@ -119,7 +119,10 @@ exports.updateComment = async (req, res) => {
     if (!exists) {
       return res.status(404).json({ message: "댓글을 찾을 수 없습니다." });
     }
-
+    if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
+      return res.status(403).json({ message: "본인 또는 관리자만 수정/삭제할 수 있습니다." });
+    }
+    
     const updated = await prisma.comment.update({
       where: { id },
       data: { comment },
@@ -142,6 +145,9 @@ exports.deleteComment = async (req, res) => {
     const exists = await prisma.comment.findUnique({ where: { id } });
     if (!exists) {
       return res.status(404).json({ message: "댓글을 찾을 수 없습니다." });
+    }
+    if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
+      return res.status(403).json({ message: "본인 또는 관리자만 수정/삭제할 수 있습니다." });
     }
 
     await prisma.comment.delete({ where: { id } });
