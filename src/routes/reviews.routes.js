@@ -64,10 +64,25 @@ router.post(
  *     parameters:
  *       - in: query
  *         name: page
- *         schema: { type: integer, example: 1 }
+ *         schema: { type: integer, example: 1, minimum: 1 }
  *       - in: query
- *         name: limit
- *         schema: { type: integer, example: 10 }
+ *         name: size
+ *         schema: { type: integer, example: 20, minimum: 1, maximum: 100 }
+ *       - in: query
+ *         name: sort
+ *         schema: { type: string, example: "createdAt,DESC" }
+ *       - in: query
+ *         name: keyword
+ *         schema: { type: string, example: "좋아요" }
+ *       - in: query
+ *         name: rating
+ *         schema: { type: integer, example: 5 }
+ *       - in: query
+ *         name: dateFrom
+ *         schema: { type: string, format: date-time, example: "2024-01-01T00:00:00.000Z" }
+ *       - in: query
+ *         name: dateTo
+ *         schema: { type: string, format: date-time, example: "2024-12-31T23:59:59.000Z" }
  *     responses:
  *       200:
  *         description: 리뷰 목록
@@ -77,6 +92,12 @@ router.post(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Review'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get("/", validateQuery(reviewListQuerySchema), reviewsController.getReviews);
 

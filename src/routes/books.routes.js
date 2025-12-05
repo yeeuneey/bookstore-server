@@ -36,17 +36,23 @@ const {
  *         name: page
  *         schema: { type: integer, example: 1 }
  *       - in: query
- *         name: limit
+ *         name: size
  *         schema: { type: integer, example: 10 }
  *       - in: query
- *         name: search
+ *         name: keyword
  *         schema: { type: string, example: "클린 코드" }
  *       - in: query
  *         name: sort
- *         schema: { type: string, example: "createdAt" }
+ *         schema: { type: string, example: "createdAt,DESC" }
  *       - in: query
- *         name: order
- *         schema: { type: string, enum: ["asc", "desc"], example: "desc" }
+ *         name: category
+ *         schema: { type: string, example: "IT" }
+ *       - in: query
+ *         name: dateFrom
+ *         schema: { type: string, format: date-time, example: "2024-01-01T00:00:00.000Z" }
+ *       - in: query
+ *         name: dateTo
+ *         schema: { type: string, format: date-time, example: "2024-12-31T23:59:59.000Z" }
  *     responses:
  *       200:
  *         description: 도서 목록
@@ -56,12 +62,16 @@ const {
  *               type: object
  *               properties:
  *                 page: { type: integer }
- *                 limit: { type: integer }
+ *                 size: { type: integer }
  *                 total: { type: integer }
  *                 books:
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Book'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get("/", validateQuery(bookListQuerySchema), booksController.getBooks);
 
@@ -89,6 +99,8 @@ router.get("/", validateQuery(bookListQuerySchema), booksController.getBooks);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get("/:id", validateParams(bookIdParamSchema), booksController.getBookById);
 

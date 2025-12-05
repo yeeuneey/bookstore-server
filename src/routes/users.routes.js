@@ -93,19 +93,25 @@ router.get("/me", authMiddleware, usersController.getMe);
  *     parameters:
  *       - in: query
  *         name: page
- *         schema: { type: integer, example: 1 }
+ *         schema: { type: integer, example: 1, minimum: 1 }
  *       - in: query
- *         name: limit
- *         schema: { type: integer, example: 10 }
- *       - in: query
- *         name: search
- *         schema: { type: string, example: "hong" }
+ *         name: size
+ *         schema: { type: integer, example: 20, minimum: 1, maximum: 100 }
  *       - in: query
  *         name: sort
- *         schema: { type: string, example: "id" }
+ *         schema: { type: string, example: "id,ASC" }
  *       - in: query
- *         name: order
- *         schema: { type: string, enum: ["asc", "desc"], example: "desc" }
+ *         name: keyword
+ *         schema: { type: string, example: "hong" }
+ *       - in: query
+ *         name: role
+ *         schema: { type: string, enum: ["USER", "ADMIN"], example: "USER" }
+ *       - in: query
+ *         name: dateFrom
+ *         schema: { type: string, format: date-time, example: "2024-01-01T00:00:00.000Z" }
+ *       - in: query
+ *         name: dateTo
+ *         schema: { type: string, format: date-time, example: "2024-12-31T23:59:59.000Z" }
  *     responses:
  *       200:
  *         description: 페이징된 사용자 목록
@@ -121,11 +127,13 @@ router.get("/me", authMiddleware, usersController.getMe);
  *                   items:
  *                     $ref: '#/components/schemas/User'
  *       403:
- *         description: 관리자만 접근 가능
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *         $ref: '#/components/responses/Error403'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/",

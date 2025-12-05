@@ -1,4 +1,4 @@
-const path = require("path");
+﻿const path = require("path");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 
@@ -8,7 +8,7 @@ const options = {
     info: {
       title: "Online Bookstore API",
       version: "1.0.0",
-      description: `온라인 서점 서비스용 REST API 문서입니다.
+      description: `온라인 서점 REST API입니다.
 
 ### 인증 방식
 - 모든 보호된 엔드포인트는 Bearer 토큰(JWT) 필요
@@ -35,15 +35,15 @@ const options = {
       },
     ],
     tags: [
-      { name: "Auth", description: "로그인/로그아웃 및 토큰" },
-      { name: "Users", description: "회원 정보 및 활동" },
+      { name: "Auth", description: "로그인/토큰 갱신/로그아웃" },
+      { name: "Users", description: "회원 정보 및 관리" },
       { name: "Books", description: "도서 조회 및 관리" },
-      { name: "Carts", description: "장바구니" },
-      { name: "Orders", description: "주문" },
-      { name: "Reviews", description: "리뷰" },
-      { name: "Comments", description: "댓글" },
-      { name: "Admin", description: "관리자 기능" },
-      { name: "Health", description: "상태 점검" },
+      { name: "Carts", description: "장바구니 관리" },
+      { name: "Orders", description: "주문 생성/조회/관리" },
+      { name: "Reviews", description: "리뷰 작성/조회/관리" },
+      { name: "Comments", description: "댓글 작성/조회/관리" },
+      { name: "Admin", description: "관리자 전용 기능" },
+      { name: "Health", description: "상태 체크" },
     ],
     components: {
       securitySchemes: {
@@ -321,6 +321,169 @@ const options = {
           },
         },
       },
+      responses: {
+        Error400: {
+          description: "잘못된 요청",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ErrorResponse" },
+              examples: {
+                badRequest: {
+                  value: {
+                    success: false,
+                    error: {
+                      code: "BAD_REQUEST",
+                      message: "잘못된 요청입니다.",
+                      status: 400,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        Error401: {
+          description: "인증 실패",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ErrorResponse" },
+              examples: {
+                unauthorized: {
+                  value: {
+                    success: false,
+                    error: {
+                      code: "UNAUTHORIZED",
+                      message: "인증 토큰이 필요합니다.",
+                      status: 401,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        Error403: {
+          description: "권한 부족",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ErrorResponse" },
+              examples: {
+                forbidden: {
+                  value: {
+                    success: false,
+                    error: {
+                      code: "FORBIDDEN",
+                      message: "권한이 없습니다.",
+                      status: 403,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        Error404: {
+          description: "리소스 없음",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ErrorResponse" },
+              examples: {
+                notFound: {
+                  value: {
+                    success: false,
+                    error: {
+                      code: "NOT_FOUND",
+                      message: "리소스를 찾을 수 없습니다.",
+                      status: 404,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        Error409: {
+          description: "충돌",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ErrorResponse" },
+              examples: {
+                conflict: {
+                  value: {
+                    success: false,
+                    error: {
+                      code: "CONFLICT",
+                      message: "이미 존재합니다.",
+                      status: 409,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        Error422: {
+          description: "검증 실패",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ErrorResponse" },
+              examples: {
+                validation: {
+                  value: {
+                    success: false,
+                    error: {
+                      code: "VALIDATION_ERROR",
+                      message: "입력값이 올바르지 않습니다.",
+                      status: 422,
+                      details: [{ path: ["field"], message: "?필수 입력입니다." }],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        Error429: {
+          description: "요청 한도 초과",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ErrorResponse" },
+              examples: {
+                rateLimit: {
+                  value: {
+                    success: false,
+                    error: {
+                      code: "RATE_LIMIT_EXCEEDED",
+                      message: "요청 한도를 초과했습니다.",
+                      status: 429,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        Error500: {
+          description: "서버 내부 오류",
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ErrorResponse" },
+              examples: {
+                internal: {
+                  value: {
+                    success: false,
+                    error: {
+                      code: "INTERNAL_SERVER_ERROR",
+                      message: "서버 내부 오류가 발생했습니다.",
+                      status: 500,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
   },
   apis: [path.join(__dirname, "../routes/*.js"), path.join(__dirname, "../app.js")],
@@ -329,3 +492,5 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 module.exports = { swaggerUi, swaggerSpec };
+
+
