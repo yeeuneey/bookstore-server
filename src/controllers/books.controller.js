@@ -1,0 +1,296 @@
+// src/controllers/books.controller.js
+require("dotenv").config();
+const { PrismaClient } = require("@prisma/client");
+const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
+
+const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
+const prisma = new PrismaClient({ adapter });
+
+/* ===========================================================
+   1) 도서 목록 조회 + 검색 + 정렬 + 페이지네이션 (GET /books)
+=========================================================== */
+exports.getBooks = async (req, res) => {
+  try {
+    const {
+      page = 1,
+      limit = 10,
+      search = "",
+      sort = "createdAt",
+      order = "desc",
+    } = req.query;
+
+    const pageNum = Number(page);
+    const take = Number(limit);
+    const skip = (pageNum - 1) * take;
+
+    const where = search
+      ? {
+          OR: [
+            { title: { contains: search } },
+            { summary: { contains: search } },
+            { publisher: { contains: search } },
+          ],
+        }
+      : {};
+
+    const [books, total] = await Promise.all([
+      prisma.book.findMany({
+        where,
+        orderBy: { [sort]: order },
+        skip,
+        take,
+        include: {
+          authors: {
+            include: {
+              author: true,
+            },
+          },
+          categories: {
+            include: {
+              category: true,
+            },
+          },
+          reviews: true,
+        },
+      }),
+      prisma.book.count({ where }),
+    ]);
+
+    return res.json({
+      page: pageNum,
+      limit: take,
+      total,
+      books,
+    });
+  } catch (err) {
+    console.error("Get Books Error:", err);
+    return res.status(500).json({ message: "서버 오류" });
+  }
+};
+
+/* ===========================================================
+   2) 단일 도서 상세 조회 (GET /books/:id)
+=========================================================== */
+exports.getBookById = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    const book = await prisma.book.findUnique({
+      where: { id },
+      include: {
+        authors: { include: { author: true } },
+        categories: { include: { category: true } },
+        reviews: {
+          include: {
+            user: { select: { id: true, name: true } },
+          },
+        },
+      },
+    });
+
+    if (!book) {
+      return res.status(404).json({ message: "도서를 찾을 수 없습니다." });
+    }
+
+    return res.json(book);
+  } catch (err) {
+    console.error("Get Book Error:", err);
+    return res.status(500).json({ message: "서버 오류" });
+  }
+};
+
+/* ===========================================================
+   3) 도서 생성 (POST /books)
+=========================================================== */
+exports.createBook = async (req, res) => {
+  try {
+    const {
+      title,
+      isbn,
+      price,
+      publisher,
+      summary,
+      publicationDate,
+      categoryIds = [],
+      authorIds = [],
+    } = req.body;
+
+    if (!title || !isbn || !price) {
+      return res.status(400).json({ message: "필수 항목 누락" });
+    }
+
+    const exists = await prisma.book.findUnique({ where: { isbn } });
+    if (exists) {
+      return res.status(409).json({ message: "ISBN이 이미 존재합니다." });
+    }
+
+    const book = await prisma.book.create({
+      data: {
+        title,
+        isbn,
+        price,
+        publisher,
+        summary,
+        publicationDate: publicationDate ? new Date(publicationDate) : null,
+        authors: {
+          create: authorIds.map((id) => ({ authorId: id })),
+        },
+        categories: {
+          create: categoryIds.map((id) => ({ categoryId: id })),
+        },
+      },
+      include: {
+        authors: { include: { author: true } },
+        categories: { include: { category: true } },
+      },
+    });
+
+    return res.status(201).json({ message: "도서 생성 완료", book });
+  } catch (err) {
+    console.error("Create Book Error:", err);
+    return res.status(500).json({ message: "서버 오류" });
+  }
+};
+
+/* ===========================================================
+   4) 도서 수정 (PATCH /books/:id)
+=========================================================== */
+exports.updateBook = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    const exists = await prisma.book.findUnique({ where: { id } });
+    if (!exists) {
+      return res.status(404).json({ message: "도서를 찾을 수 없습니다." });
+    }
+
+    const {
+      title,
+      price,
+      publisher,
+      summary,
+      publicationDate,
+      categoryIds = [],
+      authorIds = [],
+    } = req.body;
+
+    const book = await prisma.book.update({
+      where: { id },
+      data: {
+        title,
+        price,
+        publisher,
+        summary,
+        publicationDate: publicationDate ? new Date(publicationDate) : null,
+
+        // Many-to-many 관계 재정의
+        authors: {
+          deleteMany: {},
+          create: authorIds.map((aid) => ({ authorId: aid })),
+        },
+        categories: {
+          deleteMany: {},
+          create: categoryIds.map((cid) => ({ categoryId: cid })),
+        },
+      },
+      include: {
+        authors: { include: { author: true } },
+        categories: { include: { category: true } },
+      },
+    });
+
+    return res.json({ message: "도서 수정 완료", book });
+  } catch (err) {
+    console.error("Update Book Error:", err);
+    return res.status(500).json({ message: "서버 오류" });
+  }
+};
+
+/* ===========================================================
+   5) 도서 삭제 (DELETE /books/:id)
+=========================================================== */
+exports.deleteBook = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    const exists = await prisma.book.findUnique({ where: { id } });
+    if (!exists) {
+      return res.status(404).json({ message: "도서를 찾을 수 없습니다." });
+    }
+
+    await prisma.book.delete({ where: { id } });
+
+    return res.json({ message: "도서 삭제 완료" });
+  } catch (err) {
+    console.error("Delete Book Error:", err);
+    return res.status(500).json({ message: "서버 오류" });
+  }
+};
+
+/* ===========================================================
+   6) 도서 리뷰 목록 (GET /books/:id/reviews)
+=========================================================== */
+exports.getBookReviews = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    const book = await prisma.book.findUnique({ where: { id } });
+    if (!book)
+      return res.status(404).json({ message: "도서를 찾을 수 없습니다." });
+
+    const reviews = await prisma.review.findMany({
+      where: { bookId: id },
+      orderBy: { createdAt: "desc" },
+      include: {
+        user: { select: { id: true, name: true } },
+      },
+    });
+
+    return res.json({ bookId: id, count: reviews.length, reviews });
+  } catch (err) {
+    console.error("Get Book Reviews Error:", err);
+    return res.status(500).json({ message: "서버 오류" });
+  }
+};
+
+/* ===========================================================
+   7) 도서 카테고리 목록 (GET /books/:id/categories)
+=========================================================== */
+exports.getBookCategories = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    const categories = await prisma.bookCategory.findMany({
+      where: { bookId: id },
+      include: {
+        category: true,
+      },
+    });
+
+    return res.json(categories);
+  } catch (err) {
+    console.error("Get Book Categories Error:", err);
+    return res.status(500).json({ message: "서버 오류" });
+  }
+};
+
+/* ===========================================================
+   8) 도서 저자 목록 (GET /books/:id/authors)
+=========================================================== */
+exports.getBookAuthors = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    const authors = await prisma.bookAuthor.findMany({
+      where: { bookId: id },
+      include: {
+        author: true,
+      },
+    });
+
+    return res.json(authors);
+  } catch (err) {
+    console.error("Get Book Authors Error:", err);
+    return res.status(500).json({ message: "서버 오류" });
+  }
+};

@@ -1,14 +1,204 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+datasource db {
+  provider = "mysql"
 }
 
-datasource db {
-  provider = "postgresql"
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  password     String
+  name         String
+  birthDate    DateTime?
+  gender       Gender?
+  address      String?
+  phoneNumber  String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  deletedAt    DateTime?
+
+  // Relations
+  reviews      Review[]
+  comments     Comment[]
+  reviewLikes  ReviewLike[]
+  commentLikes CommentLike[]
+  favorites    Favorite[]
+  orders       Order[]
+  carts        Cart[]
+}
+
+model Book {
+  id              Int         @id @default(autoincrement())
+  title           String
+  publisher       String?
+  summary         String?
+  isbn            String       @unique
+  price           Float
+  publicationDate DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  deletedAt       DateTime?
+
+  // Relations
+  reviews         Review[]
+  favorites       Favorite[]
+  cartItems       Cart[]
+  orderItems      OrderItem[]
+  categories      BookCategory[]
+  authors         BookAuthor[]
+}
+
+model Review {
+  id         Int       @id @default(autoincrement())
+  rating     Int
+  comment    String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+
+  userId     Int
+  bookId     Int
+
+  user       User      @relation(fields: [userId], references: [id])
+  book       Book      @relation(fields: [bookId], references: [id])
+
+  comments   Comment[]
+  likes      ReviewLike[]
+}
+
+model Comment {
+  id         Int       @id @default(autoincrement())
+  comment    String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+
+  reviewId   Int
+  userId     Int
+
+  review     Review    @relation(fields: [reviewId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
+
+  likes      CommentLike[]
+}
+
+model ReviewLike {
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  reviewId  Int
+
+  user      User   @relation(fields: [userId], references: [id])
+  review    Review @relation(fields: [reviewId], references: [id])
+
+  @@unique([userId, reviewId])
+}
+
+model CommentLike {
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  commentId Int
+
+  user      User    @relation(fields: [userId], references: [id])
+  comment   Comment @relation(fields: [commentId], references: [id])
+
+  @@unique([userId, commentId])
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  userId    Int
+  bookId    Int
+
+  user      User     @relation(fields: [userId], references: [id])
+  book      Book     @relation(fields: [bookId], references: [id])
+
+  @@unique([userId, bookId])
+}
+
+model Cart {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  bookId     Int
+  quantity   Int      @default(1)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user       User     @relation(fields: [userId], references: [id])
+  book       Book     @relation(fields: [bookId], references: [id])
+
+  @@unique([userId, bookId])
+}
+
+model Order {
+  id             Int          @id @default(autoincrement())
+  userId         Int
+  orderStatus    OrderStatus  @default(PENDING)
+  totalPrice     Float
+  deliveryAddress String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  user           User         @relation(fields: [userId], references: [id])
+  orderItems     OrderItem[]
+}
+
+model OrderItem {
+  id              Int     @id @default(autoincrement())
+  orderId         Int
+  bookId          Int
+  quantity        Int
+  priceAtPurchase Float
+
+  order           Order   @relation(fields: [orderId], references: [id])
+  book            Book    @relation(fields: [bookId], references: [id])
+}
+
+model Category {
+  id       Int            @id @default(autoincrement())
+  name     String         @unique
+  books    BookCategory[]
+}
+
+model BookCategory {
+  id         Int       @id @default(autoincrement())
+  bookId     Int
+  categoryId Int
+
+  book       Book      @relation(fields: [bookId], references: [id])
+  category   Category  @relation(fields: [categoryId], references: [id])
+
+  @@unique([bookId, categoryId])
+}
+
+model Author {
+  id      Int          @id @default(autoincrement())
+  name    String
+  books   BookAuthor[]
+}
+
+model BookAuthor {
+  id       Int      @id @default(autoincrement())
+  bookId   Int
+  authorId Int
+
+  book     Book     @relation(fields: [bookId], references: [id])
+  author   Author   @relation(fields: [authorId], references: [id])
+
+  @@unique([bookId, authorId])
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum OrderStatus {
+  PENDING
+  SHIPPED
+  DELIVERED
+  CANCELLED
 }
