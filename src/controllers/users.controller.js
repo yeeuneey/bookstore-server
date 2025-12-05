@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
 
-exports.getMe = async (req, res) => {
+exports.getMe = async (req, res, next) => {
   try {
     const me = await prisma.user.findUnique({
       where: { id: req.user.id },
@@ -23,14 +23,14 @@ exports.getMe = async (req, res) => {
     return res.json(me);
   } catch (err) {
     console.error("Get Me Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    1) 회원가입 (POST /users)
 ================================================== */
-exports.createUser = async (req, res) => {
+exports.createUser = async (req, res, next) => {
   try {
     const { email, password, name, gender } = req.body;
 
@@ -60,14 +60,14 @@ exports.createUser = async (req, res) => {
     return res.status(201).json({ message: "회원가입 성공", user });
   } catch (err) {
     console.error("Create User Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    2) 유저 목록 조회 + 검색/정렬/페이지네이션 (GET /users)
 ================================================== */
-exports.getUsers = async (req, res) => {
+exports.getUsers = async (req, res, next) => {
   try {
     const {
       page = 1,
@@ -116,14 +116,14 @@ exports.getUsers = async (req, res) => {
     });
   } catch (err) {
     console.error("Get Users Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    3) 개별 유저 조회 (GET /users/:id)
 ================================================== */
-exports.getUserById = async (req, res) => {
+exports.getUserById = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -145,14 +145,14 @@ exports.getUserById = async (req, res) => {
     return res.json({ user });
   } catch (err) {
     console.error("Get User Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    4) 유저 수정 (PATCH /users/:id)
 ================================================== */
-exports.updateUser = async (req, res) => {
+exports.updateUser = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     const { name, gender } = req.body;
@@ -177,14 +177,14 @@ exports.updateUser = async (req, res) => {
     return res.json({ message: "유저 정보 수정 성공", user: updated });
   } catch (err) {
     console.error("Update User Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    5) 유저 삭제 (DELETE /users/:id)
 ================================================== */
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -198,14 +198,14 @@ exports.deleteUser = async (req, res) => {
     return res.json({ message: "유저 삭제 완료" });
   } catch (err) {
     console.error("Delete User Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    6) 관계형: 유저가 작성한 리뷰 (GET /users/:id/reviews)
 ================================================== */
-exports.getUserReviews = async (req, res) => {
+exports.getUserReviews = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -224,14 +224,14 @@ exports.getUserReviews = async (req, res) => {
     return res.json({ userId: id, count: reviews.length, reviews });
   } catch (err) {
     console.error("Get User Reviews Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    7) 관계형: 유저의 댓글 목록 (GET /users/:id/comments)
 ================================================== */
-exports.getUserComments = async (req, res) => {
+exports.getUserComments = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -250,14 +250,14 @@ exports.getUserComments = async (req, res) => {
     return res.json({ userId: id, count: comments.length, comments });
   } catch (err) {
     console.error("Get User Comments Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    8) 관계형: 유저가 좋아요한 리뷰 (GET /users/:id/review-likes)
 ================================================== */
-exports.getUserReviewLikes = async (req, res) => {
+exports.getUserReviewLikes = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -279,14 +279,14 @@ exports.getUserReviewLikes = async (req, res) => {
     return res.json({ userId: id, count: likes.length, likes });
   } catch (err) {
     console.error("Get User ReviewLikes Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    9) 관계형: 유저가 좋아요한 댓글 (GET /users/:id/comment-likes)
 ================================================== */
-exports.getUserCommentLikes = async (req, res) => {
+exports.getUserCommentLikes = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -308,14 +308,14 @@ exports.getUserCommentLikes = async (req, res) => {
     return res.json({ userId: id, count: likes.length, likes });
   } catch (err) {
     console.error("Get User CommentLikes Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    10) 관계형: 유저의 찜(Favorites)
 ================================================== */
-exports.getUserFavorites = async (req, res) => {
+exports.getUserFavorites = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -333,14 +333,14 @@ exports.getUserFavorites = async (req, res) => {
     return res.json({ userId: id, count: favorites.length, favorites });
   } catch (err) {
     console.error("Get User Favorites Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    11) 관계형: 유저 장바구니 (GET /users/:id/carts)
 ================================================== */
-exports.getUserCarts = async (req, res) => {
+exports.getUserCarts = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -358,14 +358,14 @@ exports.getUserCarts = async (req, res) => {
     return res.json({ userId: id, count: carts.length, carts });
   } catch (err) {
     console.error("Get User Carts Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ==================================================
    12) 관계형: 유저 주문 목록 (GET /users/:id/orders)
 ================================================== */
-exports.getUserOrders = async (req, res) => {
+exports.getUserOrders = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -388,6 +388,6 @@ exports.getUserOrders = async (req, res) => {
     return res.json({ userId: id, count: orders.length, orders });
   } catch (err) {
     console.error("Get User Orders Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };

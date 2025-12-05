@@ -3,11 +3,12 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { PrismaClient } = require("@prisma/client");
 const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
+const AppError = require("../utils/AppError");
 
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
 
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -55,11 +56,11 @@ exports.login = async (req, res) => {
     });
   } catch (err) {
     console.error("Login Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
-exports.refresh = async (req, res) => {
+exports.refresh = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
 
@@ -80,7 +81,7 @@ exports.refresh = async (req, res) => {
     });
 
     if (!user || user.refreshToken !== refreshToken) {
-      return res.status(403).json({ message: "다시 로그인해야 합니다." });
+      throw new AppError("다시 로그인해야 합니다.", 403, "FORBIDDEN");
     }
 
     // 새로운 Access Token 발급
@@ -100,11 +101,11 @@ exports.refresh = async (req, res) => {
     });
   } catch (err) {
     console.error("Refresh Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
-exports.logout = async (req, res) => {
+exports.logout = async (req, res, next) => {
   try {
     const { userId } = req.body;
 
@@ -115,6 +116,6 @@ exports.logout = async (req, res) => {
 
     return res.json({ message: "로그아웃 완료" });
   } catch (err) {
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };

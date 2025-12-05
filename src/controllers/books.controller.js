@@ -9,7 +9,7 @@ const prisma = new PrismaClient({ adapter });
 /* ===========================================================
    1) 도서 목록 조회 + 검색 + 정렬 + 페이지네이션 (GET /books)
 =========================================================== */
-exports.getBooks = async (req, res) => {
+exports.getBooks = async (req, res, next) => {
   try {
     const {
       page = 1,
@@ -64,14 +64,14 @@ exports.getBooks = async (req, res) => {
     });
   } catch (err) {
     console.error("Get Books Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    2) 단일 도서 상세 조회 (GET /books/:id)
 =========================================================== */
-exports.getBookById = async (req, res) => {
+exports.getBookById = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -95,14 +95,14 @@ exports.getBookById = async (req, res) => {
     return res.json(book);
   } catch (err) {
     console.error("Get Book Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    3) 도서 생성 (POST /books)
 =========================================================== */
-exports.createBook = async (req, res) => {
+exports.createBook = async (req, res, next) => {
   try {
     const {
       title,
@@ -148,14 +148,14 @@ exports.createBook = async (req, res) => {
     return res.status(201).json({ message: "도서 생성 완료", book });
   } catch (err) {
     console.error("Create Book Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    4) 도서 수정 (PATCH /books/:id)
 =========================================================== */
-exports.updateBook = async (req, res) => {
+exports.updateBook = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -202,14 +202,14 @@ exports.updateBook = async (req, res) => {
     return res.json({ message: "도서 수정 완료", book });
   } catch (err) {
     console.error("Update Book Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    5) 도서 삭제 (DELETE /books/:id)
 =========================================================== */
-exports.deleteBook = async (req, res) => {
+exports.deleteBook = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -223,14 +223,14 @@ exports.deleteBook = async (req, res) => {
     return res.json({ message: "도서 삭제 완료" });
   } catch (err) {
     console.error("Delete Book Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    6) 도서 리뷰 목록 (GET /books/:id/reviews)
 =========================================================== */
-exports.getBookReviews = async (req, res) => {
+exports.getBookReviews = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -249,14 +249,14 @@ exports.getBookReviews = async (req, res) => {
     return res.json({ bookId: id, count: reviews.length, reviews });
   } catch (err) {
     console.error("Get Book Reviews Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    7) 도서 카테고리 목록 (GET /books/:id/categories)
 =========================================================== */
-exports.getBookCategories = async (req, res) => {
+exports.getBookCategories = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -270,14 +270,14 @@ exports.getBookCategories = async (req, res) => {
     return res.json(categories);
   } catch (err) {
     console.error("Get Book Categories Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    8) 도서 저자 목록 (GET /books/:id/authors)
 =========================================================== */
-exports.getBookAuthors = async (req, res) => {
+exports.getBookAuthors = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -291,6 +291,6 @@ exports.getBookAuthors = async (req, res) => {
     return res.json(authors);
   } catch (err) {
     console.error("Get Book Authors Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };

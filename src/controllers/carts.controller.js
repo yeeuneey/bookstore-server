@@ -2,6 +2,7 @@
 require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
 const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
+const AppError = require("../utils/AppError");
 
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
@@ -9,7 +10,7 @@ const prisma = new PrismaClient({ adapter });
 /* ===========================================================
    1) 장바구니 추가 (POST /carts)
 =========================================================== */
-exports.createCartItem = async (req, res) => {
+exports.createCartItem = async (req, res, next) => {
   try {
     const { userId, bookId, quantity } = req.body;
 
@@ -45,7 +46,7 @@ exports.createCartItem = async (req, res) => {
     return res.status(201).json({ message: "장바구니 추가 완료", item });
   } catch (err) {
     console.error("Create Cart Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
@@ -55,7 +56,7 @@ exports.createCartItem = async (req, res) => {
       - 정렬
       - 페이지네이션
 =========================================================== */
-exports.getCartItems = async (req, res) => {
+exports.getCartItems = async (req, res, next) => {
   try {
     const {
       page = 1,
@@ -95,14 +96,14 @@ exports.getCartItems = async (req, res) => {
     });
   } catch (err) {
     console.error("Get Cart Items Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    3) 장바구니 단일 조회 (GET /carts/:id)
 =========================================================== */
-exports.getCartItemById = async (req, res) => {
+exports.getCartItemById = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -118,20 +119,20 @@ exports.getCartItemById = async (req, res) => {
       return res.status(404).json({ message: "장바구니 항목을 찾을 수 없습니다." });
     }
     if (req.user.role !== "ADMIN" && item.userId !== req.user.id) {
-      return res.status(403).json({ message: "본인 또는 관리자만 접근할 수 있습니다." });
+      throw new AppError("본인 또는 관리자만 접근할 수 있습니다.", 403, "FORBIDDEN");
     }
 
     return res.json(item);
   } catch (err) {
     console.error("Get Cart Item Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    4) 장바구니 수량 수정 (PATCH /carts/:id)
 =========================================================== */
-exports.updateCartItem = async (req, res) => {
+exports.updateCartItem = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     const { quantity } = req.body;
@@ -145,7 +146,7 @@ exports.updateCartItem = async (req, res) => {
       return res.status(404).json({ message: "장바구니 항목을 찾을 수 없습니다." });
     }
     if (req.user.role !== "ADMIN" && item.userId !== req.user.id) {
-      return res.status(403).json({ message: "본인 또는 관리자만 접근할 수 있습니다." });
+      throw new AppError("본인 또는 관리자만 접근할 수 있습니다.", 403, "FORBIDDEN");
     }
 
     const updated = await prisma.cart.update({
@@ -156,14 +157,14 @@ exports.updateCartItem = async (req, res) => {
     return res.json({ message: "장바구니 수정 완료", item: updated });
   } catch (err) {
     console.error("Update Cart Item Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    5) 장바구니 항목 삭제 (DELETE /carts/:id)
 =========================================================== */
-exports.deleteCartItem = async (req, res) => {
+exports.deleteCartItem = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -172,7 +173,7 @@ exports.deleteCartItem = async (req, res) => {
       return res.status(404).json({ message: "장바구니 항목을 찾을 수 없습니다." });
     }
     if (req.user.role !== "ADMIN" && item.userId !== req.user.id) {
-      return res.status(403).json({ message: "본인 또는 관리자만 접근할 수 있습니다." });
+      throw new AppError("본인 또는 관리자만 접근할 수 있습니다.", 403, "FORBIDDEN");
     }
 
     await prisma.cart.delete({ where: { id } });
@@ -180,14 +181,14 @@ exports.deleteCartItem = async (req, res) => {
     return res.json({ message: "장바구니 항목 삭제 완료" });
   } catch (err) {
     console.error("Delete Cart Item Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    6) 특정 유저의 장바구니 조회 (GET /carts/user/:userId)
 =========================================================== */
-exports.getUserCartItems = async (req, res) => {
+exports.getUserCartItems = async (req, res, next) => {
   try {
     const userId = Number(req.params.userId);
 
@@ -205,6 +206,6 @@ exports.getUserCartItems = async (req, res) => {
     return res.json({ userId, count: items.length, items });
   } catch (err) {
     console.error("Get User Cart Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };

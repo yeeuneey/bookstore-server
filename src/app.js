@@ -6,6 +6,7 @@ const morgan = require('morgan');
 require('dotenv').config();
 const prisma = require('./lib/prisma');
 const adminRouter = require("./routes/admin.routes");
+const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 app.use("/admin", adminRouter);
+app.use(errorHandler);
 
 // 기존 헬스 체크
 app.get('/health', (req, res) => {

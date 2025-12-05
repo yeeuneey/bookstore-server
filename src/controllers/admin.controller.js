@@ -8,7 +8,7 @@ const prisma = new PrismaClient({ adapter });
 /* ===========================================================
    1) 전체 유저 조회 (GET /admin/users)
 =========================================================== */
-exports.getAllUsers = async (req, res) => {
+exports.getAllUsers = async (req, res, next) => {
   try {
     const users = await prisma.user.findMany({
       orderBy: { createdAt: "desc" },
@@ -25,14 +25,14 @@ exports.getAllUsers = async (req, res) => {
     return res.json({ count: users.length, users });
   } catch (err) {
     console.error("Admin Get Users Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    2) 유저 정지 처리 (PATCH /admin/users/:id/ban)
 =========================================================== */
-exports.banUser = async (req, res) => {
+exports.banUser = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -59,14 +59,14 @@ exports.banUser = async (req, res) => {
     return res.json({ message: "유저 정지 처리 완료", user: updated });
   } catch (err) {
     console.error("Ban User Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    3) 주문 통계 조회 (GET /admin/statistics/orders)
 =========================================================== */
-exports.getOrderStatistics = async (req, res) => {
+exports.getOrderStatistics = async (req, res, next) => {
   try {
     // 오늘 기준 통계 or 전체 통계
     const totalOrders = await prisma.order.count();
@@ -106,6 +106,6 @@ exports.getOrderStatistics = async (req, res) => {
     });
   } catch (err) {
     console.error("Order Statistics Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };

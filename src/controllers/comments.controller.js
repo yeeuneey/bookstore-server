@@ -2,6 +2,7 @@
 require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
 const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
+const AppError = require("../utils/AppError");
 
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
@@ -9,7 +10,7 @@ const prisma = new PrismaClient({ adapter });
 /* ===========================================================
    1) 댓글 생성 (POST /comments)
 =========================================================== */
-exports.createComment = async (req, res) => {
+exports.createComment = async (req, res, next) => {
   try {
     const { userId, reviewId, comment } = req.body;
 
@@ -30,14 +31,14 @@ exports.createComment = async (req, res) => {
     return res.status(201).json({ message: "댓글 생성 완료", comment: newComment });
   } catch (err) {
     console.error("Create Comment Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    2) 댓글 목록 조회 + 검색/정렬/페이지네이션 (GET /comments)
 =========================================================== */
-exports.getComments = async (req, res) => {
+exports.getComments = async (req, res, next) => {
   try {
     const {
       page = 1,
@@ -77,14 +78,14 @@ exports.getComments = async (req, res) => {
     });
   } catch (err) {
     console.error("Get Comments Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    3) 댓글 상세 조회 (GET /comments/:id)
 =========================================================== */
-exports.getCommentById = async (req, res) => {
+exports.getCommentById = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -103,14 +104,14 @@ exports.getCommentById = async (req, res) => {
     return res.json(comment);
   } catch (err) {
     console.error("Get Comment Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    4) 댓글 수정 (PATCH /comments/:id)
 =========================================================== */
-exports.updateComment = async (req, res) => {
+exports.updateComment = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     const { comment } = req.body;
@@ -120,7 +121,7 @@ exports.updateComment = async (req, res) => {
       return res.status(404).json({ message: "댓글을 찾을 수 없습니다." });
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
-      return res.status(403).json({ message: "본인 또는 관리자만 수정/삭제할 수 있습니다." });
+      throw new AppError("본인 또는 관리자만 수정/삭제할 수 있습니다.", 403, "FORBIDDEN");
     }
     
     const updated = await prisma.comment.update({
@@ -131,14 +132,14 @@ exports.updateComment = async (req, res) => {
     return res.json({ message: "댓글 수정 완료", comment: updated });
   } catch (err) {
     console.error("Update Comment Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    5) 댓글 삭제 (DELETE /comments/:id)
 =========================================================== */
-exports.deleteComment = async (req, res) => {
+exports.deleteComment = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -147,7 +148,7 @@ exports.deleteComment = async (req, res) => {
       return res.status(404).json({ message: "댓글을 찾을 수 없습니다." });
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
-      return res.status(403).json({ message: "본인 또는 관리자만 수정/삭제할 수 있습니다." });
+      throw new AppError("본인 또는 관리자만 수정/삭제할 수 있습니다.", 403, "FORBIDDEN");
     }
 
     await prisma.comment.delete({ where: { id } });
@@ -155,14 +156,14 @@ exports.deleteComment = async (req, res) => {
     return res.json({ message: "댓글 삭제 완료" });
   } catch (err) {
     console.error("Delete Comment Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    6) 댓글의 좋아요 목록 (GET /comments/:id/likes)
 =========================================================== */
-exports.getCommentLikes = async (req, res) => {
+exports.getCommentLikes = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -180,6 +181,6 @@ exports.getCommentLikes = async (req, res) => {
     return res.json({ commentId: id, count: likes.length, likes });
   } catch (err) {
     console.error("Get Comment Likes Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };

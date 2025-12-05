@@ -2,6 +2,7 @@
 require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
 const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
+const AppError = require("../utils/AppError");
 
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
@@ -9,7 +10,7 @@ const prisma = new PrismaClient({ adapter });
 /* ===========================================================
    1) 주문 생성 (POST /orders)
 =========================================================== */
-exports.createOrder = async (req, res) => {
+exports.createOrder = async (req, res, next) => {
   try {
     const { userId, deliveryAddress, items } = req.body;
 
@@ -72,7 +73,7 @@ exports.createOrder = async (req, res) => {
     return res.status(201).json({ message: "주문 생성 완료", order });
   } catch (err) {
     console.error("Create Order Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
@@ -82,7 +83,7 @@ exports.createOrder = async (req, res) => {
       - 정렬(sort/order)
       - 페이지네이션
 =========================================================== */
-exports.getOrders = async (req, res) => {
+exports.getOrders = async (req, res, next) => {
   try {
     const {
       page = 1,
@@ -126,14 +127,14 @@ exports.getOrders = async (req, res) => {
     });
   } catch (err) {
     console.error("Get Orders Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    3) 단일 주문 상세 조회 (GET /orders/:id)
 =========================================================== */
-exports.getOrderById = async (req, res) => {
+exports.getOrderById = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -152,19 +153,19 @@ exports.getOrderById = async (req, res) => {
     if (!order)
       return res.status(404).json({ message: "주문을 찾을 수 없습니다." });
     if (req.user.role !== "ADMIN" && order.userId !== req.user.id) {
-      return res.status(403).json({ message: "본인 또는 관리자만 조회할 수 있습니다." });
+      throw new AppError("본인 또는 관리자만 조회할 수 있습니다.", 403, "FORBIDDEN");
     }
     return res.json(order);
   } catch (err) {
     console.error("Get Order Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    4) 주문 상태 변경 (PATCH /orders/:id)
 =========================================================== */
-exports.updateOrder = async (req, res) => {
+exports.updateOrder = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     const { orderStatus } = req.body;
@@ -177,7 +178,7 @@ exports.updateOrder = async (req, res) => {
     if (!exists)
       return res.status(404).json({ message: "주문을 찾을 수 없습니다." });
     if (req.user.role !== "ADMIN" && order.userId !== req.user.id) {
-      return res.status(403).json({ message: "본인 또는 관리자만 조회할 수 있습니다." });
+      throw new AppError("본인 또는 관리자만 조회할 수 있습니다.", 403, "FORBIDDEN");
     }
     const updated = await prisma.order.update({
       where: { id },
@@ -187,14 +188,14 @@ exports.updateOrder = async (req, res) => {
     return res.json({ message: "주문 상태 변경 완료", order: updated });
   } catch (err) {
     console.error("Update Order Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    5) 주문 삭제 (DELETE /orders/:id)
 =========================================================== */
-exports.deleteOrder = async (req, res) => {
+exports.deleteOrder = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
@@ -202,7 +203,7 @@ exports.deleteOrder = async (req, res) => {
     if (!exists)
       return res.status(404).json({ message: "주문을 찾을 수 없습니다." });
     if (req.user.role !== "ADMIN" && order.userId !== req.user.id) {
-      return res.status(403).json({ message: "본인 또는 관리자만 조회할 수 있습니다." });
+      throw new AppError("본인 또는 관리자만 조회할 수 있습니다.", 403, "FORBIDDEN");
     }
 
     await prisma.order.delete({ where: { id } });
@@ -210,14 +211,14 @@ exports.deleteOrder = async (req, res) => {
     return res.json({ message: "주문 삭제 완료" });
   } catch (err) {
     console.error("Delete Order Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
 
 /* ===========================================================
    6) 특정 유저의 주문 목록 조회 (GET /orders/user/:userId)
 =========================================================== */
-exports.getUserOrders = async (req, res) => {
+exports.getUserOrders = async (req, res, next) => {
   try {
     const userId = Number(req.params.userId);
 
@@ -240,6 +241,6 @@ exports.getUserOrders = async (req, res) => {
     return res.json({ userId, count: orders.length, orders });
   } catch (err) {
     console.error("Get User Orders Error:", err);
-    return res.status(500).json({ message: "서버 오류" });
+    return next(err);
   }
 };
