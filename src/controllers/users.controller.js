@@ -72,29 +72,41 @@ exports.getUsers = async (req, res, next) => {
   try {
     const {
       page = 1,
-      limit = 10,
-      search = "",
-      sort = "id",
-      order = "asc",
+      size = 20,
+      sort = "id,ASC",
+      keyword,
+      role,
+      dateFrom,
+      dateTo,
     } = req.query;
 
+    const [sortField, sortDirRaw] = String(sort).split(",");
+    const sortDirection = sortDirRaw?.toLowerCase() === "desc" ? "desc" : "asc";
+
     const pageNum = parseInt(page, 10);
-    const take = parseInt(limit, 10);
+    const take = parseInt(size, 10);
     const skip = (pageNum - 1) * take;
 
-    const where = search
-      ? {
-          OR: [
-            { email: { contains: search } },
-            { name: { contains: search } },
-          ],
-        }
-      : {};
+    const where = {
+      AND: [
+        keyword
+          ? {
+              OR: [
+                { email: { contains: keyword } },
+                { name: { contains: keyword } },
+              ],
+            }
+          : {},
+        role ? { role } : {},
+        dateFrom ? { createdAt: { gte: new Date(dateFrom) } } : {},
+        dateTo ? { createdAt: { lte: new Date(dateTo) } } : {},
+      ],
+    };
 
     const [users, total] = await Promise.all([
       prisma.user.findMany({
         where,
-        orderBy: { [sort]: order === "desc" ? "desc" : "asc" },
+        orderBy: { [sortField || "id"]: sortDirection },
         skip,
         take,
         select: {
@@ -110,7 +122,7 @@ exports.getUsers = async (req, res, next) => {
 
     return res.json({
       page: pageNum,
-      limit: take,
+      size: take,
       total,
       users,
     });
@@ -398,4 +410,3 @@ exports.getUserOrders = async (req, res, next) => {
     return next(err);
   }
 };
-

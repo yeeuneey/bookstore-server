@@ -15,30 +15,50 @@ exports.getBooks = async (req, res, next) => {
   try {
     const {
       page = 1,
-      limit = 10,
-      search = "",
-      sort = "createdAt",
-      order = "desc",
+      size = 20,
+      sort = "createdAt,DESC",
+      keyword,
+      category,
+      dateFrom,
+      dateTo,
     } = req.query;
 
+    const [sortField, sortDirRaw] = String(sort).split(",");
+    const sortDirection = sortDirRaw?.toLowerCase() === "asc" ? "asc" : "desc";
+
     const pageNum = Number(page);
-    const take = Number(limit);
+    const take = Number(size);
     const skip = (pageNum - 1) * take;
 
-    const where = search
-      ? {
-          OR: [
-            { title: { contains: search } },
-            { summary: { contains: search } },
-            { publisher: { contains: search } },
-          ],
-        }
-      : {};
+    const where = {
+      AND: [
+        keyword
+          ? {
+              OR: [
+                { title: { contains: keyword } },
+                { summary: { contains: keyword } },
+                { publisher: { contains: keyword } },
+              ],
+            }
+          : {},
+        category
+          ? {
+              categories: {
+                some: {
+                  category: { name: { contains: category } },
+                },
+              },
+            }
+          : {},
+        dateFrom ? { createdAt: { gte: new Date(dateFrom) } } : {},
+        dateTo ? { createdAt: { lte: new Date(dateTo) } } : {},
+      ],
+    };
 
     const [books, total] = await Promise.all([
       prisma.book.findMany({
         where,
-        orderBy: { [sort]: order },
+        orderBy: { [sortField || "createdAt"]: sortDirection },
         skip,
         take,
         include: {
@@ -52,7 +72,7 @@ exports.getBooks = async (req, res, next) => {
 
     return res.json({
       page: pageNum,
-      limit: take,
+      size: take,
       total,
       books,
     });
@@ -283,4 +303,3 @@ exports.getBookAuthors = async (req, res, next) => {
     return next(err);
   }
 };
-

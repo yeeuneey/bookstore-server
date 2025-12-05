@@ -43,22 +43,34 @@ exports.getReviews = async (req, res, next) => {
   try {
     const {
       page = 1,
-      limit = 10,
-      search = "",
-      sort = "createdAt",
-      order = "desc",
+      size = 20,
+      sort = "createdAt,DESC",
+      keyword,
+      rating,
+      dateFrom,
+      dateTo,
     } = req.query;
 
+    const [sortField, sortDirRaw] = String(sort).split(",");
+    const sortDirection = sortDirRaw?.toLowerCase() === "asc" ? "asc" : "desc";
+
     const pageNum = Number(page);
-    const take = Number(limit);
+    const take = Number(size);
     const skip = (pageNum - 1) * take;
 
-    const where = search ? { comment: { contains: search } } : {};
+    const where = {
+      AND: [
+        keyword ? { comment: { contains: keyword } } : {},
+        rating ? { rating: Number(rating) } : {},
+        dateFrom ? { createdAt: { gte: new Date(dateFrom) } } : {},
+        dateTo ? { createdAt: { lte: new Date(dateTo) } } : {},
+      ],
+    };
 
     const [reviews, total] = await Promise.all([
       prisma.review.findMany({
         where,
-        orderBy: { [sort]: order },
+        orderBy: { [sortField || "createdAt"]: sortDirection },
         skip,
         take,
         include: {
@@ -71,7 +83,7 @@ exports.getReviews = async (req, res, next) => {
 
     return res.json({
       page: pageNum,
-      limit: take,
+      size: take,
       total,
       reviews,
     });
@@ -219,4 +231,3 @@ exports.getReviewLikes = async (req, res, next) => {
     return next(err);
   }
 };
-

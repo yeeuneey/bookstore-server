@@ -25,9 +25,11 @@ exports.userIdParamSchema = z.object({
 });
 
 exports.userListQuerySchema = z.object({
-  page: z.coerce.number().int().positive().optional(),
-  limit: z.coerce.number().int().positive().optional(),
-  search: z.string().optional(),
-  sort: z.string().optional(),
-  order: z.enum(["asc", "desc"]).optional(),
+  page: z.coerce.number().int().min(1).max(1000).default(1),
+  size: z.coerce.number().int().min(1).max(100).default(20),
+  sort: z.string().regex(/^[a-zA-Z0-9_]+,(ASC|DESC)$/i).default("id,ASC"),
+  keyword: z.string().optional(),
+  role: z.enum(["USER", "ADMIN"]).optional(),
+  dateFrom: z.string().datetime().optional(),
+  dateTo: z.string().datetime().optional(),
 });

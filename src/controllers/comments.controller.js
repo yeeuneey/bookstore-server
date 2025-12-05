@@ -43,22 +43,32 @@ exports.getComments = async (req, res, next) => {
   try {
     const {
       page = 1,
-      limit = 10,
-      search = "",
-      sort = "createdAt",
-      order = "desc",
+      size = 20,
+      sort = "createdAt,DESC",
+      keyword,
+      dateFrom,
+      dateTo,
     } = req.query;
 
+    const [sortField, sortDirRaw] = String(sort).split(",");
+    const sortDirection = sortDirRaw?.toLowerCase() === "asc" ? "asc" : "desc";
+
     const pageNum = Number(page);
-    const take = Number(limit);
+    const take = Number(size);
     const skip = (pageNum - 1) * take;
 
-    const where = search ? { comment: { contains: search } } : {};
+    const where = {
+      AND: [
+        keyword ? { comment: { contains: keyword } } : {},
+        dateFrom ? { createdAt: { gte: new Date(dateFrom) } } : {},
+        dateTo ? { createdAt: { lte: new Date(dateTo) } } : {},
+      ],
+    };
 
     const [comments, total] = await Promise.all([
       prisma.comment.findMany({
         where,
-        orderBy: { [sort]: order },
+        orderBy: { [sortField || "createdAt"]: sortDirection },
         skip,
         take,
         include: {
@@ -71,7 +81,7 @@ exports.getComments = async (req, res, next) => {
 
     return res.json({
       page: pageNum,
-      limit: take,
+      size: take,
       total,
       comments,
     });
@@ -208,4 +218,3 @@ exports.getCommentLikes = async (req, res, next) => {
     return next(err);
   }
 };
-
