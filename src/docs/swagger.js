@@ -18,12 +18,12 @@ const options = {
 모든 오류는 동일한 형태로 반환됩니다.
 \`\`\`json
 {
-  "success": false,
-  "error": {
-    "code": "RESOURCE_NOT_FOUND",
-    "message": "요청한 리소스를 찾을 수 없습니다.",
-    "status": 404
-  }
+  "timestamp": "2025-03-05T12:34:56Z",
+  "path": "/api/posts/1",
+  "status": 404,
+  "code": "RESOURCE_NOT_FOUND",
+  "message": "요청한 리소스를 찾을 수 없습니다.",
+  "details": { "resource": "post" }
 }
 \`\`\`
       `,
@@ -57,18 +57,14 @@ const options = {
         ErrorResponse: {
           type: "object",
           properties: {
-            success: { type: "boolean", example: false },
-            error: {
-              type: "object",
-              properties: {
-                code: { type: "string", example: "USER_NOT_FOUND" },
-                message: { type: "string", example: "요청한 사용자를 찾을 수 없습니다." },
-                status: { type: "integer", example: 404 },
-              },
-              required: ["code", "message", "status"],
-            },
+            timestamp: { type: "string", format: "date-time", example: "2025-03-05T12:34:56Z" },
+            path: { type: "string", example: "/api/posts/1" },
+            status: { type: "integer", example: 404 },
+            code: { type: "string", example: "USER_NOT_FOUND" },
+            message: { type: "string", example: "요청한 사용자를 찾을 수 없습니다." },
+            details: { type: "object", nullable: true, example: { field: "현재 길이 150자" } },
           },
-          required: ["success", "error"],
+          required: ["timestamp", "path", "status", "code", "message"],
         },
         PaginationMeta: {
           type: "object",
@@ -323,19 +319,36 @@ const options = {
       },
       responses: {
         Error400: {
-          description: "잘못된 요청",
+          description: "요청 형식이 올바르지 않음",
           content: {
             "application/json": {
               schema: { $ref: "#/components/schemas/ErrorResponse" },
               examples: {
                 badRequest: {
                   value: {
-                    success: false,
-                    error: {
-                      code: "BAD_REQUEST",
-                      message: "잘못된 요청입니다.",
-                      status: 400,
-                    },
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 400,
+                    code: "BAD_REQUEST",
+                    message: "요청 형식이 올바르지 않습니다.",
+                  },
+                },
+                validationFailed: {
+                  value: {
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 400,
+                    code: "VALIDATION_FAILED",
+                    message: "필드 유효성 검사 실패하였습니다.",
+                  },
+                },
+                invalidQueryParam: {
+                  value: {
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 400,
+                    code: "INVALID_QUERY_PARAM",
+                    message: "쿼리 파라미터 값이 잘못되었습니다.",
                   },
                 },
               },
@@ -343,19 +356,27 @@ const options = {
           },
         },
         Error401: {
-          description: "인증 실패",
+          description: "인증 토큰 없음 또는 잘못된 토큰",
           content: {
             "application/json": {
               schema: { $ref: "#/components/schemas/ErrorResponse" },
               examples: {
                 unauthorized: {
                   value: {
-                    success: false,
-                    error: {
-                      code: "UNAUTHORIZED",
-                      message: "인증 토큰이 필요합니다.",
-                      status: 401,
-                    },
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 401,
+                    code: "UNAUTHORIZED",
+                    message: "인증 토큰이 없거나 잘못된 토큰입니다.",
+                  },
+                },
+                tokenExpired: {
+                  value: {
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 401,
+                    code: "TOKEN_EXPIRED",
+                    message: "토큰 만료",
                   },
                 },
               },
@@ -363,19 +384,18 @@ const options = {
           },
         },
         Error403: {
-          description: "권한 부족",
+          description: "접근 권한 없음 (Role 불일치 등)",
           content: {
             "application/json": {
               schema: { $ref: "#/components/schemas/ErrorResponse" },
               examples: {
                 forbidden: {
                   value: {
-                    success: false,
-                    error: {
-                      code: "FORBIDDEN",
-                      message: "권한이 없습니다.",
-                      status: 403,
-                    },
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 403,
+                    code: "FORBIDDEN",
+                    message: "접근 권한이 없습니다.",
                   },
                 },
               },
@@ -383,19 +403,27 @@ const options = {
           },
         },
         Error404: {
-          description: "리소스 없음",
+          description: "요청한 리소스가 존재하지 않음",
           content: {
             "application/json": {
               schema: { $ref: "#/components/schemas/ErrorResponse" },
               examples: {
                 notFound: {
                   value: {
-                    success: false,
-                    error: {
-                      code: "NOT_FOUND",
-                      message: "리소스를 찾을 수 없습니다.",
-                      status: 404,
-                    },
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 404,
+                    code: "RESOURCE_NOT_FOUND",
+                    message: "요청한 리소스가 존재하지 않습니다.",
+                  },
+                },
+                userNotFound: {
+                  value: {
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 404,
+                    code: "USER_NOT_FOUND",
+                    message: "사용자 ID가 존재하지 않습니다.",
                   },
                 },
               },
@@ -403,19 +431,27 @@ const options = {
           },
         },
         Error409: {
-          description: "충돌",
+          description: "중복 데이터 존재 또는 리소스 상태 충돌",
           content: {
             "application/json": {
               schema: { $ref: "#/components/schemas/ErrorResponse" },
               examples: {
                 conflict: {
                   value: {
-                    success: false,
-                    error: {
-                      code: "CONFLICT",
-                      message: "이미 존재합니다.",
-                      status: 409,
-                    },
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 409,
+                    code: "DUPLICATE_RESOURCE",
+                    message: "중복 데이터가 존재합니다.",
+                  },
+                },
+                stateConflict: {
+                  value: {
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 409,
+                    code: "STATE_CONFLICT",
+                    message: "리소스 상태가 충돌하였습니다.",
                   },
                 },
               },
@@ -423,20 +459,19 @@ const options = {
           },
         },
         Error422: {
-          description: "검증 실패",
+          description: "처리할 수 없는 요청 내용",
           content: {
             "application/json": {
               schema: { $ref: "#/components/schemas/ErrorResponse" },
               examples: {
                 validation: {
                   value: {
-                    success: false,
-                    error: {
-                      code: "VALIDATION_ERROR",
-                      message: "입력값이 올바르지 않습니다.",
-                      status: 422,
-                      details: [{ path: ["field"], message: "?필수 입력입니다." }],
-                    },
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 422,
+                    code: "UNPROCESSABLE_ENTITY",
+                    message: "처리할 수 없는 요청 내용입니다.",
+                    details: [{ path: ["field"], message: "필수 입력입니다." }],
                   },
                 },
               },
@@ -444,19 +479,18 @@ const options = {
           },
         },
         Error429: {
-          description: "요청 한도 초과",
+          description: "요청 한도 초과 (rate limiting)",
           content: {
             "application/json": {
               schema: { $ref: "#/components/schemas/ErrorResponse" },
               examples: {
                 rateLimit: {
                   value: {
-                    success: false,
-                    error: {
-                      code: "RATE_LIMIT_EXCEEDED",
-                      message: "요청 한도를 초과했습니다.",
-                      status: 429,
-                    },
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 429,
+                    code: "TOO_MANY_REQUESTS",
+                    message: "요청 한도를 초과했습니다.",
                   },
                 },
               },
@@ -471,12 +505,29 @@ const options = {
               examples: {
                 internal: {
                   value: {
-                    success: false,
-                    error: {
-                      code: "INTERNAL_SERVER_ERROR",
-                      message: "서버 내부 오류가 발생했습니다.",
-                      status: 500,
-                    },
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 500,
+                    code: "INTERNAL_SERVER_ERROR",
+                    message: "서버 내부 오류",
+                  },
+                },
+                databaseError: {
+                  value: {
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 500,
+                    code: "DATABASE_ERROR",
+                    message: "DB 연동 오류",
+                  },
+                },
+                unknownError: {
+                  value: {
+                    timestamp: "2025-03-05T12:34:56Z",
+                    path: "/api/example",
+                    status: 500,
+                    code: "UNKNOWN_ERROR",
+                    message: "알 수 없는 오류",
                   },
                 },
               },
@@ -492,5 +543,3 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 module.exports = { swaggerUi, swaggerSpec };
-
-

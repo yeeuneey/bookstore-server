@@ -17,7 +17,7 @@ exports.createOrder = async (req, res, next) => {
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     let totalPrice = 0;
@@ -29,7 +29,7 @@ exports.createOrder = async (req, res, next) => {
         throw new AppError(
           `bookId=${item.bookId} 도서를 찾을 수 없습니다.`,
           404,
-          ERROR_CODES.NOT_FOUND
+          ERROR_CODES.RESOURCE_NOT_FOUND
         );
       }
 
@@ -150,7 +150,7 @@ exports.getOrderById = async (req, res, next) => {
     });
 
     if (!order) {
-      throw new AppError("주문을 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("주문을 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
     if (req.user.role !== "ADMIN" && order.userId !== req.user.id) {
       throw new AppError(
@@ -176,7 +176,7 @@ exports.updateOrder = async (req, res, next) => {
 
     const exists = await prisma.order.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("주문을 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("주문을 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
       throw new AppError(
@@ -206,7 +206,7 @@ exports.deleteOrder = async (req, res, next) => {
 
     const exists = await prisma.order.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("주문을 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("주문을 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
       throw new AppError(
@@ -234,7 +234,7 @@ exports.getUserOrders = async (req, res, next) => {
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const orders = await prisma.order.findMany({

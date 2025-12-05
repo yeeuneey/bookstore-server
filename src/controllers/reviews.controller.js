@@ -17,12 +17,12 @@ exports.createReview = async (req, res, next) => {
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const book = await prisma.book.findUnique({ where: { id: bookId } });
     if (!book) {
-      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     const review = await prisma.review.create({
@@ -109,7 +109,7 @@ exports.getReviewById = async (req, res, next) => {
     });
 
     if (!review) {
-      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     return res.json(review);
@@ -129,7 +129,7 @@ exports.updateReview = async (req, res, next) => {
 
     const exists = await prisma.review.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
       throw new AppError(
@@ -160,7 +160,7 @@ exports.deleteReview = async (req, res, next) => {
 
     const exists = await prisma.review.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
       throw new AppError(
@@ -188,7 +188,7 @@ exports.getReviewComments = async (req, res, next) => {
 
     const review = await prisma.review.findUnique({ where: { id } });
     if (!review) {
-      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     const comments = await prisma.comment.findMany({
@@ -215,7 +215,7 @@ exports.getReviewLikes = async (req, res, next) => {
 
     const review = await prisma.review.findUnique({ where: { id } });
     if (!review) {
-      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     const likes = await prisma.reviewLike.findMany({

@@ -56,7 +56,7 @@ const {
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -111,7 +111,7 @@ router.post(
  *       403:
  *         $ref: '#/components/responses/Error403'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  *       400:
@@ -158,7 +158,7 @@ router.get(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -198,7 +198,7 @@ router.get(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -244,7 +244,7 @@ router.get(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -289,7 +289,7 @@ router.patch(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */

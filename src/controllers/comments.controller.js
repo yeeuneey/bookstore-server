@@ -17,12 +17,12 @@ exports.createComment = async (req, res, next) => {
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const review = await prisma.review.findUnique({ where: { id: reviewId } });
     if (!review) {
-      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     const newComment = await prisma.comment.create({
@@ -110,7 +110,7 @@ exports.getCommentById = async (req, res, next) => {
       throw new AppError(
         "댓글을 찾을 수 없습니다.",
         404,
-        ERROR_CODES.NOT_FOUND
+        ERROR_CODES.RESOURCE_NOT_FOUND
       );
     }
 
@@ -134,7 +134,7 @@ exports.updateComment = async (req, res, next) => {
       throw new AppError(
         "댓글을 찾을 수 없습니다.",
         404,
-        ERROR_CODES.NOT_FOUND
+        ERROR_CODES.RESOURCE_NOT_FOUND
       );
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
@@ -169,7 +169,7 @@ exports.deleteComment = async (req, res, next) => {
       throw new AppError(
         "댓글을 찾을 수 없습니다.",
         404,
-        ERROR_CODES.NOT_FOUND
+        ERROR_CODES.RESOURCE_NOT_FOUND
       );
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
@@ -201,7 +201,7 @@ exports.getCommentLikes = async (req, res, next) => {
       throw new AppError(
         "댓글을 찾을 수 없습니다.",
         404,
-        ERROR_CODES.NOT_FOUND
+        ERROR_CODES.RESOURCE_NOT_FOUND
       );
     }
 

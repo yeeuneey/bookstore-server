@@ -43,7 +43,7 @@ const { userIdParamSchema } = require("../validators/user.validators");
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -82,7 +82,7 @@ router.get("/users", authMiddleware, adminOnly, adminController.getAllUsers);
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -129,7 +129,7 @@ router.patch(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */

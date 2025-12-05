@@ -42,7 +42,7 @@ const { loginSchema, refreshSchema, logoutSchema } = require("../validators/auth
  *       403:
  *         $ref: '#/components/responses/Error403'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -85,7 +85,7 @@ router.post("/login", validateBody(loginSchema), authController.login);
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -125,7 +125,7 @@ router.post("/refresh", validateBody(refreshSchema), authController.refresh);
  *       403:
  *         $ref: '#/components/responses/Error403'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */

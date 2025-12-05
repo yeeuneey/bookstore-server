@@ -60,7 +60,7 @@ const {
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -90,7 +90,7 @@ router.post("/", validateBody(createUserSchema), usersController.createUser);
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -145,7 +145,7 @@ router.get("/me", authMiddleware, usersController.getMe);
  *       401:
  *         $ref: '#/components/responses/Error401'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  *       400:
@@ -193,7 +193,7 @@ router.get(
  *       403:
  *         $ref: '#/components/responses/Error403'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -245,7 +245,7 @@ router.get(
  *       403:
  *         $ref: '#/components/responses/Error403'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -291,7 +291,7 @@ router.patch(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -334,7 +334,7 @@ router.delete(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -377,7 +377,7 @@ router.get(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -420,7 +420,7 @@ router.get(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -463,7 +463,7 @@ router.get(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -506,7 +506,7 @@ router.get(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -549,7 +549,7 @@ router.get(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -592,7 +592,7 @@ router.get(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */

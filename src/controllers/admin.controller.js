@@ -43,7 +43,7 @@ exports.banUser = async (req, res, next) => {
       throw new AppError(
         "유저를 찾을 수 없습니다.",
         404,
-        ERROR_CODES.NOT_FOUND
+        ERROR_CODES.USER_NOT_FOUND
       );
     }
 
@@ -51,7 +51,7 @@ exports.banUser = async (req, res, next) => {
       throw new AppError(
         "이미 정지된 유저입니다.",
         409,
-        ERROR_CODES.CONFLICT
+        ERROR_CODES.DUPLICATE_RESOURCE
       );
     }
 
@@ -120,4 +120,3 @@ exports.getOrderStatistics = async (req, res, next) => {
     return next(err);
   }
 };
-

@@ -15,8 +15,8 @@ exports.validateBody = (schema) => {
         return next(
           new AppError(
             "입력값이 올바르지 않습니다.",
-            422,
-            ERROR_CODES.VALIDATION_ERROR,
+            400,
+            ERROR_CODES.VALIDATION_FAILED,
             err.errors
           )
         );
@@ -39,8 +39,8 @@ exports.validateParams = (schema) => {
         return next(
           new AppError(
             "URL 파라미터가 올바르지 않습니다.",
-            422,
-            ERROR_CODES.VALIDATION_ERROR,
+            400,
+            ERROR_CODES.INVALID_QUERY_PARAM,
             err.errors
           )
         );
@@ -63,8 +63,8 @@ exports.validateQuery = (schema) => {
         return next(
           new AppError(
             "QueryString 값이 올바르지 않습니다.",
-            422,
-            ERROR_CODES.VALIDATION_ERROR,
+            400,
+            ERROR_CODES.INVALID_QUERY_PARAM,
             err.errors
           )
         );
@@ -73,4 +73,3 @@ exports.validateQuery = (schema) => {
     }
   };
 };
-

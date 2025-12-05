@@ -41,7 +41,7 @@ exports.createUser = async (req, res, next) => {
       throw new AppError(
         "이미 존재하는 이메일입니다.",
         409,
-        ERROR_CODES.CONFLICT
+        ERROR_CODES.DUPLICATE_RESOURCE
       );
     }
 
@@ -151,7 +151,7 @@ exports.getUserById = async (req, res, next) => {
     });
 
     if (!user) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     return res.json({ user });
@@ -171,7 +171,7 @@ exports.updateUser = async (req, res, next) => {
 
     const exists = await prisma.user.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const updated = await prisma.user.update({
@@ -202,7 +202,7 @@ exports.deleteUser = async (req, res, next) => {
 
     const exists = await prisma.user.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     await prisma.user.delete({ where: { id } });
@@ -223,7 +223,7 @@ exports.getUserReviews = async (req, res, next) => {
 
     const exists = await prisma.user.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const reviews = await prisma.review.findMany({
@@ -250,7 +250,7 @@ exports.getUserComments = async (req, res, next) => {
 
     const exists = await prisma.user.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const comments = await prisma.comment.findMany({
@@ -277,7 +277,7 @@ exports.getUserReviewLikes = async (req, res, next) => {
 
     const exists = await prisma.user.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const likes = await prisma.reviewLike.findMany({
@@ -307,7 +307,7 @@ exports.getUserCommentLikes = async (req, res, next) => {
 
     const exists = await prisma.user.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const likes = await prisma.commentLike.findMany({
@@ -337,7 +337,7 @@ exports.getUserFavorites = async (req, res, next) => {
 
     const exists = await prisma.user.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const favorites = await prisma.favorite.findMany({
@@ -363,7 +363,7 @@ exports.getUserCarts = async (req, res, next) => {
 
     const exists = await prisma.user.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const carts = await prisma.cart.findMany({
@@ -389,7 +389,7 @@ exports.getUserOrders = async (req, res, next) => {
 
     const exists = await prisma.user.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const orders = await prisma.order.findMany({

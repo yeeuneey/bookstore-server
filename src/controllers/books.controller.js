@@ -103,7 +103,7 @@ exports.getBookById = async (req, res, next) => {
     });
 
     if (!book) {
-      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     return res.json(book);
@@ -131,7 +131,7 @@ exports.createBook = async (req, res, next) => {
 
     const exists = await prisma.book.findUnique({ where: { isbn } });
     if (exists) {
-      throw new AppError("ISBN이 이미 존재합니다.", 409, ERROR_CODES.CONFLICT);
+      throw new AppError("ISBN이 이미 존재합니다.", 409, ERROR_CODES.DUPLICATE_RESOURCE);
     }
 
     const book = await prisma.book.create({
@@ -171,7 +171,7 @@ exports.updateBook = async (req, res, next) => {
 
     const exists = await prisma.book.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     const {
@@ -223,7 +223,7 @@ exports.deleteBook = async (req, res, next) => {
 
     const exists = await prisma.book.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     await prisma.book.delete({ where: { id } });
@@ -244,7 +244,7 @@ exports.getBookReviews = async (req, res, next) => {
 
     const book = await prisma.book.findUnique({ where: { id } });
     if (!book) {
-      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     const reviews = await prisma.review.findMany({

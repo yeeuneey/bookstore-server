@@ -17,12 +17,12 @@ exports.createCartItem = async (req, res, next) => {
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const book = await prisma.book.findUnique({ where: { id: bookId } });
     if (!book) {
-      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     // 이미 장바구니에 존재할 경우 수량 증가
@@ -124,7 +124,7 @@ exports.getCartItemById = async (req, res, next) => {
       throw new AppError(
         "장바구니 항목을 찾을 수 없습니다.",
         404,
-        ERROR_CODES.NOT_FOUND
+        ERROR_CODES.RESOURCE_NOT_FOUND
       );
     }
     if (req.user.role !== "ADMIN" && item.userId !== req.user.id) {
@@ -155,7 +155,7 @@ exports.updateCartItem = async (req, res, next) => {
       throw new AppError(
         "장바구니 항목을 찾을 수 없습니다.",
         404,
-        ERROR_CODES.NOT_FOUND
+        ERROR_CODES.RESOURCE_NOT_FOUND
       );
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
@@ -190,7 +190,7 @@ exports.deleteCartItem = async (req, res, next) => {
       throw new AppError(
         "장바구니 항목을 찾을 수 없습니다.",
         404,
-        ERROR_CODES.NOT_FOUND
+        ERROR_CODES.RESOURCE_NOT_FOUND
       );
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
@@ -219,7 +219,7 @@ exports.getUserCartItems = async (req, res, next) => {
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
     const items = await prisma.cart.findMany({

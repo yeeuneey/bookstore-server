@@ -69,7 +69,7 @@ const {
  *                   items:
  *                     $ref: '#/components/schemas/Book'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  *       400:
@@ -112,7 +112,7 @@ router.get("/", validateQuery(bookListQuerySchema), booksController.getBooks);
  *       403:
  *         $ref: '#/components/responses/Error403'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  */
 router.get("/:id", validateParams(bookIdParamSchema), booksController.getBookById);
 
@@ -153,7 +153,7 @@ router.get("/:id", validateParams(bookIdParamSchema), booksController.getBookByI
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -200,7 +200,7 @@ router.post(
  *       403:
  *         $ref: '#/components/responses/Error403'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -246,7 +246,7 @@ router.patch(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -287,7 +287,7 @@ router.delete(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -332,7 +332,7 @@ router.get(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
@@ -377,7 +377,7 @@ router.get(
  *       404:
  *         $ref: '#/components/responses/Error404'
  *       422:
- *         $ref: '#/components/responses/Error422'
+ *         $ref: '#/components/responses/Error400'
  *       500:
  *         $ref: '#/components/responses/Error500'
  */

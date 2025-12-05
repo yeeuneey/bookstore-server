@@ -18,7 +18,7 @@ exports.login = async (req, res, next) => {
       throw new AppError(
         "존재하지 않는 이메일입니다.",
         404,
-        ERROR_CODES.NOT_FOUND
+        ERROR_CODES.USER_NOT_FOUND
       );
     }
 
@@ -128,4 +128,3 @@ exports.logout = async (req, res, next) => {
     return next(err);
   }
 };
-
