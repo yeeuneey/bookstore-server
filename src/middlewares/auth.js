@@ -1,10 +1,19 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const AppError = require("../utils/AppError");
+const { ERROR_CODES } = require("../utils/errorCodes");
 
-exports.authMiddleware = (req, res, next) => {
+exports.authMiddleware = (req, _res, next) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader)
-    return res.status(401).json({ message: "인증 토큰이 없습니다." });
+  if (!authHeader) {
+    return next(
+      new AppError(
+        "인증 토큰이 필요합니다.",
+        401,
+        ERROR_CODES.UNAUTHORIZED
+      )
+    );
+  }
 
   const token = authHeader.split(" ")[1];
 
@@ -12,11 +21,19 @@ exports.authMiddleware = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
-
   } catch (err) {
     if (err.name === "TokenExpiredError") {
-      return res.status(401).json({ message: "access_token_expired" });
+      return next(
+        new AppError(
+          "Access Token이 만료되었습니다.",
+          401,
+          ERROR_CODES.TOKEN_EXPIRED
+        )
+      );
     }
-    return res.status(401).json({ message: "invalid_token" });
+    return next(
+      new AppError("유효하지 않은 토큰입니다.", 401, ERROR_CODES.UNAUTHORIZED)
+    );
   }
 };
+

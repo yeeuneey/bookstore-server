@@ -3,6 +3,7 @@ require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
 const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
 const AppError = require("../utils/AppError");
+const { ERROR_CODES } = require("../utils/errorCodes");
 
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
@@ -14,31 +15,23 @@ exports.createOrder = async (req, res, next) => {
   try {
     const { userId, deliveryAddress, items } = req.body;
 
-    /**
-     * items = [
-     *    { bookId: 1, quantity: 2 },
-     *    { bookId: 5, quantity: 1 },
-     * ]
-     */
-
-    if (!userId || !deliveryAddress || !items || items.length === 0) {
-      return res.status(400).json({ message: "필수 항목 누락" });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
     }
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user)
-      return res.status(404).json({ message: "유저를 찾을 수 없습니다." });
-
-    // 총 가격 계산
     let totalPrice = 0;
     const orderItemsData = [];
 
     for (const item of items) {
       const book = await prisma.book.findUnique({ where: { id: item.bookId } });
-      if (!book)
-        return res
-          .status(404)
-          .json({ message: `bookId=${item.bookId} 도서를 찾을 수 없습니다.` });
+      if (!book) {
+        throw new AppError(
+          `bookId=${item.bookId} 도서를 찾을 수 없습니다.`,
+          404,
+          ERROR_CODES.NOT_FOUND
+        );
+      }
 
       const itemPrice = book.price * item.quantity;
       totalPrice += itemPrice;
@@ -50,7 +43,6 @@ exports.createOrder = async (req, res, next) => {
       });
     }
 
-    // 주문 생성 (order + orderItems)
     const order = await prisma.order.create({
       data: {
         userId,
@@ -79,9 +71,6 @@ exports.createOrder = async (req, res, next) => {
 
 /* ===========================================================
    2) 주문 목록 조회 (GET /orders)
-      - 검색(search: 주소)
-      - 정렬(sort/order)
-      - 페이지네이션
 =========================================================== */
 exports.getOrders = async (req, res, next) => {
   try {
@@ -97,9 +86,7 @@ exports.getOrders = async (req, res, next) => {
     const take = Number(limit);
     const skip = (pageNum - 1) * take;
 
-    const where = search
-      ? { deliveryAddress: { contains: search } }
-      : {};
+    const where = search ? { deliveryAddress: { contains: search } } : {};
 
     const [orders, total] = await Promise.all([
       prisma.order.findMany({
@@ -132,7 +119,7 @@ exports.getOrders = async (req, res, next) => {
 };
 
 /* ===========================================================
-   3) 단일 주문 상세 조회 (GET /orders/:id)
+   3) 주문 상세 조회 (GET /orders/:id)
 =========================================================== */
 exports.getOrderById = async (req, res, next) => {
   try {
@@ -150,10 +137,15 @@ exports.getOrderById = async (req, res, next) => {
       },
     });
 
-    if (!order)
-      return res.status(404).json({ message: "주문을 찾을 수 없습니다." });
+    if (!order) {
+      throw new AppError("주문을 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+    }
     if (req.user.role !== "ADMIN" && order.userId !== req.user.id) {
-      throw new AppError("본인 또는 관리자만 조회할 수 있습니다.", 403, "FORBIDDEN");
+      throw new AppError(
+        "본인 또는 관리자만 조회할 수 있습니다.",
+        403,
+        ERROR_CODES.FORBIDDEN
+      );
     }
     return res.json(order);
   } catch (err) {
@@ -170,15 +162,16 @@ exports.updateOrder = async (req, res, next) => {
     const id = Number(req.params.id);
     const { orderStatus } = req.body;
 
-    if (!orderStatus) {
-      return res.status(400).json({ message: "orderStatus 필수" });
-    }
-
     const exists = await prisma.order.findUnique({ where: { id } });
-    if (!exists)
-      return res.status(404).json({ message: "주문을 찾을 수 없습니다." });
-    if (req.user.role !== "ADMIN" && order.userId !== req.user.id) {
-      throw new AppError("본인 또는 관리자만 조회할 수 있습니다.", 403, "FORBIDDEN");
+    if (!exists) {
+      throw new AppError("주문을 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+    }
+    if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
+      throw new AppError(
+        "본인 또는 관리자만 수정할 수 있습니다.",
+        403,
+        ERROR_CODES.FORBIDDEN
+      );
     }
     const updated = await prisma.order.update({
       where: { id },
@@ -200,10 +193,15 @@ exports.deleteOrder = async (req, res, next) => {
     const id = Number(req.params.id);
 
     const exists = await prisma.order.findUnique({ where: { id } });
-    if (!exists)
-      return res.status(404).json({ message: "주문을 찾을 수 없습니다." });
-    if (req.user.role !== "ADMIN" && order.userId !== req.user.id) {
-      throw new AppError("본인 또는 관리자만 조회할 수 있습니다.", 403, "FORBIDDEN");
+    if (!exists) {
+      throw new AppError("주문을 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+    }
+    if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
+      throw new AppError(
+        "본인 또는 관리자만 삭제할 수 있습니다.",
+        403,
+        ERROR_CODES.FORBIDDEN
+      );
     }
 
     await prisma.order.delete({ where: { id } });
@@ -216,15 +214,16 @@ exports.deleteOrder = async (req, res, next) => {
 };
 
 /* ===========================================================
-   6) 특정 유저의 주문 목록 조회 (GET /orders/user/:userId)
+   6) 특정 사용자의 주문 목록 (GET /orders/user/:userId)
 =========================================================== */
 exports.getUserOrders = async (req, res, next) => {
   try {
     const userId = Number(req.params.userId);
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user)
-      return res.status(404).json({ message: "유저를 찾을 수 없습니다." });
+    if (!user) {
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+    }
 
     const orders = await prisma.order.findMany({
       where: { userId },
@@ -244,3 +243,4 @@ exports.getUserOrders = async (req, res, next) => {
     return next(err);
   }
 };
+

@@ -1,12 +1,14 @@
 require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
 const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
+const AppError = require("../utils/AppError");
+const { ERROR_CODES } = require("../utils/errorCodes");
 
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
 
 /* ===========================================================
-   1) 전체 유저 조회 (GET /admin/users)
+   1) 전체 사용자 목록 조회 (GET /admin/users)
 =========================================================== */
 exports.getAllUsers = async (req, res, next) => {
   try {
@@ -30,19 +32,28 @@ exports.getAllUsers = async (req, res, next) => {
 };
 
 /* ===========================================================
-   2) 유저 정지 처리 (PATCH /admin/users/:id/ban)
+   2) 특정 사용자 정지 처리 (PATCH /admin/users/:id/ban)
 =========================================================== */
 exports.banUser = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
     const user = await prisma.user.findUnique({ where: { id } });
-    if (!user)
-      return res.status(404).json({ message: "유저를 찾을 수 없습니다." });
+    if (!user) {
+      throw new AppError(
+        "유저를 찾을 수 없습니다.",
+        404,
+        ERROR_CODES.NOT_FOUND
+      );
+    }
 
-    // 이미 정지된 유저인지 확인
-    if (user.bannedAt)
-      return res.status(400).json({ message: "이미 정지된 유저입니다." });
+    if (user.bannedAt) {
+      throw new AppError(
+        "이미 정지된 유저입니다.",
+        409,
+        ERROR_CODES.CONFLICT
+      );
+    }
 
     const updated = await prisma.user.update({
       where: { id },
@@ -56,7 +67,7 @@ exports.banUser = async (req, res, next) => {
       },
     });
 
-    return res.json({ message: "유저 정지 처리 완료", user: updated });
+    return res.json({ message: "정지 처리 완료", user: updated });
   } catch (err) {
     console.error("Ban User Error:", err);
     return next(err);
@@ -109,3 +120,4 @@ exports.getOrderStatistics = async (req, res, next) => {
     return next(err);
   }
 };
+

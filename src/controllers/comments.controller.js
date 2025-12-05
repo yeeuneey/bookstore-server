@@ -3,6 +3,7 @@ require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
 const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
 const AppError = require("../utils/AppError");
+const { ERROR_CODES } = require("../utils/errorCodes");
 
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
@@ -14,15 +15,15 @@ exports.createComment = async (req, res, next) => {
   try {
     const { userId, reviewId, comment } = req.body;
 
-    if (!userId || !reviewId || !comment) {
-      return res.status(400).json({ message: "필수 항목 누락" });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
     }
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) return res.status(404).json({ message: "유저를 찾을 수 없습니다." });
-
     const review = await prisma.review.findUnique({ where: { id: reviewId } });
-    if (!review) return res.status(404).json({ message: "리뷰를 찾을 수 없습니다." });
+    if (!review) {
+      throw new AppError("리뷰를 찾을 수 없습니다.", 404, ERROR_CODES.NOT_FOUND);
+    }
 
     const newComment = await prisma.comment.create({
       data: { userId, reviewId, comment },
@@ -36,7 +37,7 @@ exports.createComment = async (req, res, next) => {
 };
 
 /* ===========================================================
-   2) 댓글 목록 조회 + 검색/정렬/페이지네이션 (GET /comments)
+   2) 댓글 목록 조회 (GET /comments)
 =========================================================== */
 exports.getComments = async (req, res, next) => {
   try {
@@ -52,9 +53,7 @@ exports.getComments = async (req, res, next) => {
     const take = Number(limit);
     const skip = (pageNum - 1) * take;
 
-    const where = search
-      ? { comment: { contains: search } }
-      : {};
+    const where = search ? { comment: { contains: search } } : {};
 
     const [comments, total] = await Promise.all([
       prisma.comment.findMany({
@@ -98,7 +97,11 @@ exports.getCommentById = async (req, res, next) => {
     });
 
     if (!comment) {
-      return res.status(404).json({ message: "댓글을 찾을 수 없습니다." });
+      throw new AppError(
+        "댓글을 찾을 수 없습니다.",
+        404,
+        ERROR_CODES.NOT_FOUND
+      );
     }
 
     return res.json(comment);
@@ -118,12 +121,20 @@ exports.updateComment = async (req, res, next) => {
 
     const exists = await prisma.comment.findUnique({ where: { id } });
     if (!exists) {
-      return res.status(404).json({ message: "댓글을 찾을 수 없습니다." });
+      throw new AppError(
+        "댓글을 찾을 수 없습니다.",
+        404,
+        ERROR_CODES.NOT_FOUND
+      );
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
-      throw new AppError("본인 또는 관리자만 수정/삭제할 수 있습니다.", 403, "FORBIDDEN");
+      throw new AppError(
+        "본인 또는 관리자만 수정/삭제할 수 있습니다.",
+        403,
+        ERROR_CODES.FORBIDDEN
+      );
     }
-    
+
     const updated = await prisma.comment.update({
       where: { id },
       data: { comment },
@@ -145,10 +156,18 @@ exports.deleteComment = async (req, res, next) => {
 
     const exists = await prisma.comment.findUnique({ where: { id } });
     if (!exists) {
-      return res.status(404).json({ message: "댓글을 찾을 수 없습니다." });
+      throw new AppError(
+        "댓글을 찾을 수 없습니다.",
+        404,
+        ERROR_CODES.NOT_FOUND
+      );
     }
     if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
-      throw new AppError("본인 또는 관리자만 수정/삭제할 수 있습니다.", 403, "FORBIDDEN");
+      throw new AppError(
+        "본인 또는 관리자만 수정/삭제할 수 있습니다.",
+        403,
+        ERROR_CODES.FORBIDDEN
+      );
     }
 
     await prisma.comment.delete({ where: { id } });
@@ -161,15 +180,20 @@ exports.deleteComment = async (req, res, next) => {
 };
 
 /* ===========================================================
-   6) 댓글의 좋아요 목록 (GET /comments/:id/likes)
+   6) 댓글 좋아요 목록 (GET /comments/:id/likes)
 =========================================================== */
 exports.getCommentLikes = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
     const comment = await prisma.comment.findUnique({ where: { id } });
-    if (!comment)
-      return res.status(404).json({ message: "댓글을 찾을 수 없습니다." });
+    if (!comment) {
+      throw new AppError(
+        "댓글을 찾을 수 없습니다.",
+        404,
+        ERROR_CODES.NOT_FOUND
+      );
+    }
 
     const likes = await prisma.commentLike.findMany({
       where: { commentId: id },
@@ -184,3 +208,4 @@ exports.getCommentLikes = async (req, res, next) => {
     return next(err);
   }
 };
+

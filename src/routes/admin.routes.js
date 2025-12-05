@@ -3,6 +3,8 @@ const router = express.Router();
 const adminController = require("../controllers/admin.controller");
 const { authMiddleware } = require("../middlewares/auth");
 const { adminOnly } = require("../middlewares/admin");
+const { validateParams } = require("../middlewares/validate");
+const { userIdParamSchema } = require("../validators/user.validators");
 
 /**
  * @swagger
@@ -60,7 +62,13 @@ router.get("/users", authMiddleware, adminOnly, adminController.getAllUsers);
  *                 user:
  *                   $ref: '#/components/schemas/User'
  */
-router.patch("/users/:id/ban", authMiddleware, adminOnly, adminController.banUser);
+router.patch(
+  "/users/:id/ban",
+  authMiddleware,
+  adminOnly,
+  validateParams(userIdParamSchema),
+  adminController.banUser
+);
 
 /**
  * @swagger

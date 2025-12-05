@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { PrismaClient } = require("@prisma/client");
 const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
 const AppError = require("../utils/AppError");
+const { ERROR_CODES } = require("../utils/errorCodes");
 
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
@@ -12,20 +13,24 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password)
-      return res.status(400).json({ message: "이메일과 비밀번호는 필수입니다." });
-
     const user = await prisma.user.findUnique({ where: { email } });
-
-    if (!user)
-      return res.status(404).json({ message: "존재하지 않는 이메일입니다." });
+    if (!user) {
+      throw new AppError(
+        "존재하지 않는 이메일입니다.",
+        404,
+        ERROR_CODES.NOT_FOUND
+      );
+    }
 
     const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      throw new AppError(
+        "비밀번호가 올바르지 않습니다.",
+        401,
+        ERROR_CODES.UNAUTHORIZED
+      );
+    }
 
-    if (!match)
-      return res.status(401).json({ message: "비밀번호가 올바르지 않습니다." });
-
-    // Access Token
     const accessToken = jwt.sign(
       {
         id: user.id,
@@ -40,7 +45,7 @@ exports.login = async (req, res, next) => {
     const refreshToken = jwt.sign(
       { id: user.id },
       process.env.JWT_SECRET,
-      { expiresIn: "7d" } 
+      { expiresIn: "7d" }
     );
 
     // Refresh Token DB 저장
@@ -50,7 +55,7 @@ exports.login = async (req, res, next) => {
     });
 
     return res.json({
-      message: "로그인 성공",
+      message: "로그인에 성공했습니다.",
       accessToken,
       refreshToken,
     });
@@ -64,15 +69,19 @@ exports.refresh = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
 
-    if (!refreshToken)
-      return res.status(400).json({ message: "Refresh Token이 필요합니다." });
-
-    // 토큰이 위조/만료인지 검증
     let decoded;
     try {
       decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
     } catch (err) {
-      return res.status(401).json({ message: "유효하지 않은 Refresh Token입니다." });
+      const code =
+        err.name === "TokenExpiredError"
+          ? ERROR_CODES.TOKEN_EXPIRED
+          : ERROR_CODES.UNAUTHORIZED;
+      const message =
+        err.name === "TokenExpiredError"
+          ? "Refresh Token이 만료되었습니다."
+          : "유효하지 않은 Refresh Token입니다.";
+      throw new AppError(message, 401, code);
     }
 
     // DB에 저장된 refreshToken과 동일한지 확인
@@ -81,7 +90,7 @@ exports.refresh = async (req, res, next) => {
     });
 
     if (!user || user.refreshToken !== refreshToken) {
-      throw new AppError("다시 로그인해야 합니다.", 403, "FORBIDDEN");
+      throw new AppError("토큰이 일치하지 않습니다.", 403, ERROR_CODES.FORBIDDEN);
     }
 
     // 새로운 Access Token 발급
@@ -96,7 +105,7 @@ exports.refresh = async (req, res, next) => {
     );
 
     return res.json({
-      message: "토큰 재발급 성공",
+      message: "토큰 재발급에 성공했습니다.",
       accessToken: newAccessToken,
     });
   } catch (err) {
@@ -119,3 +128,4 @@ exports.logout = async (req, res, next) => {
     return next(err);
   }
 };
+
