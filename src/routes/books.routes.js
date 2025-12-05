@@ -18,26 +18,113 @@ const {
   updateBookSchema,
 } = require("../validators/book.validators");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Books
+ *   description: 도서 조회 및 관리
+ */
 
-// ======================================================
-// 기본 CRUD
-// ======================================================
+/**
+ * @swagger
+ * /books:
+ *   get:
+ *     tags: [Books]
+ *     summary: 도서 목록 조회 (검색/정렬/페이징)
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, example: 1 }
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, example: 10 }
+ *       - in: query
+ *         name: search
+ *         schema: { type: string, example: "클린 코드" }
+ *       - in: query
+ *         name: sort
+ *         schema: { type: string, example: "createdAt" }
+ *       - in: query
+ *         name: order
+ *         schema: { type: string, enum: ["asc", "desc"], example: "desc" }
+ *     responses:
+ *       200:
+ *         description: 도서 목록
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 page: { type: integer }
+ *                 limit: { type: integer }
+ *                 total: { type: integer }
+ *                 books:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Book'
+ */
+router.get("/", validateQuery(bookListQuerySchema), booksController.getBooks);
 
-// GET /books - 도서 목록 조회
-router.get(
-  "/",
-  validateQuery(bookListQuerySchema),
-  booksController.getBooks
-);
+/**
+ * @swagger
+ * /books/{id}:
+ *   get:
+ *     tags: [Books]
+ *     summary: 도서 상세 조회
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, example: 101 }
+ *     responses:
+ *       200:
+ *         description: 도서 상세
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       404:
+ *         description: 도서 없음
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+router.get("/:id", validateParams(bookIdParamSchema), booksController.getBookById);
 
-// GET /books/:id - 도서 상세 조회
-router.get(
-  "/:id",
-  validateParams(bookIdParamSchema),
-  booksController.getBookById
-);
-
-// POST /books - 도서 생성(관리자)
+/**
+ * @swagger
+ * /books:
+ *   post:
+ *     tags: [Books]
+ *     summary: 도서 생성 (관리자)
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/BookCreateInput'
+ *     responses:
+ *       201:
+ *         description: 생성된 도서
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 book:
+ *                   $ref: '#/components/schemas/Book'
+ *       409:
+ *         description: ISBN 중복
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.post(
   "/",
   authMiddleware,
@@ -46,7 +133,39 @@ router.post(
   booksController.createBook
 );
 
-// PATCH /books/:id - 도서 수정(관리자)
+/**
+ * @swagger
+ * /books/{id}:
+ *   patch:
+ *     tags: [Books]
+ *     summary: 도서 수정 (관리자)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, example: 101 }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/BookUpdateInput'
+ *     responses:
+ *       200:
+ *         description: 수정된 도서
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       404:
+ *         description: 도서 없음
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.patch(
   "/:id",
   authMiddleware,
@@ -56,7 +175,31 @@ router.patch(
   booksController.updateBook
 );
 
-// DELETE /books/:id - 도서 삭제(관리자)
+/**
+ * @swagger
+ * /books/{id}:
+ *   delete:
+ *     tags: [Books]
+ *     summary: 도서 삭제 (관리자)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, example: 101 }
+ *     responses:
+ *       200:
+ *         description: 삭제 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "도서가 삭제되었습니다."
+ */
 router.delete(
   "/:id",
   authMiddleware,
@@ -65,27 +208,93 @@ router.delete(
   booksController.deleteBook
 );
 
-
-
-// ======================================================
-// 관계형 Sub-resource
-// ======================================================
-
-// GET /books/:id/reviews - 해당 도서의 리뷰 목록
+/**
+ * @swagger
+ * /books/{id}/reviews:
+ *   get:
+ *     tags: [Books]
+ *     summary: 도서에 달린 리뷰 조회
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, example: 101 }
+ *     responses:
+ *       200:
+ *         description: 리뷰 목록
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Review'
+ */
 router.get(
   "/:id/reviews",
   validateParams(bookIdParamSchema),
   booksController.getBookReviews
 );
 
-// GET /books/:id/categories - 해당 도서의 카테고리 목록
+/**
+ * @swagger
+ * /books/{id}/categories:
+ *   get:
+ *     tags: [Books]
+ *     summary: 도서 카테고리 목록
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, example: 101 }
+ *     responses:
+ *       200:
+ *         description: 카테고리 목록
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   category:
+ *                     type: object
+ *                     properties:
+ *                       id: { type: integer }
+ *                       name: { type: string }
+ */
 router.get(
   "/:id/categories",
   validateParams(bookIdParamSchema),
   booksController.getBookCategories
 );
 
-// GET /books/:id/authors - 해당 도서의 저자 목록
+/**
+ * @swagger
+ * /books/{id}/authors:
+ *   get:
+ *     tags: [Books]
+ *     summary: 도서 저자 목록
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, example: 101 }
+ *     responses:
+ *       200:
+ *         description: 저자 목록
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   author:
+ *                     type: object
+ *                     properties:
+ *                       id: { type: integer }
+ *                       name: { type: string }
+ */
 router.get(
   "/:id/authors",
   validateParams(bookIdParamSchema),

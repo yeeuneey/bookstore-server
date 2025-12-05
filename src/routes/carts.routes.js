@@ -19,12 +19,35 @@ const {
   cartListQuerySchema,
 } = require("../validators/cart.validators");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Carts
+ *   description: 장바구니 관련 API
+ */
 
-// ======================================================
-// 기본 CRUD
-// ======================================================
-
-// POST /carts - 장바구니 추가
+/**
+ * @swagger
+ * /carts:
+ *   post:
+ *     tags: [Carts]
+ *     summary: 장바구니에 상품 추가
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CartCreateInput'
+ *     responses:
+ *       201:
+ *         description: 장바구니 추가 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CartItem'
+ */
 router.post(
   "/",
   authMiddleware,
@@ -32,7 +55,31 @@ router.post(
   cartsController.createCartItem
 );
 
-// GET /carts - 전체 장바구니 목록(관리자)
+/**
+ * @swagger
+ * /carts:
+ *   get:
+ *     tags: [Carts]
+ *     summary: 전체 장바구니 목록 (관리자)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, example: 1 }
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, example: 20 }
+ *     responses:
+ *       200:
+ *         description: 페이징된 장바구니 목록
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/CartItem'
+ */
 router.get(
   "/",
   authMiddleware,
@@ -41,7 +88,29 @@ router.get(
   cartsController.getCartItems
 );
 
-// GET /carts/user/:userId - 유저 장바구니 조회
+/**
+ * @swagger
+ * /carts/user/{userId}:
+ *   get:
+ *     tags: [Carts]
+ *     summary: 특정 사용자의 장바구니 조회
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema: { type: integer, example: 1 }
+ *     responses:
+ *       200:
+ *         description: 사용자 장바구니
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/CartItem'
+ */
 router.get(
   "/user/:userId",
   authMiddleware,
@@ -49,7 +118,27 @@ router.get(
   cartsController.getUserCartItems
 );
 
-// GET /carts/:id - 장바구니 단일 항목 조회
+/**
+ * @swagger
+ * /carts/{id}:
+ *   get:
+ *     tags: [Carts]
+ *     summary: 장바구니 아이템 단건 조회
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, example: 10 }
+ *     responses:
+ *       200:
+ *         description: 단일 장바구니 아이템
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CartItem'
+ */
 router.get(
   "/:id",
   authMiddleware,
@@ -57,7 +146,33 @@ router.get(
   cartsController.getCartItemById
 );
 
-// PATCH /carts/:id - 장바구니 항목 수정
+/**
+ * @swagger
+ * /carts/{id}:
+ *   patch:
+ *     tags: [Carts]
+ *     summary: 장바구니 수량 수정
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, example: 10 }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CartUpdateInput'
+ *     responses:
+ *       200:
+ *         description: 수정된 장바구니 아이템
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CartItem'
+ */
 router.patch(
   "/:id",
   authMiddleware,
@@ -66,7 +181,31 @@ router.patch(
   cartsController.updateCartItem
 );
 
-// DELETE /carts/:id - 장바구니 항목 삭제
+/**
+ * @swagger
+ * /carts/{id}:
+ *   delete:
+ *     tags: [Carts]
+ *     summary: 장바구니 아이템 삭제
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, example: 10 }
+ *     responses:
+ *       200:
+ *         description: 삭제 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "장바구니에서 제거되었습니다."
+ */
 router.delete(
   "/:id",
   authMiddleware,
