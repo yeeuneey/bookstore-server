@@ -34,6 +34,18 @@ const { userIdParamSchema } = require("../validators/user.validators");
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/User'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get("/users", authMiddleware, adminOnly, adminController.getAllUsers);
 
@@ -61,6 +73,18 @@ router.get("/users", authMiddleware, adminOnly, adminController.getAllUsers);
  *                 message: { type: string, example: "사용자가 차단되었습니다." }
  *                 user:
  *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.patch(
   "/users/:id/ban",
@@ -96,6 +120,18 @@ router.patch(
  *                       bookId: { type: integer }
  *                       title: { type: string }
  *                       totalQuantity: { type: integer }
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get("/statistics/orders", authMiddleware, adminOnly, adminController.getOrderStatistics);
 

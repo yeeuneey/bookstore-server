@@ -47,6 +47,18 @@ const {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/CartItem'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.post(
   "/",
@@ -99,6 +111,10 @@ router.post(
  *         $ref: '#/components/responses/Error422'
  *       500:
  *         $ref: '#/components/responses/Error500'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
  */
 router.get(
   "/",
@@ -130,6 +146,18 @@ router.get(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/CartItem'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/user/:userId",
@@ -158,6 +186,18 @@ router.get(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/CartItem'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id",
@@ -192,6 +232,18 @@ router.get(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/CartItem'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.patch(
   "/:id",
@@ -225,6 +277,18 @@ router.patch(
  *                 message:
  *                   type: string
  *                   example: "장바구니에서 제거되었습니다."
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.delete(
   "/:id",

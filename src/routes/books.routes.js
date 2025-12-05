@@ -72,6 +72,14 @@ const {
  *         $ref: '#/components/responses/Error422'
  *       500:
  *         $ref: '#/components/responses/Error500'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
  */
 router.get("/", validateQuery(bookListQuerySchema), booksController.getBooks);
 
@@ -94,13 +102,17 @@ router.get("/", validateQuery(bookListQuerySchema), booksController.getBooks);
  *             schema:
  *               $ref: '#/components/schemas/Book'
  *       404:
- *         description: 도서 없음
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *         $ref: '#/components/responses/Error404'
  *       500:
  *         $ref: '#/components/responses/Error500'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
  */
 router.get("/:id", validateParams(bookIdParamSchema), booksController.getBookById);
 
@@ -131,11 +143,19 @@ router.get("/:id", validateParams(bookIdParamSchema), booksController.getBookByI
  *                 book:
  *                   $ref: '#/components/schemas/Book'
  *       409:
- *         description: ISBN 중복
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *         $ref: '#/components/responses/Error409'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.post(
   "/",
@@ -172,11 +192,17 @@ router.post(
  *             schema:
  *               $ref: '#/components/schemas/Book'
  *       404:
- *         description: 도서 없음
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *         $ref: '#/components/responses/Error404'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.patch(
   "/:id",
@@ -211,6 +237,18 @@ router.patch(
  *                 message:
  *                   type: string
  *                   example: "도서가 삭제되었습니다."
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.delete(
   "/:id",
@@ -240,6 +278,18 @@ router.delete(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Review'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/reviews",
@@ -273,6 +323,18 @@ router.get(
  *                     properties:
  *                       id: { type: integer }
  *                       name: { type: string }
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/categories",
@@ -306,6 +368,18 @@ router.get(
  *                     properties:
  *                       id: { type: integer }
  *                       name: { type: string }
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/authors",

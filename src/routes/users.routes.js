@@ -50,11 +50,19 @@ const {
  *                 user:
  *                   $ref: '#/components/schemas/User'
  *       409:
- *         description: 이미 존재하는 이메일
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *         $ref: '#/components/responses/Error409'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.post("/", validateBody(createUserSchema), usersController.createUser);
 
@@ -74,11 +82,17 @@ router.post("/", validateBody(createUserSchema), usersController.createUser);
  *             schema:
  *               $ref: '#/components/schemas/User'
  *       401:
- *         description: 토큰 누락 또는 만료
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *         $ref: '#/components/responses/Error401'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get("/me", authMiddleware, usersController.getMe);
 
@@ -134,6 +148,10 @@ router.get("/me", authMiddleware, usersController.getMe);
  *         $ref: '#/components/responses/Error422'
  *       500:
  *         $ref: '#/components/responses/Error500'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
  */
 router.get(
   "/",
@@ -167,11 +185,17 @@ router.get(
  *                 user:
  *                   $ref: '#/components/schemas/User'
  *       404:
- *         description: 사용자를 찾을 수 없음
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *         $ref: '#/components/responses/Error404'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id",
@@ -213,11 +237,17 @@ router.get(
  *                 user:
  *                   $ref: '#/components/schemas/User'
  *       404:
- *         description: 사용자를 찾을 수 없음
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *         $ref: '#/components/responses/Error404'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.patch(
   "/:id",
@@ -253,11 +283,17 @@ router.patch(
  *                   type: string
  *                   example: "사용자가 삭제되었습니다."
  *       403:
- *         description: 권한 부족
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *         $ref: '#/components/responses/Error403'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.delete(
   "/:id",
@@ -289,6 +325,18 @@ router.delete(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Review'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/reviews",
@@ -320,6 +368,18 @@ router.get(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Comment'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/comments",
@@ -351,6 +411,18 @@ router.get(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Review'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/review-likes",
@@ -382,6 +454,18 @@ router.get(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Comment'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/comment-likes",
@@ -413,6 +497,18 @@ router.get(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Book'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/favorites",
@@ -444,6 +540,18 @@ router.get(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/CartItem'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/carts",
@@ -475,6 +583,18 @@ router.get(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Order'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/orders",

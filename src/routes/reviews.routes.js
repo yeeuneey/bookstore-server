@@ -46,6 +46,18 @@ const { selfOrAdminByBody } = require("../middlewares/ownership");
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Review'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.post(
   "/",
@@ -98,6 +110,12 @@ router.post(
  *         $ref: '#/components/responses/Error422'
  *       500:
  *         $ref: '#/components/responses/Error500'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
  */
 router.get("/", validateQuery(reviewListQuerySchema), reviewsController.getReviews);
 
@@ -119,6 +137,18 @@ router.get("/", validateQuery(reviewListQuerySchema), reviewsController.getRevie
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Review'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id",
@@ -152,6 +182,18 @@ router.get(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Review'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.patch(
   "/:id",
@@ -185,6 +227,18 @@ router.patch(
  *                 message:
  *                   type: string
  *                   example: "리뷰가 삭제되었습니다."
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.delete(
   "/:id",
@@ -213,6 +267,18 @@ router.delete(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Comment'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/comments",
@@ -242,6 +308,18 @@ router.get(
  *                 type: object
  *                 properties:
  *                   userId: { type: integer }
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error422'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
  */
 router.get(
   "/:id/likes",
