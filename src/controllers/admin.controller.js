@@ -12,17 +12,22 @@ const prisma = new PrismaClient({ adapter });
 =========================================================== */
 exports.getAllUsers = async (req, res, next) => {
   try {
-    const users = await prisma.user.findMany({
+    const usersRaw = await prisma.user.findMany({
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
         email: true,
         name: true,
-        role: true,
+        Role: true,
         bannedAt: true,
         createdAt: true,
       },
     });
+
+    const users = usersRaw.map(({ Role, ...rest }) => ({
+      ...rest,
+      role: Role,
+    }));
 
     return res.json({ count: users.length, users });
   } catch (err) {
@@ -55,17 +60,20 @@ exports.banUser = async (req, res, next) => {
       );
     }
 
-    const updated = await prisma.user.update({
+    const updatedRaw = await prisma.user.update({
       where: { id },
       data: { bannedAt: new Date() },
       select: {
         id: true,
         email: true,
         name: true,
-        role: true,
+        Role: true,
         bannedAt: true,
       },
     });
+
+    const { Role, ...restUpdated } = updatedRaw;
+    const updated = { ...restUpdated, role: Role };
 
     return res.json({ message: "정지 처리 완료", user: updated });
   } catch (err) {

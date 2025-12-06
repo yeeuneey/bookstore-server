@@ -13,7 +13,7 @@ exports.orderListQuerySchema = z.object({
   size: z.coerce.number().int().min(1).max(100).default(20),
   sort: z.string().regex(/^[a-zA-Z0-9_]+,(ASC|DESC)$/i).default("createdAt,DESC"),
   keyword: z.string().optional(),
-  status: z.string().optional(),
+  status: z.enum(["PENDING", "SHIPPED", "DELIVERED", "CANCELLED"]).optional(),
   dateFrom: z.string().datetime().optional(),
   dateTo: z.string().datetime().optional(),
 });
@@ -30,5 +30,5 @@ exports.createOrderSchema = z.object({
 });
 
 exports.updateOrderSchema = z.object({
-  orderStatus: z.enum(["PENDING", "PAID", "SHIPPED", "CANCELLED"]),
+  orderStatus: z.enum(["PENDING", "SHIPPED", "DELIVERED", "CANCELLED"]),
 });

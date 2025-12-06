@@ -17,12 +17,17 @@ exports.getMe = async (req, res, next) => {
         id: true,
         email: true,
         name: true,
-        role: true,
+        Role: true,
         createdAt: true,
       },
     });
 
-    return res.json(me);
+    if (!me) {
+      throw new AppError("사용자를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
+    }
+
+    const { Role, ...rest } = me;
+    return res.json({ ...rest, role: Role });
   } catch (err) {
     req.log.error("Get Me Error:", { error: err });
     return next(err);
@@ -97,7 +102,7 @@ exports.getUsers = async (req, res, next) => {
               ],
             }
           : {},
-        role ? { role } : {},
+        role ? { Role: role } : {},
         dateFrom ? { createdAt: { gte: new Date(dateFrom) } } : {},
         dateTo ? { createdAt: { lte: new Date(dateTo) } } : {},
       ],

@@ -311,8 +311,8 @@ const options = {
           properties: {
             orderStatus: {
               type: "string",
-              enum: ["PENDING", "PAID", "SHIPPED", "CANCELLED"],
-              example: "PAID",
+              enum: ["PENDING", "SHIPPED", "DELIVERED", "CANCELLED"],
+              example: "SHIPPED",
             },
           },
         },
