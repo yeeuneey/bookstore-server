@@ -46,7 +46,7 @@ exports.login = async (req, res, next) => {
         role,
       },
       ACCESS_SECRET,
-      { expiresIn: "15m" }
+      { expiresIn: "1h" }
     );
 
     const refreshToken = jwt.sign(
@@ -119,7 +119,7 @@ exports.refresh = async (req, res, next) => {
         role,
       },
       ACCESS_SECRET,
-      { expiresIn: "15m" }
+      { expiresIn: "1h" }
     );
 
     return res.json({
