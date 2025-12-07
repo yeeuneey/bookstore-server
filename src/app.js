@@ -31,6 +31,10 @@ app.use("/comments", commentsRouter);
 app.use("/admin", adminRouter);
 app.use("/users", usersRouter);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// OpenAPI JSON (Postman import 등)
+app.get("/docs.json", (_req, res) => {
+  res.type("application/json").send(swaggerSpec);
+});
 app.use(errorHandler);
 
 /**

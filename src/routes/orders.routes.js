@@ -87,16 +87,16 @@ router.post(
  *         schema: { type: string, example: "createdAt,DESC" }
  *       - in: query
  *         name: keyword
- *         schema: { type: string, example: "Seoul" }
+ *         schema: { type: string, example: "전주" }
  *       - in: query
  *         name: status
  *         schema: { type: string, example: "PENDING" }
  *       - in: query
  *         name: dateFrom
- *         schema: { type: string, format: date-time, example: "2024-01-01T00:00:00.000Z" }
+ *         schema: { type: string, format: date-time, example: "2025-01-01T00:00:00.000Z" }
  *       - in: query
  *         name: dateTo
- *         schema: { type: string, format: date-time, example: "2024-12-31T23:59:59.000Z" }
+ *         schema: { type: string, format: date-time, example: "2025-12-31T23:59:59.000Z" }
  *     responses:
  *       200:
  *         description: 주문 목록

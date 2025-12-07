@@ -59,6 +59,13 @@ exports.login = async (req, res, next) => {
       message: "로그인에 성공했습니다.",
       accessToken,
       refreshToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role,
+        createdAt: user.createdAt,
+      },
     });
   } catch (err) {
     req.log?.error("Login Error:", { error: err });

@@ -24,8 +24,8 @@ const { loginSchema, refreshSchema, logoutSchema } = require("../validators/auth
  *           schema:
  *             $ref: '#/components/schemas/LoginInput'
  *           example:
- *             email: user@example.com
- *             password: secret123
+ *             email: user1@example.com
+ *             password: P@ssw0rd!
  *     responses:
  *       200:
  *         description: 로그인 성공 및 토큰 반환

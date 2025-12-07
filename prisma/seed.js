@@ -1,8 +1,8 @@
 // prisma/seed.js
-require('dotenv').config();
-const bcrypt = require('bcrypt');
-const { PrismaClient } = require('@prisma/client');
-const { PrismaMariaDb } = require('@prisma/adapter-mariadb');
+require("dotenv").config();
+const bcrypt = require("bcrypt");
+const { PrismaClient } = require("@prisma/client");
+const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
 
 const SALT = 10;
 
@@ -11,18 +11,22 @@ const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
 
 /* -----------------------------------------
-   Helper Functions 
+   Helper Functions
 ----------------------------------------- */
 
-// 사용자 생성 또는 조회
-async function ensureUser(email, password, name, gender = "MALE") {
+// 사용자 생성 또는 조회 (필요하면 Role 업데이트)
+async function ensureUser(email, password, name, gender = "MALE", role = "USER") {
   const existing = await prisma.user.findUnique({ where: { email } });
-  if (existing) return existing;
+  if (existing) {
+    if (role && existing.Role !== role) {
+      return prisma.user.update({ where: { email }, data: { Role: role } });
+    }
+    return existing;
+  }
 
   const hashed = await bcrypt.hash(password, SALT);
-
   return prisma.user.create({
-    data: { email, password: hashed, name, gender },
+    data: { email, password: hashed, name, gender, Role: role },
   });
 }
 
@@ -59,21 +63,24 @@ async function main() {
   console.log("🌱 Seeding started...");
 
   /* -----------------------------------------
-      1) Users (20명 생성) 
+      1) Users (20명 생성)
   ----------------------------------------- */
   const admin = await ensureUser(
     "admin@example.com",
-    "admin1234!",
+    "P@ssw0rd!",
     "관리자",
-    "MALE"
+    "MALE",
+    "ADMIN"
   );
 
   const users = [admin];
 
-  for (let i = 1; i <= 20; i++) { 
+  for (let i = 1; i <= 20; i++) {
+    const email = `user${i}@example.com`;
+    const password = i === 1 ? "P@ssw0rd!" : `P@ssw0rd${i}!`;
     const user = await ensureUser(
-      `user${i}@test.com`,
-      `password${i}!`,
+      email,
+      password,
       `유저${i}`,
       i % 2 === 0 ? "FEMALE" : "MALE"
     );
@@ -84,8 +91,16 @@ async function main() {
       2) Categories (10개)
   ----------------------------------------- */
   const categoryNames = [
-    "IT", "소설", "자기계발", "여행", "과학",
-    "예술", "철학", "경제", "역사", "요리"
+    "IT",
+    "소설",
+    "자기계발",
+    "여행",
+    "과학",
+    "예술",
+    "철학",
+    "경제",
+    "역사",
+    "요리",
   ];
 
   const categories = [];
@@ -107,17 +122,17 @@ async function main() {
   }
 
   /* -----------------------------------------
-      4) Books (50권) 
+      4) Books (50권)
   ----------------------------------------- */
   const books = [];
-  for (let i = 1; i <= 50; i++) { 
+  for (let i = 1; i <= 50; i++) {
     const book = await ensureBook({
       title: `샘플 도서 ${i}`,
       isbn: `ISBN-${1000 + i}`,
       price: 10000 + i * 300,
       publisher: "샘플출판사",
       summary: `샘플 도서 ${i}의 요약입니다.`,
-      publicationDate: new Date("2023-01-01")
+      publicationDate: new Date("2023-01-01"),
     });
 
     // 카테고리 2개 연결
@@ -142,31 +157,31 @@ async function main() {
   }
 
   /* -----------------------------------------
-      5) Reviews (50개) 
+      5) Reviews (50개)
   ----------------------------------------- */
   const reviews = [];
-  for (let i = 1; i <= 50; i++) { 
+  for (let i = 1; i <= 50; i++) {
     const review = await prisma.review.create({
       data: {
         rating: (i % 5) + 1,
         comment: `리뷰 내용 ${i}`,
         userId: users[i % users.length].id,
-        bookId: books[i % books.length].id
-      }
+        bookId: books[i % books.length].id,
+      },
     });
     reviews.push(review);
   }
 
   /* -----------------------------------------
-      6) Comments (50개) 
+      6) Comments (50개)
   ----------------------------------------- */
-  for (let i = 1; i <= 50; i++) { 
+  for (let i = 1; i <= 50; i++) {
     await prisma.comment.create({
       data: {
         comment: `댓글 내용 ${i}`,
         userId: users[(i + 3) % users.length].id,
-        reviewId: reviews[i % reviews.length].id
-      }
+        reviewId: reviews[i % reviews.length].id,
+      },
     });
   }
 
@@ -174,25 +189,29 @@ async function main() {
       7) Favorites (50개)
   ----------------------------------------- */
   for (let i = 1; i <= 50; i++) {
-    await prisma.favorite.create({
-      data: {
-        userId: users[i % users.length].id,
-        bookId: books[i % books.length].id,
-      }
-    }).catch(() => {});
+    await prisma.favorite
+      .create({
+        data: {
+          userId: users[i % users.length].id,
+          bookId: books[i % books.length].id,
+        },
+      })
+      .catch(() => {});
   }
 
   /* -----------------------------------------
-      8) Carts (50개) 
+      8) Carts (50개)
   ----------------------------------------- */
-  for (let i = 1; i <= 50; i++) { 
-    await prisma.cart.create({
-      data: {
-        userId: users[i % users.length].id,
-        bookId: books[(i * 2) % books.length].id,
-        quantity: (i % 3) + 1
-      }
-    }).catch(() => {});
+  for (let i = 1; i <= 50; i++) {
+    await prisma.cart
+      .create({
+        data: {
+          userId: users[i % users.length].id,
+          bookId: books[(i * 2) % books.length].id,
+          quantity: (i % 3) + 1,
+        },
+      })
+      .catch(() => {});
   }
 
   /* -----------------------------------------
@@ -204,8 +223,8 @@ async function main() {
         userId: users[i % users.length].id,
         orderStatus: "PENDING",
         totalPrice: 20000 + i * 500,
-        deliveryAddress: `전주시 건지로 ${i}`
-      }
+        deliveryAddress: `전주시 건지로 ${i}`,
+      },
     });
 
     await prisma.orderItem.createMany({
@@ -227,6 +246,36 @@ async function main() {
     });
   }
 
+  /* -----------------------------------------
+      10) Likes 시드 (댓글/리뷰) - 기존 데이터 기반
+  ----------------------------------------- */
+  const commentSample = await prisma.comment.findMany({
+    select: { id: true },
+    orderBy: { id: "asc" },
+    take: 20,
+  });
+  const reviewSample = await prisma.review.findMany({
+    select: { id: true },
+    orderBy: { id: "asc" },
+    take: 20,
+  });
+
+  if (commentSample.length && users.length) {
+    const commentLikes = commentSample.map((c, idx) => ({
+      userId: users[idx % users.length].id,
+      commentId: c.id,
+    }));
+    await prisma.commentLike.createMany({ data: commentLikes, skipDuplicates: true });
+  }
+
+  if (reviewSample.length && users.length) {
+    const reviewLikes = reviewSample.map((r, idx) => ({
+      userId: users[(idx + 1) % users.length].id,
+      reviewId: r.id,
+    }));
+    await prisma.reviewLike.createMany({ data: reviewLikes, skipDuplicates: true });
+  }
+
   console.log("🌱 Seed Completed!");
 }
 
@@ -241,3 +290,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+

@@ -6,9 +6,9 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Online Bookstore API",
+      title: "Bookstore API",
       version: "1.0.0",
-      description: `온라인 서점 REST API입니다.
+      description: `Express.js 기반 백엔드 API 명세서
 
 ### 인증 방식
 - 모든 보호된 엔드포인트는 Bearer 토큰(JWT) 필요
@@ -70,7 +70,7 @@ const options = {
           type: "object",
           properties: {
             page: { type: "integer", example: 1 },
-            limit: { type: "integer", example: 10 },
+            size: { type: "integer", example: 10 },
             total: { type: "integer", example: 125 },
           },
         },
@@ -86,8 +86,8 @@ const options = {
           type: "object",
           required: ["email", "password"],
           properties: {
-            email: { type: "string", format: "email", example: "user@example.com" },
-            password: { type: "string", example: "secret123" },
+            email: { type: "string", format: "email", example: "user1@example.com" },
+            password: { type: "string", example: "P@ssw0rd!" },
           },
         },
         RefreshInput: {
@@ -108,7 +108,7 @@ const options = {
           type: "object",
           properties: {
             id: { type: "integer", example: 12 },
-            email: { type: "string", example: "user@example.com" },
+            email: { type: "string", example: "user1@example.com" },
             name: { type: "string", example: "홍길동" },
             role: { type: "string", example: "USER" },
             gender: { type: "string", nullable: true, example: "MALE" },
@@ -122,8 +122,8 @@ const options = {
           type: "object",
           required: ["email", "password", "name"],
           properties: {
-            email: { type: "string", format: "email", example: "user@example.com" },
-            password: { type: "string", example: "secret123" },
+            email: { type: "string", format: "email", example: "user1@example.com" },
+            password: { type: "string", example: "P@ssw0rd!" },
             name: { type: "string", example: "홍길동" },
             gender: { type: "string", enum: ["MALE", "FEMALE"], example: "MALE" },
           },
@@ -541,5 +541,43 @@ const options = {
 };
 
 const swaggerSpec = swaggerJSDoc(options);
+
+// NOTE: Swagger 문서에서만 ID 예시를 Postman 스타일 변수로 노출해주기 위한 후처리.
+// 실제 라우팅은 /:id 그대로 유지됩니다.
+const pathIdPlaceholders = [
+  { prefix: "/users", example: "{{userId}}" },
+  { prefix: "/admin/users", example: "{{userId}}" },
+  { prefix: "/books", example: "{{bookId}}" },
+  { prefix: "/carts", example: "{{cartId}}" },
+  { prefix: "/orders", example: "{{orderId}}" },
+  { prefix: "/reviews", example: "{{reviewId}}" },
+  { prefix: "/comments", example: "{{commentId}}" },
+];
+
+function injectIdExamples(spec) {
+  if (!spec?.paths) return;
+  for (const [path, pathItem] of Object.entries(spec.paths)) {
+    const matched = pathIdPlaceholders.find(
+      ({ prefix }) => path.startsWith(prefix) && path.includes("{id}")
+    );
+    if (!matched) continue;
+
+    for (const op of Object.values(pathItem)) {
+      if (!op?.parameters) continue;
+      op.parameters = op.parameters.map((param) => {
+        if (param?.in === "path" && param?.name === "id") {
+          const updated = { ...param, description: param.description };
+          updated.schema = { ...(param.schema || {}) };
+          updated.schema.example = matched.example;
+          updated.description = `${param.description || "Path ID"} (예: ${matched.example})`;
+          return updated;
+        }
+        return param;
+      });
+    }
+  }
+}
+
+injectIdExamples(swaggerSpec);
 
 module.exports = { swaggerUi, swaggerSpec };

@@ -82,13 +82,13 @@ router.post(
  *         schema: { type: string, example: "createdAt,DESC" }
  *       - in: query
  *         name: keyword
- *         schema: { type: string, example: "좋아요" }
+ *         schema: { type: string, example: "댓글" }
  *       - in: query
  *         name: dateFrom
- *         schema: { type: string, format: date-time, example: "2024-01-01T00:00:00.000Z" }
+ *         schema: { type: string, format: date-time, example: "2025-01-01T00:00:00.000Z" }
  *       - in: query
  *         name: dateTo
- *         schema: { type: string, format: date-time, example: "2024-12-31T23:59:59.000Z" }
+ *         schema: { type: string, format: date-time, example: "2025-12-31T23:59:59.000Z" }
  *     responses:
  *       200:
  *         description: 댓글 목록
@@ -243,6 +243,76 @@ router.delete(
   authMiddleware,
   validateParams(commentIdParamSchema),
   commentsController.deleteComment
+);
+
+/**
+ * @swagger
+ * /comments/{id}/likes:
+ *   post:
+ *     tags: [Comments]
+ *     summary: 댓글 좋아요 생성
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, example: 8 }
+ *     responses:
+ *       201:
+ *         description: 좋아요 생성
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       409:
+ *         $ref: '#/components/responses/Error409'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
+ */
+router.post(
+  "/:id/likes",
+  authMiddleware,
+  validateParams(commentIdParamSchema),
+  commentsController.likeComment
+);
+
+/**
+ * @swagger
+ * /comments/{id}/likes:
+ *   delete:
+ *     tags: [Comments]
+ *     summary: 댓글 좋아요 취소
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, example: 8 }
+ *     responses:
+ *       200:
+ *         description: 좋아요 삭제
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
+ */
+router.delete(
+  "/:id/likes",
+  authMiddleware,
+  validateParams(commentIdParamSchema),
+  commentsController.unlikeComment
 );
 
 /**

@@ -4,6 +4,7 @@ const cartsController = require("../controllers/carts.controller");
 
 const { authMiddleware } = require("../middlewares/auth");
 const { adminOnly } = require("../middlewares/admin");
+const { selfOrAdminByParam, selfOrAdminByBody } = require("../middlewares/ownership");
 
 const {
   validateBody,
@@ -63,6 +64,7 @@ const {
 router.post(
   "/",
   authMiddleware,
+  selfOrAdminByBody("userId"),
   validateBody(createCartItemSchema),
   cartsController.createCartItem
 );
@@ -162,6 +164,7 @@ router.get(
 router.get(
   "/user/:userId",
   authMiddleware,
+  selfOrAdminByParam("userId"),
   validateParams(cartUserParamSchema),
   cartsController.getUserCartItems
 );

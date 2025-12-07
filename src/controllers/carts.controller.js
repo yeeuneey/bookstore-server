@@ -217,6 +217,10 @@ exports.getUserCartItems = async (req, res, next) => {
   try {
     const userId = Number(req.params.userId);
 
+    if (req.user.role !== "ADMIN" && req.user.id !== userId) {
+      throw new AppError("본인 또는 관리자만 조회할 수 있습니다.", 403, ERROR_CODES.FORBIDDEN);
+    }
+
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
       throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);

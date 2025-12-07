@@ -31,28 +31,30 @@ const {
  *   get:
  *     tags: [Books]
  *     summary: 도서 목록 조회 (검색/정렬/페이징)
+ *     description: >
+ *       Example: GET /books?page=1&size=5&sort=price,ASC&keyword=샘플&category=IT&dateFrom=2023-01-01T00:00:00.000Z&dateTo=2030-12-31T23:59:59.000Z
  *     parameters:
  *       - in: query
  *         name: page
  *         schema: { type: integer, example: 1 }
  *       - in: query
  *         name: size
- *         schema: { type: integer, example: 10 }
+ *         schema: { type: integer, example: 5 }
  *       - in: query
  *         name: keyword
- *         schema: { type: string, example: "클린 코드" }
+ *         schema: { type: string, example: "샘플" }
  *       - in: query
  *         name: sort
- *         schema: { type: string, example: "createdAt,DESC" }
+ *         schema: { type: string, example: "price,ASC" }
  *       - in: query
  *         name: category
  *         schema: { type: string, example: "IT" }
  *       - in: query
  *         name: dateFrom
- *         schema: { type: string, format: date-time, example: "2024-01-01T00:00:00.000Z" }
+ *         schema: { type: string, format: date-time, example: "2023-01-01T00:00:00.000Z" }
  *       - in: query
  *         name: dateTo
- *         schema: { type: string, format: date-time, example: "2024-12-31T23:59:59.000Z" }
+ *         schema: { type: string, format: date-time, example: "2030-12-31T23:59:59.000Z" }
  *     responses:
  *       200:
  *         description: 도서 목록

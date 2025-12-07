@@ -190,7 +190,70 @@ exports.deleteComment = async (req, res, next) => {
 };
 
 /* ===========================================================
-   6) 댓글 좋아요 목록 (GET /comments/:id/likes)
+   6) 댓글 좋아요 생성 (POST /comments/:id/likes)
+=========================================================== */
+exports.likeComment = async (req, res, next) => {
+  try {
+    const commentId = Number(req.params.id);
+    const userId = req.user?.id;
+
+    if (!userId) {
+      throw new AppError("로그인이 필요합니다.", 401, ERROR_CODES.UNAUTHORIZED);
+    }
+
+    const comment = await prisma.comment.findUnique({ where: { id: commentId } });
+    if (!comment) {
+      throw new AppError("댓글을 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
+    }
+
+    const existing = await prisma.commentLike.findUnique({
+      where: { userId_commentId: { userId, commentId } },
+    });
+    if (existing) {
+      throw new AppError("이미 좋아요를 눌렀습니다.", 409, ERROR_CODES.DUPLICATE_RESOURCE);
+    }
+
+    const like = await prisma.commentLike.create({
+      data: { userId, commentId },
+    });
+
+    return res.status(201).json({ message: "댓글 좋아요 생성 완료", like });
+  } catch (err) {
+    req.log.error("Like Comment Error:", { error: err });
+    return next(err);
+  }
+};
+
+/* ===========================================================
+   7) 댓글 좋아요 취소 (DELETE /comments/:id/likes)
+=========================================================== */
+exports.unlikeComment = async (req, res, next) => {
+  try {
+    const commentId = Number(req.params.id);
+    const userId = req.user?.id;
+
+    if (!userId) {
+      throw new AppError("로그인이 필요합니다.", 401, ERROR_CODES.UNAUTHORIZED);
+    }
+
+    const existing = await prisma.commentLike.findUnique({
+      where: { userId_commentId: { userId, commentId } },
+    });
+    if (!existing) {
+      throw new AppError("좋아요 내역이 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
+    }
+
+    await prisma.commentLike.delete({ where: { userId_commentId: { userId, commentId } } });
+
+    return res.json({ message: "댓글 좋아요 취소 완료" });
+  } catch (err) {
+    req.log.error("Unlike Comment Error:", { error: err });
+    return next(err);
+  }
+};
+
+/* ===========================================================
+   8) 댓글 좋아요 목록 (GET /comments/:id/likes)
 =========================================================== */
 exports.getCommentLikes = async (req, res, next) => {
   try {
