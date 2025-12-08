@@ -263,7 +263,7 @@ router.patch(
  * /users/{id}:
  *   delete:
  *     tags: [Users]
- *     summary: 사용자 삭제 (관리자)
+ *     summary: 사용자 삭제 (본인 혹은 관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -299,7 +299,7 @@ router.delete(
   "/:id",
   authMiddleware,
   validateParams(userIdParamSchema),
-  adminOnly,
+  selfOrAdminByParam("id"),
   usersController.deleteUser
 );
 

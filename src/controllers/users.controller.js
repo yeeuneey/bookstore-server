@@ -172,26 +172,44 @@ exports.getUserById = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
-    const { name, gender } = req.body;
+    const { email, password, name, gender } = req.body;
 
     const exists = await prisma.user.findUnique({ where: { id } });
     if (!exists) {
       throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
     }
 
+    const data = {};
+
+    if (email && email !== exists.email) {
+      const duplicated = await prisma.user.findUnique({ where: { email } });
+      if (duplicated) {
+        throw new AppError("이미 존재하는 이메일입니다.", 409, ERROR_CODES.DUPLICATE_RESOURCE);
+      }
+      data.email = email;
+    }
+
+    if (password) {
+      data.password = await bcrypt.hash(password, 10);
+    }
+
+    if (name !== undefined) data.name = name;
+    if (gender !== undefined) data.gender = gender;
     const updated = await prisma.user.update({
       where: { id },
-      data: { name, gender },
+      data,
       select: {
         id: true,
         email: true,
         name: true,
         gender: true,
+        Role: true,
         createdAt: true,
       },
     });
 
-    return res.json({ message: "사용자 정보 수정 성공", user: updated });
+    const { Role, ...rest } = updated;
+    return res.json({ message: "사용자 정보 수정 성공", user: { ...rest, role: Role } });
   } catch (err) {
     req.log.error("Update User Error:", { error: err });
     return next(err);

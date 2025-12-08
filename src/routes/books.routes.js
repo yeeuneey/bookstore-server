@@ -3,7 +3,6 @@ const router = express.Router();
 const booksController = require("../controllers/books.controller");
 
 const { authMiddleware } = require("../middlewares/auth");
-const { adminOnly } = require("../middlewares/admin");
 
 const {
   validateBody,
@@ -123,7 +122,7 @@ router.get("/:id", validateParams(bookIdParamSchema), booksController.getBookByI
  * /books:
  *   post:
  *     tags: [Books]
- *     summary: 도서 생성 (관리자)
+ *     summary: 도서 생성
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -159,20 +158,14 @@ router.get("/:id", validateParams(bookIdParamSchema), booksController.getBookByI
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
-router.post(
-  "/",
-  authMiddleware,
-  adminOnly,
-  validateBody(createBookSchema),
-  booksController.createBook
-);
+router.post("/", authMiddleware, validateBody(createBookSchema), booksController.createBook);
 
 /**
  * @swagger
  * /books/{id}:
  *   patch:
  *     tags: [Books]
- *     summary: 도서 수정 (관리자)
+ *     summary: 도서 수정
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -209,7 +202,6 @@ router.post(
 router.patch(
   "/:id",
   authMiddleware,
-  adminOnly,
   validateParams(bookIdParamSchema),
   validateBody(updateBookSchema),
   booksController.updateBook
@@ -220,7 +212,7 @@ router.patch(
  * /books/{id}:
  *   delete:
  *     tags: [Books]
- *     summary: 도서 삭제 (관리자)
+ *     summary: 도서 삭제
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -252,13 +244,7 @@ router.patch(
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
-router.delete(
-  "/:id",
-  authMiddleware,
-  adminOnly,
-  validateParams(bookIdParamSchema),
-  booksController.deleteBook
-);
+router.delete("/:id", authMiddleware, validateParams(bookIdParamSchema), booksController.deleteBook);
 
 /**
  * @swagger

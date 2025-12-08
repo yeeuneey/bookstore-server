@@ -1,8 +1,6 @@
 const { z } = require("zod");
 
 const genderEnum = z.enum(["MALE", "FEMALE"]).optional();
-const roleEnum = z.enum(["USER", "ADMIN"]).optional();
-
 exports.createUserSchema = z.object({
   email: z.string().email("이메일 형식이 올바르지 않습니다."),
   password: z.string().min(6, "비밀번호는 최소 6자 이상이어야 합니다."),
@@ -15,9 +13,6 @@ exports.updateUserSchema = z.object({
   password: z.string().min(6).optional(),
   name: z.string().min(1).optional(),
   gender: genderEnum,
-  address: z.string().max(255).optional(),
-  phoneNumber: z.string().max(50).optional(),
-  role: roleEnum, // 관리자에서만 사용
 });
 
 exports.userIdParamSchema = z.object({

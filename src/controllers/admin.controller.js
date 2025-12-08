@@ -9,27 +9,94 @@ const prisma = new PrismaClient({ adapter });
 
 /* ===========================================================
    1) 전체 사용자 목록 조회 (GET /admin/users)
+      - 지원 필터: keyword(이메일/이름), role, dateFrom/dateTo
+      - 정렬: sort=field,DESC|ASC (기본 createdAt,DESC)
+      - 페이지: page(0 또는 1 입력 시 첫 페이지), size
 =========================================================== */
 exports.getAllUsers = async (req, res, next) => {
   try {
-    const usersRaw = await prisma.user.findMany({
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        Role: true,
-        bannedAt: true,
-        createdAt: true,
-      },
-    });
+    const pageRaw = Number(req.query.page ?? 0);
+    const sizeRaw = Number(req.query.size ?? 20);
+    const pageInput = Number.isFinite(pageRaw) && pageRaw >= 0 ? pageRaw : 0;
+    const size = Number.isFinite(sizeRaw) && sizeRaw > 0 ? sizeRaw : 20;
+    const page = pageInput > 0 ? pageInput - 1 : 0; // 1부터 입력해도 첫 페이지로 해석
+    const skip = page * size;
+
+    const keyword = req.query.keyword?.trim();
+    const roleRaw = req.query.role?.toUpperCase();
+    const role =
+      roleRaw && ["USER", "ADMIN"].includes(roleRaw) ? roleRaw : undefined;
+
+    const parseDate = (value) => {
+      if (!value) return null;
+      const d = new Date(value);
+      return Number.isNaN(d.getTime()) ? null : d;
+    };
+    const fromDate = parseDate(req.query.dateFrom);
+    const toDate = parseDate(req.query.dateTo);
+
+    const [sortFieldRaw, sortDirRaw] = (req.query.sort || "createdAt,DESC").split(
+      ","
+    );
+    const allowedSort = ["id", "email", "name", "createdAt", "updatedAt"];
+    const sortField = allowedSort.includes(sortFieldRaw)
+      ? sortFieldRaw
+      : "createdAt";
+    const sortDirection =
+      (sortDirRaw || "DESC").toLowerCase() === "asc" ? "asc" : "desc";
+
+    const where = {
+      ...(keyword
+        ? {
+            OR: [
+              { email: { contains: keyword } },
+              { name: { contains: keyword } },
+            ],
+          }
+        : {}),
+      ...(role ? { Role: role } : {}),
+      ...(fromDate || toDate
+        ? {
+            createdAt: {
+              ...(fromDate ? { gte: fromDate } : {}),
+              ...(toDate ? { lte: toDate } : {}),
+            },
+          }
+        : {}),
+    };
+
+    const [total, usersRaw] = await Promise.all([
+      prisma.user.count({ where }),
+      prisma.user.findMany({
+        where,
+        orderBy: { [sortField]: sortDirection },
+        skip,
+        take: size,
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          Role: true,
+          bannedAt: true,
+          createdAt: true,
+        },
+      }),
+    ]);
 
     const users = usersRaw.map(({ Role, ...rest }) => ({
       ...rest,
       role: Role,
     }));
 
-    return res.json({ count: users.length, users });
+    const totalPages = total > 0 ? Math.ceil(total / size) : 0;
+
+    return res.json({
+      page: pageInput,
+      size,
+      total,
+      totalPages,
+      users,
+    });
   } catch (err) {
     req.log.error("Admin Get Users Error:", { error: err });
     return next(err);

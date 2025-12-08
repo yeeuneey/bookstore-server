@@ -59,7 +59,9 @@ exports.getCartItems = async (req, res, next) => {
       page = 1,
       size = 20,
       sort = "createdAt,DESC",
-      keyword,
+      userName,
+      userEmail,
+      bookTitle,
       dateFrom,
       dateTo,
     } = req.query;
@@ -73,7 +75,9 @@ exports.getCartItems = async (req, res, next) => {
 
     const where = {
       AND: [
-        keyword ? { book: { title: { contains: keyword } } } : {},
+        userName ? { user: { name: { contains: userName } } } : {},
+        userEmail ? { user: { email: { contains: userEmail } } } : {},
+        bookTitle ? { book: { title: { contains: bookTitle } } } : {},
         dateFrom ? { createdAt: { gte: new Date(dateFrom) } } : {},
         dateTo ? { createdAt: { lte: new Date(dateTo) } } : {},
       ],

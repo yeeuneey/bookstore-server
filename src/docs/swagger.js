@@ -131,13 +131,16 @@ const options = {
         UserUpdateInput: {
           type: "object",
           properties: {
-            email: { type: "string", format: "email" },
-            password: { type: "string" },
-            name: { type: "string" },
-            gender: { type: "string", enum: ["MALE", "FEMALE"] },
-            address: { type: "string" },
-            phoneNumber: { type: "string" },
-            role: { type: "string", enum: ["USER", "ADMIN"] },
+            email: { type: "string", format: "email", example: "user104@example.com" },
+            password: { type: "string", example: "password123" },
+            name: { type: "string", example: "John Doe" },
+            gender: { type: "string", enum: ["MALE", "FEMALE"], example: "MALE" },
+          },
+          example: {
+            email: "user104@example.com",
+            password: "password123",
+            name: "John Doe",
+            gender: "MALE",
           },
         },
         Book: {

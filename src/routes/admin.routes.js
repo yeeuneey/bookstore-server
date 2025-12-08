@@ -21,15 +21,43 @@ const { userIdParamSchema } = require("../validators/user.validators");
  *     summary: 전체 사용자 목록 조회
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, default: 0, example: 1 }
+ *         description: 페이지 번호(0 또는 1부터 입력 가능)
+ *       - in: query
+ *         name: size
+ *         schema: { type: integer, default: 20, example: 20 }
+ *       - in: query
+ *         name: sort
+ *         schema: { type: string, example: "id,ASC" }
+ *         description: 정렬 필드,방향
+ *       - in: query
+ *         name: keyword
+ *         schema: { type: string, example: "hong" }
+ *         description: 이메일/이름 검색
+ *       - in: query
+ *         name: role
+ *         schema: { type: string, enum: [USER, ADMIN], example: USER }
+ *       - in: query
+ *         name: dateFrom
+ *         schema: { type: string, format: date-time, example: "2024-01-01T00:00:00.000Z" }
+ *       - in: query
+ *         name: dateTo
+ *         schema: { type: string, format: date-time, example: "2024-12-31T23:59:59.000Z" }
  *     responses:
  *       200:
- *         description: 사용자 목록
+ *         description: 사용자 목록 (페이지네이션)
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 count: { type: integer, example: 2 }
+ *                 page: { type: integer, example: 1 }
+ *                 size: { type: integer, example: 20 }
+ *                 total: { type: integer, example: 153 }
+ *                 totalPages: { type: integer, example: 8 }
  *                 users:
  *                   type: array
  *                   items:

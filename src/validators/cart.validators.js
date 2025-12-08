@@ -12,7 +12,9 @@ exports.cartListQuerySchema = z.object({
   page: z.coerce.number().int().min(1).max(1000).default(1),
   size: z.coerce.number().int().min(1).max(100).default(20),
   sort: z.string().regex(/^[a-zA-Z0-9_]+,(ASC|DESC)$/i).default("createdAt,DESC"),
-  keyword: z.string().optional(),
+  userName: z.string().optional(),
+  userEmail: z.string().optional(),
+  bookTitle: z.string().optional(),
   dateFrom: z.string().datetime().optional(),
   dateTo: z.string().datetime().optional(),
 });

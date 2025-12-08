@@ -88,8 +88,14 @@ router.post(
  *         name: sort
  *         schema: { type: string, example: "createdAt,DESC" }
  *       - in: query
- *         name: keyword
- *         schema: { type: string, example: "Node" }
+ *         name: userName
+ *         schema: { type: string, example: "홍길동" }
+ *       - in: query
+ *         name: userEmail
+ *         schema: { type: string, example: "user1@example.com" }
+ *       - in: query
+ *         name: bookTitle
+ *         schema: { type: string, example: "클린 코드" }
  *       - in: query
  *         name: dateFrom
  *         schema: { type: string, format: date-time, example: "2024-01-01T00:00:00.000Z" }
