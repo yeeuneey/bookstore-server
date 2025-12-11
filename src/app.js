@@ -13,7 +13,7 @@ const reviewsRouter = require("./routes/reviews.routes");
 const commentsRouter = require("./routes/comments.routes");
 const usersRouter = require("./routes/users.routes");
 const errorHandler = require("./middlewares/errorHandler");
-const { swaggerUi, swaggerSpec } = require("./docs/swagger");
+const { swaggerUi, swaggerSpec, swaggerUiOptions } = require("./docs/swagger");
 const requestLogger = require("./middlewares/requestLogger");
 
 const app = express();
@@ -30,7 +30,7 @@ app.use("/reviews", reviewsRouter);
 app.use("/comments", commentsRouter);
 app.use("/admin", adminRouter);
 app.use("/users", usersRouter);
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerUiOptions));
 // OpenAPI JSON (Postman import 등)
 app.get("/docs.json", (_req, res) => {
   res.type("application/json").send(swaggerSpec);

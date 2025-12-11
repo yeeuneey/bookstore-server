@@ -29,7 +29,7 @@ const {
  * /books:
  *   get:
  *     tags: [Books]
- *     summary: 도서 목록 조회 (검색/정렬/페이징)
+ *     summary: 도서 목록 조회
  *     description: >
  *       Example: GET /books?page=1&size=5&sort=price,ASC&keyword=샘플&category=IT&dateFrom=2023-01-01T00:00:00.000Z&dateTo=2030-12-31T23:59:59.000Z
  *     parameters:
@@ -222,7 +222,7 @@ router.patch(
  *         schema: { type: integer, example: 101 }
  *     responses:
  *       200:
- *         description: 삭제 성공
+ *         description: 삭제 완료
  *         content:
  *           application/json:
  *             schema:

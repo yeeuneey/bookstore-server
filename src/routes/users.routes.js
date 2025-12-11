@@ -38,7 +38,7 @@ const {
  *             $ref: '#/components/schemas/UserCreateInput'
  *     responses:
  *       201:
- *         description: 회원가입 성공
+ *         description: 회원가입 완료
  *         content:
  *           application/json:
  *             schema:
@@ -100,8 +100,8 @@ router.get("/me", authMiddleware, usersController.getMe);
  * @swagger
  * /users:
  *   get:
- *     tags: [Users]
- *     summary: 전체 사용자 목록 (관리자)
+ *     tags: [Admin]
+ *     summary: 전체 사용자 목록 조회
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -166,7 +166,7 @@ router.get(
  * /users/{id}:
  *   get:
  *     tags: [Users]
- *     summary: 특정 사용자 상세 (본인 혹은 관리자)
+ *     summary: 사용자 상세
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -387,92 +387,6 @@ router.get(
   validateParams(userIdParamSchema),
   selfOrAdminByParam("id"),
   usersController.getUserComments
-);
-
-/**
- * @swagger
- * /users/{id}/review-likes:
- *   get:
- *     tags: [Users]
- *     summary: 사용자가 좋아요한 리뷰 목록
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 5 }
- *     responses:
- *       200:
- *         description: 좋아요한 리뷰 ID 목록
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Review'
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       422:
- *         $ref: '#/components/responses/Error400'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.get(
-  "/:id/review-likes",
-  authMiddleware,
-  validateParams(userIdParamSchema),
-  selfOrAdminByParam("id"),
-  usersController.getUserReviewLikes
-);
-
-/**
- * @swagger
- * /users/{id}/comment-likes:
- *   get:
- *     tags: [Users]
- *     summary: 사용자가 좋아요한 댓글 목록
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 5 }
- *     responses:
- *       200:
- *         description: 좋아요한 댓글 목록
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Comment'
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       422:
- *         $ref: '#/components/responses/Error400'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.get(
-  "/:id/comment-likes",
-  authMiddleware,
-  validateParams(userIdParamSchema),
-  selfOrAdminByParam("id"),
-  usersController.getUserCommentLikes
 );
 
 /**

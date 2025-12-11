@@ -71,8 +71,8 @@ router.post(
  * @swagger
  * /orders:
  *   get:
- *     tags: [Orders]
- *     summary: 전체 주문 목록 (관리자)
+ *     tags: [Admin]
+ *     summary: 전체 사용자 주문 목록
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -119,20 +119,14 @@ router.post(
  *       404:
  *         $ref: '#/components/responses/Error404'
  */
-router.get(
-  "/",
-  authMiddleware,
-  adminOnly,
-  validateQuery(orderListQuerySchema),
-  ordersController.getOrders
-);
+router.get("/", authMiddleware, adminOnly, validateQuery(orderListQuerySchema), ordersController.getOrders);
 
 /**
  * @swagger
  * /orders/user/{userId}:
  *   get:
  *     tags: [Orders]
- *     summary: 특정 사용자의 주문 목록
+ *     summary: 사용자의 주문 목록
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -271,7 +265,7 @@ router.patch(
  *         schema: { type: integer, example: 10 }
  *     responses:
  *       200:
- *         description: 삭제 성공
+ *         description: 삭제 완료
  *         content:
  *           application/json:
  *             schema:

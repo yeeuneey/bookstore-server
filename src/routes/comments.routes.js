@@ -216,7 +216,7 @@ router.patch(
  *         schema: { type: integer, example: 8 }
  *     responses:
  *       200:
- *         description: 삭제 성공
+ *         description: 삭제 완료
  *         content:
  *           application/json:
  *             schema:
@@ -245,115 +245,10 @@ router.delete(
   commentsController.deleteComment
 );
 
-/**
- * @swagger
- * /comments/{id}/likes:
- *   post:
- *     tags: [Comments]
- *     summary: 댓글 좋아요 생성
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 8 }
- *     responses:
- *       201:
- *         description: 좋아요 생성
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       409:
- *         $ref: '#/components/responses/Error409'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.post(
-  "/:id/likes",
-  authMiddleware,
-  validateParams(commentIdParamSchema),
-  commentsController.likeComment
-);
 
-/**
- * @swagger
- * /comments/{id}/likes:
- *   delete:
- *     tags: [Comments]
- *     summary: 댓글 좋아요 취소
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 8 }
- *     responses:
- *       200:
- *         description: 좋아요 삭제
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.delete(
-  "/:id/likes",
-  authMiddleware,
-  validateParams(commentIdParamSchema),
-  commentsController.unlikeComment
-);
 
-/**
- * @swagger
- * /comments/{id}/likes:
- *   get:
- *     tags: [Comments]
- *     summary: 댓글 좋아요 목록
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 8 }
- *     responses:
- *       200:
- *         description: 좋아요 사용자 목록
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   userId: { type: integer }
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       422:
- *         $ref: '#/components/responses/Error400'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.get(
-  "/:id/likes",
-  validateParams(commentIdParamSchema),
-  commentsController.getCommentLikes
-);
+
+
+
 
 module.exports = router;

@@ -291,65 +291,6 @@ exports.getUserComments = async (req, res, next) => {
   }
 };
 
-/* ==================================================
-   8) 관계형: 사용자가 좋아한 리뷰 (GET /users/:id/review-likes)
-================================================== */
-exports.getUserReviewLikes = async (req, res, next) => {
-  try {
-    const id = Number(req.params.id);
-
-    const exists = await prisma.user.findUnique({ where: { id } });
-    if (!exists) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
-    }
-
-    const likes = await prisma.reviewLike.findMany({
-      where: { userId: id },
-      include: {
-        review: {
-          include: {
-            book: { select: { id: true, title: true } },
-          },
-        },
-      },
-    });
-
-    return res.json({ userId: id, count: likes.length, likes });
-  } catch (err) {
-    req.log.error("Get User ReviewLikes Error:", { error: err });
-    return next(err);
-  }
-};
-
-/* ==================================================
-   9) 관계형: 사용자가 좋아한 댓글 (GET /users/:id/comment-likes)
-================================================== */
-exports.getUserCommentLikes = async (req, res, next) => {
-  try {
-    const id = Number(req.params.id);
-
-    const exists = await prisma.user.findUnique({ where: { id } });
-    if (!exists) {
-      throw new AppError("유저를 찾을 수 없습니다.", 404, ERROR_CODES.USER_NOT_FOUND);
-    }
-
-    const likes = await prisma.commentLike.findMany({
-      where: { userId: id },
-      include: {
-        comment: {
-          include: {
-            review: true,
-          },
-        },
-      },
-    });
-
-    return res.json({ userId: id, count: likes.length, likes });
-  } catch (err) {
-    req.log.error("Get User CommentLikes Error:", { error: err });
-    return next(err);
-  }
-};
 
 /* ==================================================
    10) 관계형: 사용자 즐겨찾기 목록

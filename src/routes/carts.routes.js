@@ -43,7 +43,7 @@ const {
  *             $ref: '#/components/schemas/CartCreateInput'
  *     responses:
  *       201:
- *         description: 장바구니 추가 성공
+ *         description: 장바구니 추가 완료
  *         content:
  *           application/json:
  *             schema:
@@ -73,8 +73,8 @@ router.post(
  * @swagger
  * /carts:
  *   get:
- *     tags: [Carts]
- *     summary: 전체 장바구니 목록 (관리자)
+ *     tags: [Admin]
+ *     summary: 전체 사용자 장바구니 목록
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -124,20 +124,14 @@ router.post(
  *       404:
  *         $ref: '#/components/responses/Error404'
  */
-router.get(
-  "/",
-  authMiddleware,
-  adminOnly,
-  validateQuery(cartListQuerySchema),
-  cartsController.getCartItems
-);
+router.get("/", authMiddleware, adminOnly, validateQuery(cartListQuerySchema), cartsController.getCartItems);
 
 /**
  * @swagger
  * /carts/user/{userId}:
  *   get:
  *     tags: [Carts]
- *     summary: 특정 사용자의 장바구니 조회
+ *     summary: 사용자의 장바구니 조회
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -277,7 +271,7 @@ router.patch(
  *         schema: { type: integer, example: 10 }
  *     responses:
  *       200:
- *         description: 삭제 성공
+ *         description: 삭제 완료
  *         content:
  *           application/json:
  *             schema:

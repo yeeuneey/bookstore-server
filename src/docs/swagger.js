@@ -34,15 +34,16 @@ const options = {
         description: "Local server",
       },
     ],
+    // Swagger UI에서 표시되는 그룹 순서를 스크린샷과 동일하게 유지
     tags: [
+      { name: "Admin", description: "관리자 전용" },
       { name: "Auth", description: "로그인/토큰 갱신/로그아웃" },
-      { name: "Users", description: "회원 정보 및 관리" },
-      { name: "Books", description: "도서 조회 및 관리" },
-      { name: "Carts", description: "장바구니 관리" },
-      { name: "Orders", description: "주문 생성/조회/관리" },
-      { name: "Reviews", description: "리뷰 작성/조회/관리" },
-      { name: "Comments", description: "댓글 작성/조회/관리" },
-      { name: "Admin", description: "관리자 전용 기능" },
+      { name: "Books", description: "도서" },
+      { name: "Carts", description: "장바구니" },
+      { name: "Comments", description: "댓글" },
+      { name: "Orders", description: "주문" },
+      { name: "Reviews", description: "리뷰" },
+      { name: "Users", description: "회원" },
       { name: "Health", description: "상태 체크" },
     ],
     components: {
@@ -79,7 +80,7 @@ const options = {
           properties: {
             accessToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
             refreshToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
-            message: { type: "string", example: "로그인에 성공했습니다." },
+            message: { type: "string", example: "로그인되었습니다." },
           },
         },
         LoginInput: {
@@ -544,6 +545,92 @@ const options = {
 };
 
 const swaggerSpec = swaggerJSDoc(options);
+const tagOrder = options.definition.tags.map((t) => t.name);
+
+const operationOrder = {
+  Admin: [
+    "특정 사용자 차단 처리",
+    "전체 사용자 목록 조회",
+    "주문 통계 조회",
+    "전체 사용자 주문 목록",
+    "전체 사용자 장바구니 목록",
+  ],
+  Auth: ["로그인", "토큰 재발급", "로그아웃"],
+  Books: [
+    "도서 목록 조회",
+    "도서 생성",
+    "도서에 달린 리뷰 조회",
+    "도서 카테고리 목록",
+    "도서 저자 목록",
+    "도서 상세 조회",
+    "도서 수정",
+    "도서 삭제",
+  ],
+  Carts: [
+    "장바구니에 상품 추가",
+    "사용자의 장바구니 조회",
+    "장바구니 아이템 단건 조회",
+    "장바구니 아이템 수량 수정",
+    "장바구니 아이템 삭제",
+  ],
+  Comments: ["댓글 작성", "댓글 목록 조회", "댓글 상세 조회", "댓글 수정", "댓글 삭제"],
+  Orders: ["주문 생성", "사용자의 주문 목록", "주문 상세 조회", "주문 상태 변경", "주문 삭제"],
+  Reviews: [
+    "리뷰 작성",
+    "리뷰 목록 조회",
+    "리뷰에 달린 댓글 조회",
+    "리뷰 상세 조회",
+    "리뷰 수정",
+    "리뷰 삭제",
+  ],
+  Users: [
+    "회원가입",
+    "내 프로필 조회",
+    "사용자가 작성한 댓글 목록",
+    "사용자의 즐겨찾기 도서 목록",
+    "사용자의 장바구니 목록",
+    "사용자의 주문 목록",
+    "사용자 상세",
+    "사용자 정보 수정 (본인 혹은 관리자)",
+    "사용자 삭제 (본인 혹은 관리자)",
+    "사용자가 작성한 리뷰 목록",
+  ],
+  Health: ["서버 상태 확인", "데이터베이스 연결 상태 확인"],
+};
+
+const swaggerUiOptions = {
+  swaggerOptions: {
+    tagsSorter: "order", // tags 배열 순서대로 표시
+    operationsSorter: (a, b) => {
+      try {
+        const tagA = (a?.get && a.get("tags")?.[0]) || "";
+        const tagB = (b?.get && b.get("tags")?.[0]) || "";
+
+        if (tagA !== tagB) {
+          const idxA = tagOrder.indexOf(tagA);
+          const idxB = tagOrder.indexOf(tagB);
+          if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+          return tagA.localeCompare(tagB);
+        }
+
+        const summaryA = (a?.get && a.get("summary")) || "";
+        const summaryB = (b?.get && b.get("summary")) || "";
+        const order = operationOrder[tagA] || [];
+        const idxA = order.indexOf(summaryA);
+        const idxB = order.indexOf(summaryB);
+
+        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+        if (idxA !== -1) return -1;
+        if (idxB !== -1) return 1;
+
+        return summaryA.localeCompare(summaryB);
+      } catch (err) {
+        // 정렬 중 문제가 생기면 기본 정렬로 회귀
+        return 0;
+      }
+    },
+  },
+};
 
 // NOTE: Swagger 문서에서만 ID 예시를 Postman 스타일 변수로 노출해주기 위한 후처리.
 // 실제 라우팅은 /:id 그대로 유지됩니다.
@@ -583,4 +670,34 @@ function injectIdExamples(spec) {
 
 injectIdExamples(swaggerSpec);
 
-module.exports = { swaggerUi, swaggerSpec };
+// 공통 에러 응답 설명 자동 보강
+const defaultErrorDescriptions = {
+  400: "잘못된 요청 형식입니다. 파라미터 또는 바디를 확인하세요.",
+  401: "인증 정보가 없거나 만료/위조되었습니다.",
+  403: "요청 권한이 없습니다. (본인 또는 관리자만 가능)",
+  404: "요청한 리소스를 찾을 수 없습니다.",
+  422: "유효성 검증에 실패했습니다. 요청 스키마를 확인하세요.",
+};
+
+function enrichErrorResponses(spec) {
+  if (!spec?.paths) return;
+  const targetCodes = Object.keys(defaultErrorDescriptions);
+
+  for (const pathItem of Object.values(spec.paths)) {
+    for (const op of Object.values(pathItem)) {
+      if (!op?.responses) continue;
+      for (const code of targetCodes) {
+        const resp = op.responses[code];
+        if (!resp) continue;
+        // description이 비어 있으면 기본 설명을 채워준다.
+        if (!resp.description) {
+          resp.description = defaultErrorDescriptions[code];
+        }
+      }
+    }
+  }
+}
+
+enrichErrorResponses(swaggerSpec);
+
+module.exports = { swaggerUi, swaggerSpec, swaggerUiOptions };

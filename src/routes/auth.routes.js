@@ -16,7 +16,7 @@ const { loginSchema, refreshSchema, logoutSchema } = require("../validators/auth
  * /auth/login:
  *   post:
  *     tags: [Auth]
- *     summary: 이메일과 비밀번호로 로그인
+ *     summary: 로그인
  *     requestBody:
  *       required: true
  *       content:
@@ -28,7 +28,7 @@ const { loginSchema, refreshSchema, logoutSchema } = require("../validators/auth
  *             password: P@ssw0rd!
  *     responses:
  *       200:
- *         description: 로그인 성공 및 토큰 반환
+ *         description: 로그인 후 토큰 반환
  *         content:
  *           application/json:
  *             schema:
@@ -53,7 +53,7 @@ router.post("/login", validateBody(loginSchema), authController.login);
  * /auth/refresh:
  *   post:
  *     tags: [Auth]
- *     summary: Refresh Token으로 Access Token 재발급
+ *     summary: 토큰 재발급
  *     requestBody:
  *       required: true
  *       content:
@@ -72,7 +72,7 @@ router.post("/login", validateBody(loginSchema), authController.login);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "토큰 재발급에 성공했습니다."
+ *                   example: "토큰 재발급이 완료되었습니다."
  *                 accessToken:
  *                   type: string
  *                   example: eyJhbGciOi...
@@ -96,7 +96,7 @@ router.post("/refresh", validateBody(refreshSchema), authController.refresh);
  * /auth/logout:
  *   post:
  *     tags: [Auth]
- *     summary: 현재 사용자의 Refresh Token 무효화
+ *     summary: 로그아웃
  *     requestBody:
  *       required: true
  *       content:
@@ -107,7 +107,7 @@ router.post("/refresh", validateBody(refreshSchema), authController.refresh);
  *             userId: 3
  *     responses:
  *       200:
- *         description: 로그아웃 성공
+ *         description: 로그아웃 완료
  *         content:
  *           application/json:
  *             schema:
