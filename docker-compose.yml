@@ -1,6 +1,19 @@
 version: "3.9"
 
 services:
+  app:
+    build: .
+    container_name: bookstore_app
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    networks:
+      - backend
+
   mysql:
     image: mysql:8.0
     container_name: mysql8_container
@@ -15,12 +28,20 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - backend
 
   adminer:
     image: adminer
+    container_name: bookstore_adminer
     restart: always
     ports:
       - "8081:8080"
+    networks:
+      - backend
+
+networks:
+  backend:
 
 volumes:
   mysql_data:
