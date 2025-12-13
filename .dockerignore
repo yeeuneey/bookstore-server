@@ -1,18 +1,7 @@
-# Ignore local dependencies and build artifacts
-node_modules
-npm-debug.log
-*.log
+.git
+.gitignore
+Dockerfile
+docker-compose.yml
 
-# Editor / tooling
-.vscode
-.idea
-
-# Output / cache
-dist
-coverage
-tmp
-temp
-
-# Archives
-*.tar
-*.tgz
+# Prisma 엔진만 제거 (중요)
+node_modules/.prisma

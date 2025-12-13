@@ -1,23 +1,10 @@
-# Node 20 is required for Prisma 7.x
 FROM node:20
 
-# Set working directory
 WORKDIR /app
 
-# Only copy manifests and npm config first for better caching
-COPY package*.json .npmrc ./
-
-# Install dependencies (Linux build to avoid native module issues like bcrypt)
-RUN npm ci --legacy-peer-deps --no-audit
-
-# Copy application source
+# 이미 설치된 node_modules를 그대로 사용
 COPY . .
 
-# Prisma Client generation
-RUN npx prisma generate
-
-# Expose API port (match PORT in .env / server.js)
 EXPOSE 8080
 
-# Start command
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]
