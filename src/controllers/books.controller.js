@@ -1,12 +1,8 @@
 // src/controllers/books.controller.js
 require("dotenv").config();
-const { PrismaClient } = require("@prisma/client");
-const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
+const prisma = require("../lib/prisma");
 const AppError = require("../utils/AppError");
 const { ERROR_CODES } = require("../utils/errorCodes");
-
-const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
-const prisma = new PrismaClient({ adapter });
 
 /* ===========================================================
    1) 도서 목록 조회 + 검색/정렬/페이지네이션 (GET /books)

@@ -1,13 +1,9 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { PrismaClient } = require("@prisma/client");
-const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
+const prisma = require("../lib/prisma");
 const AppError = require("../utils/AppError");
 const { ERROR_CODES } = require("../utils/errorCodes");
-
-const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
-const prisma = new PrismaClient({ adapter });
 
 const getAccessSecret = () =>
   process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET;

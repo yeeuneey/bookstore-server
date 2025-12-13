@@ -1,11 +1,7 @@
 require("dotenv").config();
-const { PrismaClient } = require("@prisma/client");
-const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
+const prisma = require("../lib/prisma");
 const AppError = require("../utils/AppError");
 const { ERROR_CODES } = require("../utils/errorCodes");
-
-const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
-const prisma = new PrismaClient({ adapter });
 
 /* ===========================================================
    1) 전체 사용자 목록 조회 (GET /admin/users)

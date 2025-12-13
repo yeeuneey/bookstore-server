@@ -5,7 +5,6 @@ const { PrismaClient } = require("@prisma/client");
 
 const SALT = 10;
 
-// Standard Prisma Client (no MariaDB adapter)
 const prisma = new PrismaClient();
 
 /* -----------------------------------------
