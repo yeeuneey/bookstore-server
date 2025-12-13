@@ -34,6 +34,15 @@ services:
     networks:
       - backend
 
+  adminer:
+    image: adminer
+    container_name: bookstore_adminer
+    restart: always
+    ports:
+      - "8081:8080"
+    networks:
+      - backend
+
 networks:
   backend:
 
