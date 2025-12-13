@@ -5,3 +5,4 @@ dist
 .prisma.
 .DS_Store
 /generated/prisma
+app.tar
