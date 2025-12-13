@@ -1,26 +1,23 @@
 # Node 20 is required for Prisma 7.x
 FROM node:20
 
-# 작업 디렉토리 생성
+# Set working directory
 WORKDIR /app
 
-# OS 패키지 설치 (Prisma native deps 안정화)
-RUN apt-get update && apt-get install -y openssl
+# Only copy manifests and npm config first for better caching
+COPY package*.json .npmrc ./
 
-# package.json, package-lock.json 복사
-COPY package*.json ./
+# Install dependencies (Linux build to avoid native module issues like bcrypt)
+RUN npm ci --legacy-peer-deps --prefer-offline --no-audit --registry=http://registry.npmmirror.com
 
-# 의존성 설치 (peer deps 오류 방지)
-RUN npm install --legacy-peer-deps
-
-# 프로젝트 전체 복사
+# Copy application source
 COPY . .
 
-# Prisma Client 생성
+# Prisma Client generation
 RUN npx prisma generate
 
-# 컨테이너 포트 공개
-EXPOSE 3000
+# Expose API port (match PORT in .env / server.js)
+EXPOSE 8080
 
-# 앱 실행
+# Start command
 CMD ["npm", "run", "start"]

@@ -6,7 +6,8 @@ services:
     container_name: bookstore_app
     restart: always
     ports:
-      - "3000:3000"
+      # host:container (app listens on 8080 per .env)
+      - "10042:8080"
     env_file:
       - .env
     depends_on:

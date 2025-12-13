@@ -1,0 +1,18 @@
+# Ignore local dependencies and build artifacts
+node_modules
+npm-debug.log
+*.log
+
+# Editor / tooling
+.vscode
+.idea
+
+# Output / cache
+dist
+coverage
+tmp
+temp
+
+# Archives
+*.tar
+*.tgz
