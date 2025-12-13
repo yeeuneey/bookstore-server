@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json .npmrc ./
 
 # Install dependencies (Linux build to avoid native module issues like bcrypt)
-RUN npm ci --legacy-peer-deps --prefer-offline --no-audit --registry=http://registry.npmmirror.com
+RUN npm ci --legacy-peer-deps --no-audit
 
 # Copy application source
 COPY . .
