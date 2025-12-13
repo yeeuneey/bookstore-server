@@ -6,3 +6,4 @@ dist
 .DS_Store
 /generated/prisma
 app.tar
+bookstore-server-app.tar
