@@ -2,13 +2,11 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const { PrismaClient } = require("@prisma/client");
-const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
 
 const SALT = 10;
 
-// Adapter 기반 Prisma Client
-const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
-const prisma = new PrismaClient({ adapter });
+// Standard Prisma Client (no MariaDB adapter)
+const prisma = new PrismaClient();
 
 /* -----------------------------------------
    Helper Functions
@@ -290,4 +288,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-

@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/yeeuneey/bookstore-server#readme",
   "dependencies": {
-    "@prisma/adapter-mariadb": "^7.1.0",
     "@prisma/client": "^7.1.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
