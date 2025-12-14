@@ -1,7 +1,7 @@
 # Bookstore Server
 
 ## 프로젝트 개요
-- Express + Prisma + MySQL 기반 북스토어 백엔드 API (과제 요구사항 충족).
+- Express + Prisma + MySQL 기반 온라인 서점 백엔드 API.
 - 도서 조회/생성/수정/삭제, 리뷰·댓글 CRUD, 즐겨찾기/장바구니/주문 흐름, 관리자 통계(주문 집계, 사용자 차단) 제공.
 - JWT 인증과 역할 기반 접근 제어(ROLE_USER, ROLE_ADMIN), Zod 스키마로 요청 검증, Swagger UI로 전체 API 문서화.
 

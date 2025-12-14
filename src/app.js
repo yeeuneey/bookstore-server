@@ -18,12 +18,25 @@ const usersRouter = require("./routes/users.routes");
 
 // middlewares
 const requestLogger = require("./middlewares/requestLogger");
+const rateLimiter = require("./middlewares/rateLimiter");
 const errorHandler = require("./middlewares/errorHandler");
 
 // swagger
 const { swaggerUi, swaggerSpec, swaggerUiOptions } = require("./docs/swagger");
 
 const app = express();
+
+const allowlist =
+  process.env.CORS_ALLOWED_ORIGINS?.split(",").map((o) => o.trim()).filter(Boolean) ||
+  ["http://localhost:3000"];
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // 서버-서버, curl 등 Origin 없는 요청 허용
+    return allowlist.includes(origin)
+      ? callback(null, true)
+      : callback(new Error("Not allowed by CORS"));
+  },
+};
 
 /**
  * 🚨 1️⃣ helmet을 Swagger보다 "먼저" 적용
@@ -39,8 +52,9 @@ app.use(
   })
 );
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(rateLimiter);
 app.use(requestLogger);
 
 /**
@@ -116,10 +130,15 @@ app.get("/", (_req, res) => {
  *                 status: { type: string, example: "error" }
  *                 database: { type: string, example: "disconnected" }
  */
+const appVersion = require("../package.json").version;
+const buildTime = process.env.BUILD_TIME || null;
+
 app.get("/health", (_req, res) => {
   res.json({
     status: "ok",
     timestamp: new Date().toISOString(),
+    version: appVersion,
+    buildTime,
   });
 });
 
