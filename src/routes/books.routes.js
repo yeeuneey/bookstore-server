@@ -123,7 +123,7 @@ router.get("/:id", validateParams(bookIdParamSchema), booksController.getBookByI
  * /books:
  *   post:
  *     tags: [Books]
- *     summary: 도서 생성
+ *     summary: 도서 생성 (관리자)
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -172,7 +172,7 @@ router.post(
  * /books/{id}:
  *   patch:
  *     tags: [Books]
- *     summary: 도서 수정
+ *     summary: 도서 수정 (관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -220,7 +220,7 @@ router.patch(
  * /books/{id}:
  *   delete:
  *     tags: [Books]
- *     summary: 도서 삭제
+ *     summary: 도서 삭제 (관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:

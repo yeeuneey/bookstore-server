@@ -71,8 +71,8 @@ router.post(
  * @swagger
  * /orders:
  *   get:
- *     tags: [Admin]
- *     summary: 전체 사용자 주문 목록
+ *     tags: [Orders]
+ *     summary: 전체 사용자 주문 목록 (관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:

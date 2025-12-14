@@ -18,7 +18,7 @@ const { userIdParamSchema } = require("../validators/user.validators");
  * /admin/users:
  *   get:
  *     tags: [Admin]
- *     summary: 전체 사용자 목록 조회
+ *     summary: 전체 사용자 목록 조회 (관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -82,7 +82,7 @@ router.get("/users", authMiddleware, adminOnly, adminController.getAllUsers);
  * /admin/users/{id}/ban:
  *   patch:
  *     tags: [Admin]
- *     summary: 특정 사용자 차단 처리
+ *     summary: 특정 사용자 차단 처리 (관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -127,7 +127,7 @@ router.patch(
  * /admin/statistics/orders:
  *   get:
  *     tags: [Admin]
- *     summary: 주문 통계 조회
+ *     summary: 주문 통계 조회 (관리자)
  *     security:
  *       - bearerAuth: []
  *     responses:

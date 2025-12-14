@@ -99,8 +99,22 @@ app.get("/", (_req, res) => {
  *     responses:
  *       200:
  *         description: DB 연결 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: { type: string, example: "ok" }
+ *                 database: { type: string, example: "connected" }
  *       500:
  *         description: DB 연결 실패
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status: { type: string, example: "error" }
+ *                 database: { type: string, example: "disconnected" }
  */
 app.get("/health", (_req, res) => {
   res.json({

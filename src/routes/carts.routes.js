@@ -32,7 +32,7 @@ const {
  * /carts:
  *   post:
  *     tags: [Carts]
- *     summary: 장바구니에 상품 추가
+ *     summary: 장바구니에 상품 추가 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -73,8 +73,8 @@ router.post(
  * @swagger
  * /carts:
  *   get:
- *     tags: [Admin]
- *     summary: 전체 사용자 장바구니 목록
+ *     tags: [Carts]
+ *     summary: 전체 사용자 장바구니 목록 (관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -131,7 +131,7 @@ router.get("/", authMiddleware, adminOnly, validateQuery(cartListQuerySchema), c
  * /carts/user/{userId}:
  *   get:
  *     tags: [Carts]
- *     summary: 사용자의 장바구니 조회
+ *     summary: 사용자의 장바구니 조회 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:

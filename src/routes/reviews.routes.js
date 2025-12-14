@@ -30,7 +30,7 @@ const { selfOrAdminByBody } = require("../middlewares/ownership");
  * /reviews:
  *   post:
  *     tags: [Reviews]
- *     summary: 리뷰 작성
+ *     summary: 리뷰 작성 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     requestBody:

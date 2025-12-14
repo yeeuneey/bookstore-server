@@ -71,7 +71,7 @@ router.post("/", validateBody(createUserSchema), usersController.createUser);
  * /users/me:
  *   get:
  *     tags: [Users]
- *     summary: 내 프로필 조회
+ *     summary: 내 프로필 조회 (본인)
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -100,8 +100,8 @@ router.get("/me", authMiddleware, usersController.getMe);
  * @swagger
  * /users:
  *   get:
- *     tags: [Admin]
- *     summary: 전체 사용자 목록 조회
+ *     tags: [Users]
+ *     summary: 전체 사용자 목록 조회 (관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -166,7 +166,7 @@ router.get(
  * /users/{id}:
  *   get:
  *     tags: [Users]
- *     summary: 사용자 상세
+ *     summary: 사용자 상세 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -210,7 +210,7 @@ router.get(
  * /users/{id}:
  *   patch:
  *     tags: [Users]
- *     summary: 사용자 정보 수정 (본인 혹은 관리자)
+ *     summary: 사용자 정보 수정 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -263,7 +263,7 @@ router.patch(
  * /users/{id}:
  *   delete:
  *     tags: [Users]
- *     summary: 사용자 삭제 (본인 혹은 관리자)
+ *     summary: 사용자 삭제 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -308,7 +308,7 @@ router.delete(
  * /users/{id}/reviews:
  *   get:
  *     tags: [Users]
- *     summary: 사용자가 작성한 리뷰 목록
+ *     summary: 사용자가 작성한 리뷰 목록 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -351,7 +351,7 @@ router.get(
  * /users/{id}/comments:
  *   get:
  *     tags: [Users]
- *     summary: 사용자가 작성한 댓글 목록
+ *     summary: 사용자가 작성한 댓글 목록 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -394,7 +394,7 @@ router.get(
  * /users/{id}/favorites:
  *   get:
  *     tags: [Users]
- *     summary: 사용자의 즐겨찾기 도서 목록
+ *     summary: 사용자의 즐겨찾기 도서 목록 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -437,7 +437,7 @@ router.get(
  * /users/{id}/carts:
  *   get:
  *     tags: [Users]
- *     summary: 사용자의 장바구니 목록
+ *     summary: 사용자의 장바구니 목록 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -480,7 +480,7 @@ router.get(
  * /users/{id}/orders:
  *   get:
  *     tags: [Users]
- *     summary: 사용자의 주문 목록
+ *     summary: 사용자의 주문 목록 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
