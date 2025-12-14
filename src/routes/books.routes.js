@@ -16,6 +16,7 @@ const {
   bookListQuerySchema,
   createBookSchema,
   updateBookSchema,
+  popularBooksQuerySchema,
 } = require("../validators/book.validators");
 
 /**
@@ -84,6 +85,49 @@ const {
  *         $ref: '#/components/responses/Error404'
  */
 router.get("/", validateQuery(bookListQuerySchema), booksController.getBooks);
+
+/**
+ * @swagger
+ * /books/popular:
+ *   get:
+ *     tags: [books]
+ *     summary: 인기 도서 목록
+ *     description: 즐겨찾기/리뷰 수를 기준으로 상위 도서를 반환합니다.
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, example: 10, minimum: 1, maximum: 50 }
+ *     responses:
+ *       200:
+ *         description: 인기 도서 목록
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 size: { type: integer }
+ *                 books:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Book'
+ *       400:
+ *         $ref: '#/components/responses/Error400'
+ *       401:
+ *         $ref: '#/components/responses/Error401'
+ *       403:
+ *         $ref: '#/components/responses/Error403'
+ *       404:
+ *         $ref: '#/components/responses/Error404'
+ *       422:
+ *         $ref: '#/components/responses/Error400'
+ *       500:
+ *         $ref: '#/components/responses/Error500'
+ */
+router.get(
+  "/popular",
+  validateQuery(popularBooksQuerySchema),
+  booksController.getPopularBooks
+);
 
 /**
  * @swagger

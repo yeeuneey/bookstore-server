@@ -1,11 +1,54 @@
-// src/controllers/books.controller.js
+﻿// src/controllers/books.controller.js
 require("dotenv").config();
 const prisma = require("../lib/prisma");
+const cache = require("../lib/cache");
 const AppError = require("../utils/AppError");
 const { ERROR_CODES } = require("../utils/errorCodes");
 
+const BOOK_NOT_FOUND_MSG = "도서를 찾을 수 없습니다.";
+const ISBN_DUP_MSG = "ISBN이 이미 존재합니다.";
+const CREATE_SUCCESS_MSG = "도서 생성 완료";
+const UPDATE_SUCCESS_MSG = "도서 수정 완료";
+const DELETE_SUCCESS_MSG = "도서 삭제 완료";
+
 /* ===========================================================
-   1) 도서 목록 조회 + 검색/정렬/페이지네이션 (GET /books)
+   0) 인기 도서 목록 (GET /books/popular)
+=========================================================== */
+exports.getPopularBooks = async (req, res, next) => {
+  try {
+    const limit = Number(req.query.limit ?? 10);
+    const cacheKey = cache.buildKey("books:popular", { limit });
+
+    const cached = await cache.get(cacheKey);
+    if (cached) {
+      return res.json(cached);
+    }
+
+    const books = await prisma.book.findMany({
+      take: limit,
+      orderBy: [
+        { favorites: { _count: "desc" } },
+        { reviews: { _count: "desc" } },
+        { createdAt: "desc" },
+      ],
+      include: {
+        authors: { include: { author: true } },
+        categories: { include: { category: true } },
+        _count: { select: { favorites: true, reviews: true } },
+      },
+    });
+
+    const payload = { size: books.length, books };
+    await cache.set(cacheKey, payload, 300);
+    return res.json(payload);
+  } catch (err) {
+    req.log.error("Get Popular Books Error:", { error: err });
+    return next(err);
+  }
+};
+
+/* ===========================================================
+   1) 도서 목록 조회 + 검색/필터/페이지네이션 (GET /books)
 =========================================================== */
 exports.getBooks = async (req, res, next) => {
   try {
@@ -21,6 +64,7 @@ exports.getBooks = async (req, res, next) => {
 
     const [sortField, sortDirRaw] = String(sort).split(",");
     const sortDirection = sortDirRaw?.toLowerCase() === "asc" ? "asc" : "desc";
+    const normalizedSort = `${sortField || "createdAt"},${sortDirection.toUpperCase()}`;
 
     const pageNum = Number(page);
     const take = Number(size);
@@ -51,6 +95,21 @@ exports.getBooks = async (req, res, next) => {
       ],
     };
 
+    const cacheKey = cache.buildKey("books:list", {
+      page: pageNum,
+      size: take,
+      sort: normalizedSort,
+      keyword: keyword || "",
+      category: category || "",
+      dateFrom: dateFrom || "",
+      dateTo: dateTo || "",
+    });
+
+    const cached = await cache.get(cacheKey);
+    if (cached) {
+      return res.json(cached);
+    }
+
     const [books, total] = await Promise.all([
       prisma.book.findMany({
         where,
@@ -66,12 +125,15 @@ exports.getBooks = async (req, res, next) => {
       prisma.book.count({ where }),
     ]);
 
-    return res.json({
+    const payload = {
       page: pageNum,
       size: take,
       total,
       books,
-    });
+    };
+
+    await cache.set(cacheKey, payload, 300);
+    return res.json(payload);
   } catch (err) {
     req.log.error("Get Books Error:", { error: err });
     return next(err);
@@ -84,6 +146,12 @@ exports.getBooks = async (req, res, next) => {
 exports.getBookById = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
+
+    const cacheKey = cache.buildKey("books:detail", id);
+    const cached = await cache.get(cacheKey);
+    if (cached) {
+      return res.json(cached);
+    }
 
     const book = await prisma.book.findUnique({
       where: { id },
@@ -99,9 +167,10 @@ exports.getBookById = async (req, res, next) => {
     });
 
     if (!book) {
-      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
+      throw new AppError(BOOK_NOT_FOUND_MSG, 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
+    await cache.set(cacheKey, book, 600);
     return res.json(book);
   } catch (err) {
     req.log.error("Get Book Error:", { error: err });
@@ -127,7 +196,7 @@ exports.createBook = async (req, res, next) => {
 
     const exists = await prisma.book.findUnique({ where: { isbn } });
     if (exists) {
-      throw new AppError("ISBN이 이미 존재합니다.", 409, ERROR_CODES.DUPLICATE_RESOURCE);
+      throw new AppError(ISBN_DUP_MSG, 409, ERROR_CODES.DUPLICATE_RESOURCE);
     }
 
     const book = await prisma.book.create({
@@ -151,7 +220,10 @@ exports.createBook = async (req, res, next) => {
       },
     });
 
-    return res.status(201).json({ message: "도서 생성 완료", book });
+    await cache.delByPrefix("books:list");
+    await cache.delByPrefix("books:popular");
+
+    return res.status(201).json({ message: CREATE_SUCCESS_MSG, book });
   } catch (err) {
     req.log.error("Create Book Error:", { error: err });
     return next(err);
@@ -167,7 +239,7 @@ exports.updateBook = async (req, res, next) => {
 
     const exists = await prisma.book.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
+      throw new AppError(BOOK_NOT_FOUND_MSG, 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     const {
@@ -203,7 +275,13 @@ exports.updateBook = async (req, res, next) => {
       },
     });
 
-    return res.json({ message: "도서 수정 완료", book });
+    await cache.del(cache.buildKey("books:detail", id));
+    await cache.del(cache.buildKey("books:categories", id));
+    await cache.del(cache.buildKey("books:authors", id));
+    await cache.delByPrefix("books:list");
+    await cache.delByPrefix("books:popular");
+
+    return res.json({ message: UPDATE_SUCCESS_MSG, book });
   } catch (err) {
     req.log.error("Update Book Error:", { error: err });
     return next(err);
@@ -219,12 +297,18 @@ exports.deleteBook = async (req, res, next) => {
 
     const exists = await prisma.book.findUnique({ where: { id } });
     if (!exists) {
-      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
+      throw new AppError(BOOK_NOT_FOUND_MSG, 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     await prisma.book.delete({ where: { id } });
 
-    return res.json({ message: "도서 삭제 완료" });
+    await cache.del(cache.buildKey("books:detail", id));
+    await cache.del(cache.buildKey("books:categories", id));
+    await cache.del(cache.buildKey("books:authors", id));
+    await cache.delByPrefix("books:list");
+    await cache.delByPrefix("books:popular");
+
+    return res.json({ message: DELETE_SUCCESS_MSG });
   } catch (err) {
     req.log.error("Delete Book Error:", { error: err });
     return next(err);
@@ -240,7 +324,7 @@ exports.getBookReviews = async (req, res, next) => {
 
     const book = await prisma.book.findUnique({ where: { id } });
     if (!book) {
-      throw new AppError("도서를 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
+      throw new AppError(BOOK_NOT_FOUND_MSG, 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
 
     const reviews = await prisma.review.findMany({
@@ -265,6 +349,12 @@ exports.getBookCategories = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
+    const cacheKey = cache.buildKey("books:categories", id);
+    const cached = await cache.get(cacheKey);
+    if (cached) {
+      return res.json(cached);
+    }
+
     const categories = await prisma.bookCategory.findMany({
       where: { bookId: id },
       include: {
@@ -272,6 +362,7 @@ exports.getBookCategories = async (req, res, next) => {
       },
     });
 
+    await cache.set(cacheKey, categories, 3600);
     return res.json(categories);
   } catch (err) {
     req.log.error("Get Book Categories Error:", { error: err });
@@ -286,6 +377,12 @@ exports.getBookAuthors = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
 
+    const cacheKey = cache.buildKey("books:authors", id);
+    const cached = await cache.get(cacheKey);
+    if (cached) {
+      return res.json(cached);
+    }
+
     const authors = await prisma.bookAuthor.findMany({
       where: { bookId: id },
       include: {
@@ -293,6 +390,7 @@ exports.getBookAuthors = async (req, res, next) => {
       },
     });
 
+    await cache.set(cacheKey, authors, 3600);
     return res.json(authors);
   } catch (err) {
     req.log.error("Get Book Authors Error:", { error: err });

@@ -1,8 +1,16 @@
 // src/controllers/reviews.controller.js
 require("dotenv").config();
 const prisma = require("../lib/prisma");
+const cache = require("../lib/cache");
 const AppError = require("../utils/AppError");
 const { ERROR_CODES } = require("../utils/errorCodes");
+
+const invalidateBookCaches = async (bookId) => {
+  await cache.del(cache.buildKey("books:detail", bookId));
+  await cache.delByPrefix("books:list");
+  await cache.delByPrefix("books:popular");
+};
+
 
 /* ===========================================================
    1) 리뷰 생성 (POST /reviews)
@@ -25,6 +33,7 @@ exports.createReview = async (req, res, next) => {
       data: { userId, bookId, rating, comment },
     });
 
+    await invalidateBookCaches(bookId);
     return res.status(201).json({ message: "리뷰 작성 완료", review });
   } catch (err) {
     req.log.error("Create Review Error:", { error: err });
@@ -140,6 +149,7 @@ exports.updateReview = async (req, res, next) => {
       data: { rating, comment },
     });
 
+    await invalidateBookCaches(exists.bookId);
     return res.json({ message: "리뷰 수정 완료", review: updated });
   } catch (err) {
     req.log.error("Update Review Error:", { error: err });
@@ -167,6 +177,7 @@ exports.deleteReview = async (req, res, next) => {
     }
 
     await prisma.review.delete({ where: { id } });
+    await invalidateBookCaches(exists.bookId);
 
     return res.json({ message: "리뷰 삭제 완료" });
   } catch (err) {

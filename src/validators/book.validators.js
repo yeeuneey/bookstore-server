@@ -26,3 +26,7 @@ exports.createBookSchema = z.object({
 });
 
 exports.updateBookSchema = exports.createBookSchema.partial();
+
+exports.popularBooksQuerySchema = z.object({
+  limit: z.coerce.number().int().min(1).max(50).default(10),
+});

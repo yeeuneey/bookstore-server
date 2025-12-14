@@ -95,7 +95,7 @@ MYSQL_PORT=3306
 - Health: `GET /health`, `GET /health/db`
 - Auth: `POST /auth/login`, `POST /auth/refresh`, `POST /auth/logout`
 - Users: `POST /users`, `GET /users/me`, `GET|PATCH|DELETE /users/:id`, `GET /users`(admin)
-- Books: `GET /books`, `GET /books/:id`, `POST|PATCH|DELETE /books`, `GET /books/:id/reviews|categories|authors`
+- Books: `GET /books`, `GET /books/popular`, `GET /books/:id`, `POST|PATCH|DELETE /books`, `GET /books/:id/reviews|categories|authors`
 - Reviews: `POST /reviews`, `GET /reviews`, `GET|PATCH|DELETE /reviews/:id`, `GET /reviews/:id/comments`
 - Comments: `POST /comments`, `GET /comments`, `GET|PATCH|DELETE /comments/:id`
 - Carts: `POST /carts`, `GET /carts`(admin), `GET /carts/user/:userId`, `GET|PATCH|DELETE /carts/:id`
@@ -169,3 +169,7 @@ pm2 start src/server.js --name bookstore
 
 ## 시스템 아키텍처
 상세 구조는 `docs/architecture.md` 참고.
+## Cache
+- In-memory cache added for book list/detail, categories/authors, and popular books endpoint to reduce DB load.
+- Toggle via `CACHE_ENABLED` (default true) and TTL via `CACHE_TTL_SECONDS` (seconds, default 300) in `.env`.
+- Cache invalidates automatically on book create/update/delete; popular list cache expires after a few minutes.
