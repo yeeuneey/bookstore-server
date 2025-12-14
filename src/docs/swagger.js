@@ -1,3 +1,4 @@
+
 // src/docs/swagger.js
 const path = require("path");
 const swaggerJSDoc = require("swagger-jsdoc");
@@ -9,19 +10,19 @@ const options = {
     info: {
       title: "Bookstore API",
       version: "1.0.0",
-      description: "Express.js 기반 북스토어 API 명세입니다.",
+      description: "Express.js ?? ???? API ?????.",
     },
     servers: [{ url: "/" }],
     tags: [
-      { name: "Health" },
-      { name: "Auth" },
-      { name: "Users" },
-      { name: "Books" },
-      { name: "Carts" },
-      { name: "Orders" },
-      { name: "Comments" },
-      { name: "Reviews" },
-      { name: "Admin" },
+      { name: "health" },
+      { name: "auth" },
+      { name: "users" },
+      { name: "books" },
+      { name: "carts" },
+      { name: "orders" },
+      { name: "comments" },
+      { name: "reviews" },
+      { name: "admin" },
     ],
     components: {
       securitySchemes: {
@@ -38,7 +39,7 @@ const swaggerUiOptions = {
   swaggerOptions: {
     supportedSubmitMethods: ["get", "post", "put", "patch", "delete"],
     tagsSorter: (a, b) => {
-      const order = ["Health", "Auth", "Users", "Books", "Carts", "Orders", "Comments", "Reviews", "Admin"];
+      const order = ["health", "auth", "users", "books", "carts", "orders", "comments", "reviews", "admin"];
       const ai = order.indexOf(a);
       const bi = order.indexOf(b);
       if (ai === -1 && bi === -1) return a.localeCompare(b);
@@ -55,31 +56,30 @@ const swaggerUiOptions = {
         "/auth/refresh",
         "/auth/logout",
         "/users",
-        "/users/me",
+        "/users/{id}",
         "/users/{id}/comments",
         "/users/{id}/favorites",
         "/users/{id}/carts",
         "/users/{id}/orders",
         "/users/{id}/reviews",
-        "/users/{id}",
         "/books",
-        "/books/{id}",
         "/books/{id}/reviews",
         "/books/{id}/categories",
         "/books/{id}/authors",
+        "/books/{id}",
         "/carts",
-        "/carts/user/{userId}",
+        "/carts/user/{id}",
         "/carts/{id}",
         "/orders",
-        "/orders/user/{userId}",
+        "/orders/user/{id}",
         "/orders/{id}",
         "/comments",
         "/comments/{id}",
         "/reviews",
-        "/reviews/{id}",
         "/reviews/{id}/comments",
-        "/admin/users",
+        "/reviews/{id}",
         "/admin/users/{id}/ban",
+        "/admin/users",
         "/admin/statistics/orders",
       ];
       const pa = a.get("path");
