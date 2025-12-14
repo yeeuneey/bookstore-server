@@ -50,6 +50,7 @@ npm run start   # 개발 중엔 npm run dev
 - 실행: `npm test` (테스트 서버를 포트 0에서 띄워 내부 fetch로 API 호출).
 - DB 의존: MySQL이 열려 있어야 하고, 시드된 계정 비밀번호가 테스트 기대값과 일치해야 함.
 - CI: GitHub Actions 워크플로에서 install → migrate → generate → seed → lint/test/build 순으로 자동 실행.
+- 기대/권한: 기본적으로 관리자(`admin@example.com / P@ssw0rd!`)와 일반 사용자(`user1@example.com / P@ssw0rd!`) 토큰을 사용해 200(성공)/403·401(권한 부족·미인증)/404(리소스 없음) 응답을 검증함. 시드/DB가 어긋나면 인증 단계에서 401 등으로 실패할 수 있음.
 ```bash
 # 사전 준비
 npx prisma migrate deploy

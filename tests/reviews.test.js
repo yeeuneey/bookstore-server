@@ -10,13 +10,32 @@ const {
 
 let adminLogin;
 let user1Login;
-let user2Login;
+let otherLogin;
 
 before(async () => {
   await startServer();
   adminLogin = await login("admin@example.com", "P@ssw0rd!");
   user1Login = await login("user1@example.com", "P@ssw0rd!");
-  user2Login = await login("user2@example.com", "P@ssw0rd2!");
+
+  // 테스트용 일반 사용자 생성(동일 이메일이 존재하면 로그인만 시도)
+  const baseURL = getBaseURL();
+  const email = `temp_user_reviews_${Date.now()}@example.com`;
+  const password = "TempUser123!";
+  const res = await fetch(`${baseURL}/users`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email,
+      password,
+      name: "Temp Reviewer",
+      gender: "MALE",
+    }),
+  });
+  if (res.status !== 201 && res.status !== 409) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(`Failed to create temp user for tests (${res.status}): ${body.message || "unknown"}`);
+  }
+  otherLogin = await login(email, password);
 });
 
 after(async () => {
@@ -61,7 +80,7 @@ test("Review lifecycle enforces ownership rules", async (t) => {
   await t.test("PATCH /reviews/:id forbids other users", async () => {
     const res = await fetch(`${baseURL}/reviews/${reviewId}`, {
       method: "PATCH",
-      headers: authHeader(user2Login.accessToken),
+      headers: authHeader(otherLogin.accessToken),
       body: JSON.stringify({ rating: 3 }),
     });
 

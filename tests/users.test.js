@@ -10,13 +10,32 @@ const {
 
 let adminLogin;
 let user1Login;
-let user2Login;
+let otherLogin;
 
 before(async () => {
   await startServer();
   adminLogin = await login("admin@example.com", "P@ssw0rd!");
   user1Login = await login("user1@example.com", "P@ssw0rd!");
-  user2Login = await login("user2@example.com", "P@ssw0rd2!");
+
+  // 테스트용 일반 사용자 생성(동일 이메일이 있으면 로그인만 시도)
+  const baseURL = getBaseURL();
+  const email = `temp_user_${Date.now()}@example.com`;
+  const password = "TempUser123!";
+  const res = await fetch(`${baseURL}/users`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email,
+      password,
+      name: "Temp User",
+      gender: "MALE",
+    }),
+  });
+  if (res.status !== 201 && res.status !== 409) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(`Failed to create temp user (${res.status}): ${body.message || "unknown"}`);
+  }
+  otherLogin = await login(email, password);
 });
 
 after(async () => {
@@ -49,7 +68,7 @@ test("PATCH /users/:id allows self-update", async () => {
 
 test("GET /users/:id blocks access to other users when not admin", async () => {
   const res = await fetch(`${getBaseURL()}/users/${user1Login.user.id}`, {
-    headers: authHeader(user2Login.accessToken),
+    headers: authHeader(otherLogin.accessToken),
   });
   const body = await res.json();
 
