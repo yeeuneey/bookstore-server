@@ -2,10 +2,16 @@ const express = require("express");
 const router = express.Router();
 const usersController = require("../controllers/users.controller");
 const { authMiddleware } = require("../middlewares/auth");
+const { adminOnly } = require("../middlewares/admin");
 const { selfOrAdminByParam } = require("../middlewares/ownership");
-const { validateBody, validateParams } = require("../middlewares/validate");
+const { validateBody, validateParams, validateQuery } = require("../middlewares/validate");
 
-const { createUserSchema, updateUserSchema, userIdParamSchema } = require("../validators/user.validators");
+const {
+  createUserSchema,
+  updateUserSchema,
+  userIdParamSchema,
+  userListQuerySchema,
+} = require("../validators/user.validators");
 
 /**
  * @swagger
@@ -56,6 +62,9 @@ const { createUserSchema, updateUserSchema, userIdParamSchema } = require("../va
  */
 router.post("/", validateBody(createUserSchema), usersController.createUser);
 
+// Admin only: list users
+router.get("/", authMiddleware, adminOnly, validateQuery(userListQuerySchema), usersController.getUsers);
+
 /**
  * @swagger
  * /users/me:
@@ -85,6 +94,15 @@ router.post("/", validateBody(createUserSchema), usersController.createUser);
  *         $ref: '#/components/responses/Error500'
  */
 router.get("/me", authMiddleware, usersController.getMe);
+
+// Self or admin: get user by id
+router.get(
+  "/:id",
+  authMiddleware,
+  validateParams(userIdParamSchema),
+  selfOrAdminByParam("id"),
+  usersController.getUserById
+);
 
 /**
  * @swagger
