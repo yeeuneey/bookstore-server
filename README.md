@@ -54,11 +54,43 @@ node prisma/seed.js
 npm test
 ```
 
-## 인증 플로우 설명
-- 회원가입 `POST /users` → 로그인 `POST /auth/login` 시 access/refresh 토큰 수신.
-- 보호 API 호출 시 `Authorization: Bearer <accessToken>` 헤더 사용.
-- access 만료 시 `POST /auth/refresh` 로 갱신.
-- `POST /auth/logout` 은 사용자 존재 확인만 수행(현 구현상 서버측 토큰 무효화 없음).
+### 엔드포인트 요약 (메서드·URL·설명)
+| 구분 | 메서드 | URL | 설명 |
+| --- | --- | --- | --- |
+| Health | GET | /health | 헬스체크 (버전/빌드/타임스탬프) |
+| Health | GET | /health/db | DB 연결 헬스체크 |
+| Auth | POST | /auth/login | 이메일/비밀번호 로그인 |
+| Auth | POST | /auth/refresh | Refresh 토큰으로 Access 재발급 |
+| Auth | POST | /auth/logout | 사용자 존재 확인(서버 토큰 무효화 없음) |
+| Users | POST | /users | 회원가입 |
+| Users | GET | /users/me | 내 프로필 조회 |
+| Users | GET/PATCH/DELETE | /users/:id | 사용자 조회/수정/삭제 (self or admin) |
+| Users | GET | /users | 사용자 목록 (관리자) |
+| Books | GET | /books | 도서 목록 조회 |
+| Books | GET | /books/popular | 인기 도서 조회 (`limit` 기본 10, 최대 50) |
+| Books | GET | /books/:id | 도서 상세 조회 |
+| Books | GET | /books/:id/reviews | 도서 리뷰 목록 |
+| Books | GET | /books/:id/categories | 도서 카테고리 목록 |
+| Books | GET | /books/:id/authors | 도서 저자 목록 |
+| Books | POST/PATCH/DELETE | /books | 도서 생성/수정/삭제 (관리자) |
+| Reviews | POST | /reviews | 리뷰 작성 (본인) |
+| Reviews | GET | /reviews | 리뷰 목록 |
+| Reviews | GET/PATCH/DELETE | /reviews/:id | 리뷰 조회/수정/삭제 (작성자 또는 관리자) |
+| Reviews | GET | /reviews/:id/comments | 리뷰의 댓글 목록 |
+| Comments | POST | /comments | 댓글 작성 (본인) |
+| Comments | GET | /comments | 댓글 목록 |
+| Comments | GET/PATCH/DELETE | /comments/:id | 댓글 조회/수정/삭제 (작성자 또는 관리자) |
+| Carts | POST | /carts | 장바구니 아이템 추가 (본인) |
+| Carts | GET | /carts/user/:userId | 사용자 장바구니 조회 (본인 또는 관리자) |
+| Carts | GET/PATCH/DELETE | /carts/:id | 장바구니 아이템 조회/수정/삭제 (owner/admin) |
+| Carts | GET | /carts | 전체 장바구니 목록 (관리자) |
+| Orders | POST | /orders | 주문 생성 (본인) |
+| Orders | GET | /orders/user/:userId | 사용자 주문 목록 (본인 또는 관리자) |
+| Orders | GET/PATCH/DELETE | /orders/:id | 주문 조회/수정/삭제 (owner/admin) |
+| Orders | GET | /orders | 전체 주문 목록 (관리자) |
+| Admin | GET | /admin/users | 관리자용 사용자 목록 |
+| Admin | PATCH | /admin/users/:id/ban | 사용자 차단/해제 |
+| Admin | GET | /admin/statistics/orders | 주문 통계 조회 |
 
 ## 역할/권한 표 
 | 구분 | 비로그인 | 일반 사용자(본인 기준) | 관리자 |
@@ -66,6 +98,12 @@ npm test
 | 공용 | - `GET /health`, `GET /health/db`<br>- `POST /auth/login`, `POST /auth/refresh`<br>- `POST /users` 회원가입<br>- 도서 공개 조회: `GET /books`, `/books/popular`, `/books/:id`, `/books/:id/reviews`, `/books/:id/categories`, `/books/:id/authors` | 동일 | 동일 |
 | 본인 전용 (selfOrAdmin*) | - | - 내 정보: `GET /users/me`, `GET/PATCH/DELETE /users/:id`<br>- 내 부가정보: `GET /users/:id/reviews`, `/users/:id/comments`, `/users/:id/favorites`, `/users/:id/carts`, `/users/:id/orders`<br>- 장바구니: `POST /carts`, `GET /carts/user/:userId`, `PATCH/DELETE /carts/:id`<br>- 주문: `POST /orders`, `GET /orders/user/:userId`, `PATCH/DELETE /orders/:id`<br>- 리뷰/댓글: `POST /reviews`, `PATCH/DELETE /reviews/:id`, `POST /comments`, `PATCH/DELETE /comments/:id` | selfOrAdmin 미들웨어로 본인 제약 없이 모두 가능 |
 | 관리자 전용 | - | - | - 사용자 관리: `GET /admin/users`, `PATCH /admin/users/:id/ban`, `GET /users`(목록)<br>- 도서 관리: `POST/PATCH/DELETE /books`<br>- 주문·장바구니 전체 조회: `GET /orders`, `GET /carts`<br>- 통계: `GET /admin/statistics/orders` |
+
+## 인증 플로우 설명
+- 회원가입 `POST /users` → 로그인 `POST /auth/login` 시 access/refresh 토큰 수신.
+- 보호 API 호출 시 `Authorization: Bearer <accessToken>` 헤더 사용.
+- access 만료 시 `POST /auth/refresh` 로 갱신.
+- `POST /auth/logout` 은 사용자 존재 확인만 수행(현 구현상 서버측 토큰 무효화 없음).
 
 ## 예제 계정 (prisma/seed.js)
 - 관리자: `admin@example.com / P@ssw0rd!`
@@ -82,21 +120,6 @@ MYSQL_USER=book_user
 MYSQL_PASSWORD=book_pass
 MYSQL_PORT=3306
 ```
-
-## 엔드포인트
-- Health: `GET /health`, `GET /health/db`
-- Auth: `POST /auth/login`, `POST /auth/refresh`, `POST /auth/logout`
-- Users: `POST /users`, `GET /users/me`, `GET|PATCH|DELETE /users/:id`, `GET /users`(admin)
-- Books: `GET /books`, `GET /books/popular`, `GET /books/:id`, `POST|PATCH|DELETE /books`, `GET /books/:id/reviews|categories|authors`
-  - 인기 도서: `GET /books/popular?limit=10` (limit 기본 10, 최대 50)
-- Reviews: `POST /reviews`, `GET /reviews`, `GET|PATCH|DELETE /reviews/:id`, `GET /reviews/:id/comments`
-- Comments: `POST /comments`, `GET /comments`, `GET|PATCH|DELETE /comments/:id`
-- Carts: `POST /carts`, `GET /carts`(admin), `GET /carts/user/:userId`, `GET|PATCH|DELETE /carts/:id`
-- Orders: `POST /orders`, `GET /orders`(admin), `GET /orders/user/:userId`, `GET|PATCH|DELETE /orders/:id`
-- Admin: `GET /admin/users`, `PATCH /admin/users/:id/ban`, `GET /admin/statistics/orders`
-
-## ERD
-![ERD](./docs/db-schema.png)
 
 ## 에러 응답 표준 포맷
 ```json
