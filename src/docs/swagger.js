@@ -10,19 +10,19 @@ const options = {
     info: {
       title: "Bookstore API",
       version: "1.0.0",
-      description: "Express.js ?? ???? API ?????.",
+      description: "Express.js 기반 Book Store API 명세입니다.",
     },
     servers: [{ url: "/" }],
     tags: [
-      { name: "health" },
-      { name: "auth" },
-      { name: "users" },
-      { name: "books" },
-      { name: "carts" },
-      { name: "orders" },
-      { name: "comments" },
-      { name: "reviews" },
-      { name: "admin" },
+      { name: "Health" },
+      { name: "Auth" },
+      { name: "Users" },
+      { name: "Books" },
+      { name: "Carts" },
+      { name: "Orders" },
+      { name: "Comments" },
+      { name: "Reviews" },
+      { name: "Admin" },
     ],
     components: {
       securitySchemes: {
@@ -39,7 +39,7 @@ const swaggerUiOptions = {
   swaggerOptions: {
     supportedSubmitMethods: ["get", "post", "put", "patch", "delete"],
     tagsSorter: (a, b) => {
-      const order = ["health", "auth", "users", "books", "carts", "orders", "comments", "reviews", "admin"];
+      const order = ["Health", "Auth", "Users", "Books", "Carts", "Orders", "Comments", "Reviews", "Admin"];
       const ai = order.indexOf(a);
       const bi = order.indexOf(b);
       if (ai === -1 && bi === -1) return a.localeCompare(b);
@@ -56,6 +56,7 @@ const swaggerUiOptions = {
         "/auth/refresh",
         "/auth/logout",
         "/users",
+        "/users/me",
         "/users/{id}",
         "/users/{id}/comments",
         "/users/{id}/favorites",
