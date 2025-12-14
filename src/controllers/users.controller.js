@@ -229,6 +229,16 @@ exports.deleteUser = async (req, res, next) => {
 
     return res.json({ message: "사용자 삭제 완료" });
   } catch (err) {
+    if (err?.code === "P2003") {
+      // 참조 무결성 위반 (다른 테이블에서 userId를 참조 중)
+      return next(
+        new AppError(
+          "사용자와 연결된 데이터가 있어 삭제할 수 없습니다.",
+          409,
+          ERROR_CODES.STATE_CONFLICT
+        )
+      );
+    }
     req.log.error("Delete User Error:", { error: err });
     return next(err);
   }
