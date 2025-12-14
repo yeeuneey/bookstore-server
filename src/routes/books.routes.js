@@ -3,6 +3,7 @@ const router = express.Router();
 const booksController = require("../controllers/books.controller");
 
 const { authMiddleware } = require("../middlewares/auth");
+const { adminOnly } = require("../middlewares/admin");
 
 const {
   validateBody,
@@ -158,7 +159,13 @@ router.get("/:id", validateParams(bookIdParamSchema), booksController.getBookByI
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
-router.post("/", authMiddleware, validateBody(createBookSchema), booksController.createBook);
+router.post(
+  "/",
+  authMiddleware,
+  adminOnly,
+  validateBody(createBookSchema),
+  booksController.createBook
+);
 
 /**
  * @swagger
@@ -202,6 +209,7 @@ router.post("/", authMiddleware, validateBody(createBookSchema), booksController
 router.patch(
   "/:id",
   authMiddleware,
+  adminOnly,
   validateParams(bookIdParamSchema),
   validateBody(updateBookSchema),
   booksController.updateBook
@@ -244,7 +252,13 @@ router.patch(
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
-router.delete("/:id", authMiddleware, validateParams(bookIdParamSchema), booksController.deleteBook);
+router.delete(
+  "/:id",
+  authMiddleware,
+  adminOnly,
+  validateParams(bookIdParamSchema),
+  booksController.deleteBook
+);
 
 /**
  * @swagger

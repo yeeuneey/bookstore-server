@@ -70,7 +70,38 @@ app.get("/", (_req, res) => {
   res.json({ status: "ok", message: "bookstore API is running" });
 });
 
-// health
+/**
+ * @swagger
+ * /health:
+ *   get:
+ *     tags: [Health]
+ *     summary: 서버 상태 확인
+ *     responses:
+ *       200:
+ *         description: 서버 동작 여부와 타임스탬프를 반환합니다.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: ok
+ *                 timestamp:
+ *                   type: string
+ *                   format: date-time
+ *                   example: 2025-01-01T12:00:00.000Z
+ *
+ * /health/db:
+ *   get:
+ *     tags: [Health]
+ *     summary: 데이터베이스 연결 상태 확인
+ *     responses:
+ *       200:
+ *         description: DB 연결 성공
+ *       500:
+ *         description: DB 연결 실패
+ */
 app.get("/health", (_req, res) => {
   res.json({
     status: "ok",
