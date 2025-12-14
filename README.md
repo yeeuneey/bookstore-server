@@ -37,10 +37,11 @@ npm run start   # 개발 중엔 npm run dev
 - API Root: 루트(`/`) 기준(별도 `/api` prefix 없음).
 - Swagger 스키마 소스: `src/docs/swagger.js`
 
-## 배포/접속 주소 (로컬 기준)
-- Base URL: `http://localhost:8080`
-- Swagger: `http://localhost:8080/docs`
-- Health: `http://localhost:8080/health`, DB: `http://localhost:8080/health/db`
+## jcloud 배포/접속 주소
+- Base URL: `http://113.198.66.68:10012`
+- Swagger: `http://113.198.66.68:10012/docs`
+- Health: `http://113.198.66.68:10012/health`
+![Health 체크 화면](docs/health-check.png)
 
 
 
