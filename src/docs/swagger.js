@@ -20,9 +20,9 @@ const options = {
       { name: "Books" },
       { name: "Carts" },
       { name: "Orders" },
-      { name: "Comments" },
       { name: "Reviews" },
-      { name: "Admin" },
+      { name: "Comments" },
+      { name: "관리자 전용" },
     ],
     components: {
       securitySchemes: {
@@ -397,7 +397,7 @@ const swaggerUiOptions = {
   swaggerOptions: {
     supportedSubmitMethods: ["get", "post", "put", "patch", "delete"],
     tagsSorter: (a, b) => {
-      const order = ["Health", "Auth", "Users", "Books", "Carts", "Orders", "Comments", "Reviews", "Admin"];
+      const order = ["health", "auth", "users", "books", "carts", "orders", "reviews", "comments", "관리자 전용"];
       const ai = order.indexOf(a);
       const bi = order.indexOf(b);
       if (ai === -1 && bi === -1) return a.localeCompare(b);
@@ -415,24 +415,26 @@ const swaggerUiOptions = {
         "/auth/logout",
         "/users",
         "/users/me",
-        "/users/{id}/favorites",
-        "/users/{id}/comments",
-        "/users/{id}/reviews",
+        "/users/{userId}",
+        "/users/{userId}/favorites",
+        "/users/{userId}/reviews",
+        "/users/{userId}/comments",
         "/books",
-        "/books/{id}",
-        "/books/{id}/categories",
-        "/books/{id}/authors",
-        "/books/{id}/reviews",
+        "/books/{bookId}",
+        "/books/{bookId}/categories",
+        "/books/{bookId}/authors",
+        "/books/{bookId}/reviews",
         "/carts",
         "/carts/user/{userId}",
-        "/carts/{id}",
+        "/carts/{cartId}",
         "/orders",
         "/orders/user/{userId}",
-        "/comments",
-        "/comments/{id}",
+        "/orders/{orderId}",
         "/reviews",
-        "/reviews/{id}/comments",
-        "/reviews/{id}",
+        "/reviews/{reviewId}",
+        "/reviews/{reviewId}/comments",
+        "/comments",
+        "/comments/{commentId}",
         "/admin/users/{id}/ban",
         "/admin/users",
         "/admin/statistics/orders",

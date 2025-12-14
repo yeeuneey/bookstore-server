@@ -22,7 +22,7 @@ const {
 /**
  * @swagger
  * tags:
- *   name: Orders
+ *   name: orders
  *   description: 주문 생성 및 관리
  */
 
@@ -30,7 +30,7 @@ const {
  * @swagger
  * /orders:
  *   post:
- *     tags: [Orders]
+ *     tags: [orders]
  *     summary: 주문 생성
  *     security:
  *       - bearerAuth: []
@@ -71,7 +71,7 @@ router.post(
  * @swagger
  * /orders:
  *   get:
- *     tags: [Orders]
+ *     tags: [orders]
  *     summary: 전체 사용자 주문 목록 (관리자)
  *     security:
  *       - bearerAuth: []
@@ -125,7 +125,7 @@ router.get("/", authMiddleware, adminOnly, validateQuery(orderListQuerySchema), 
  * @swagger
  * /orders/user/{userId}:
  *   get:
- *     tags: [Orders]
+ *     tags: [orders]
  *     summary: 사용자의 주문 목록
  *     security:
  *       - bearerAuth: []
@@ -165,15 +165,15 @@ router.get(
 
 /**
  * @swagger
- * /orders/{id}:
+ * /orders/{orderId}:
  *   patch:
- *     tags: [Orders]
+ *     tags: [orders]
  *     summary: 주문 상태 변경 (관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: orderId
  *         required: true
  *         schema: { type: integer, example: 10 }
  *     requestBody:
@@ -213,15 +213,15 @@ router.patch(
 
 /**
  * @swagger
- * /orders/{id}:
+ * /orders/{orderId}:
  *   delete:
- *     tags: [Orders]
+ *     tags: [orders]
  *     summary: 주문 삭제
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: orderId
  *         required: true
  *         schema: { type: integer, example: 10 }
  *     responses:

@@ -13,7 +13,7 @@ const { createCartItemSchema, updateCartItemSchema, cartIdParamSchema, cartUserP
 /**
  * @swagger
  * tags:
- *   name: Carts
+ *   name: carts
  *   description: 장바구니 관련 API
  */
 
@@ -21,7 +21,7 @@ const { createCartItemSchema, updateCartItemSchema, cartIdParamSchema, cartUserP
  * @swagger
  * /carts:
  *   post:
- *     tags: [Carts]
+ *     tags: [carts]
  *     summary: 장바구니에 상품 추가 (본인/관리자)
  *     security:
  *       - bearerAuth: []
@@ -57,7 +57,7 @@ router.post("/", authMiddleware, selfOrAdminByBody("userId"), validateBody(creat
  * @swagger
  * /carts:
  *   get:
- *     tags: [Carts]
+ *     tags: [carts]
  *     summary: 전체 사용자 장바구니 목록 (관리자)
  *     security:
  *       - bearerAuth: []
@@ -99,7 +99,7 @@ router.get("/", authMiddleware, adminOnly, validateQuery(cartListQuerySchema), c
  * @swagger
  * /carts/user/{userId}:
  *   get:
- *     tags: [Carts]
+ *     tags: [carts]
  *     summary: 내 장바구니 조회 (본인/관리자)
  *     security:
  *       - bearerAuth: []
@@ -140,15 +140,15 @@ router.get(
 
 /**
  * @swagger
- * /carts/{id}:
+ * /carts/{cartId}:
  *   patch:
- *     tags: [Carts]
+ *     tags: [carts]
  *     summary: 내 장바구니 아이템 수량 수정
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: cartId
  *         required: true
  *         schema: { type: integer, example: 10 }
  *     requestBody:
@@ -181,15 +181,15 @@ router.patch("/:id", authMiddleware, validateParams(cartIdParamSchema), validate
 
 /**
  * @swagger
- * /carts/{id}:
+ * /carts/{cartId}:
  *   delete:
- *     tags: [Carts]
+ *     tags: [carts]
  *     summary: 장바구니 아이템 삭제
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: cartId
  *         required: true
  *         schema: { type: integer, example: 10 }
  *     responses:
@@ -219,4 +219,3 @@ router.patch("/:id", authMiddleware, validateParams(cartIdParamSchema), validate
 router.delete("/:id", authMiddleware, validateParams(cartIdParamSchema), cartsController.deleteCartItem);
 
 module.exports = router;
-

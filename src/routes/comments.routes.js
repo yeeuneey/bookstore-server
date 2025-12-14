@@ -19,7 +19,7 @@ const {
 /**
  * @swagger
  * tags:
- *   name: Comments
+ *   name: comments
  *   description: 댓글 작성 및 관리
  */
 
@@ -27,7 +27,7 @@ const {
  * @swagger
  * /comments:
  *   post:
- *     tags: [Comments]
+ *     tags: [comments]
  *     summary: 댓글 작성
  *     security:
  *       - bearerAuth: []
@@ -68,7 +68,7 @@ router.post(
  * @swagger
  * /comments:
  *   get:
- *     tags: [Comments]
+ *     tags: [comments]
  *     summary: 댓글 목록 조회
  *     parameters:
  *       - in: query
@@ -119,15 +119,15 @@ router.get(
 
 /**
  * @swagger
- * /comments/{id}:
+ * /comments/{commentId}:
  *   patch:
- *     tags: [Comments]
+ *     tags: [comments]
  *     summary: 댓글 수정
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: commentId
  *         required: true
  *         schema: { type: integer, example: 8 }
  *     requestBody:
@@ -166,15 +166,15 @@ router.patch(
 
 /**
  * @swagger
- * /comments/{id}:
+ * /comments/{commentId}:
  *   delete:
- *     tags: [Comments]
+ *     tags: [comments]
  *     summary: 댓글 삭제
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: commentId
  *         required: true
  *         schema: { type: integer, example: 8 }
  *     responses:

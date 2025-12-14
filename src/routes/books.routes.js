@@ -21,7 +21,7 @@ const {
 /**
  * @swagger
  * tags:
- *   name: Books
+ *   name: books
  *   description: 도서 조회 및 관리
  */
 
@@ -29,7 +29,7 @@ const {
  * @swagger
  * /books:
  *   get:
- *     tags: [Books]
+ *     tags: [books]
  *     summary: 도서 목록 조회
  *     description: >
  *       Example: GET /books?page=1&size=5&sort=price,ASC&keyword=샘플&category=IT&dateFrom=2023-01-01T00:00:00.000Z&dateTo=2030-12-31T23:59:59.000Z
@@ -87,13 +87,13 @@ router.get("/", validateQuery(bookListQuerySchema), booksController.getBooks);
 
 /**
  * @swagger
- * /books/{id}:
+ * /books/{bookId}:
  *   get:
- *     tags: [Books]
+ *     tags: [books]
  *     summary: 도서 상세 조회
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: bookId
  *         required: true
  *         schema: { type: integer, example: 101 }
  *     responses:
@@ -122,7 +122,7 @@ router.get("/:id", validateParams(bookIdParamSchema), booksController.getBookByI
  * @swagger
  * /books:
  *   post:
- *     tags: [Books]
+ *     tags: [books]
  *     summary: 도서 생성 (관리자)
  *     security:
  *       - bearerAuth: []
@@ -169,15 +169,15 @@ router.post(
 
 /**
  * @swagger
- * /books/{id}:
+ * /books/{bookId}:
  *   patch:
- *     tags: [Books]
+ *     tags: [books]
  *     summary: 도서 수정 (관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: bookId
  *         required: true
  *         schema: { type: integer, example: 101 }
  *     requestBody:
@@ -217,15 +217,15 @@ router.patch(
 
 /**
  * @swagger
- * /books/{id}:
+ * /books/{bookId}:
  *   delete:
- *     tags: [Books]
+ *     tags: [books]
  *     summary: 도서 삭제 (관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: bookId
  *         required: true
  *         schema: { type: integer, example: 101 }
  *     responses:
@@ -262,13 +262,13 @@ router.delete(
 
 /**
  * @swagger
- * /books/{id}/reviews:
+ * /books/{bookId}/reviews:
  *   get:
- *     tags: [Books]
+ *     tags: [books]
  *     summary: 도서에 달린 리뷰 조회
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: bookId
  *         required: true
  *         schema: { type: integer, example: 101 }
  *     responses:
@@ -301,13 +301,13 @@ router.get(
 
 /**
  * @swagger
- * /books/{id}/categories:
+ * /books/{bookId}/categories:
  *   get:
- *     tags: [Books]
+ *     tags: [books]
  *     summary: 도서 카테고리 목록
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: bookId
  *         required: true
  *         schema: { type: integer, example: 101 }
  *     responses:
@@ -346,13 +346,13 @@ router.get(
 
 /**
  * @swagger
- * /books/{id}/authors:
+ * /books/{bookId}/authors:
  *   get:
- *     tags: [Books]
+ *     tags: [books]
  *     summary: 도서 저자 목록
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: bookId
  *         required: true
  *         schema: { type: integer, example: 101 }
  *     responses:

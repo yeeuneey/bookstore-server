@@ -74,7 +74,7 @@ app.get("/", (_req, res) => {
  * @swagger
  * /health:
  *   get:
- *     tags: [Health]
+ *     tags: [health]
  *     summary: 서버 상태 확인
  *     responses:
  *       200:
@@ -94,7 +94,7 @@ app.get("/", (_req, res) => {
  *
  * /health/db:
  *   get:
- *     tags: [Health]
+ *     tags: [health]
  *     summary: 데이터베이스 연결 상태 확인
  *     responses:
  *       200:

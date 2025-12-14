@@ -10,7 +10,7 @@ const { createUserSchema, updateUserSchema, userIdParamSchema } = require("../va
 /**
  * @swagger
  * tags:
- *   name: Users
+ *   name: users
  *   description: 사용자 정보 및 내 리소스 조회
  */
 
@@ -18,7 +18,7 @@ const { createUserSchema, updateUserSchema, userIdParamSchema } = require("../va
  * @swagger
  * /users:
  *   post:
- *     tags: [Users]
+ *     tags: [users]
  *     summary: 회원가입
  *     requestBody:
  *       required: true
@@ -60,7 +60,7 @@ router.post("/", validateBody(createUserSchema), usersController.createUser);
  * @swagger
  * /users/me:
  *   get:
- *     tags: [Users]
+ *     tags: [users]
  *     summary: 내 프로필 조회 (본인)
  *     security:
  *       - bearerAuth: []
@@ -88,15 +88,15 @@ router.get("/me", authMiddleware, usersController.getMe);
 
 /**
  * @swagger
- * /users/{id}:
+ * /users/{userId}:
  *   patch:
- *     tags: [Users]
+ *     tags: [users]
  *     summary: 내 프로필 정보 수정 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: userId
  *         required: true
  *         schema: { type: integer, example: 5 }
  *     requestBody:
@@ -141,15 +141,15 @@ router.patch(
 
 /**
  * @swagger
- * /users/{id}:
+ * /users/{userId}:
  *   delete:
- *     tags: [Users]
+ *     tags: [users]
  *     summary: 사용자 삭제 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: userId
  *         required: true
  *         schema: { type: integer, example: 5 }
  *     responses:
@@ -186,15 +186,15 @@ router.delete(
 
 /**
  * @swagger
- * /users/{id}/reviews:
+ * /users/{userId}/reviews:
  *   get:
- *     tags: [Users]
+ *     tags: [users]
  *     summary: 내가 작성한 리뷰 목록 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: userId
  *         required: true
  *         schema: { type: integer, example: 5 }
  *     responses:
@@ -229,15 +229,15 @@ router.get(
 
 /**
  * @swagger
- * /users/{id}/comments:
+ * /users/{userId}/comments:
  *   get:
- *     tags: [Users]
+ *     tags: [users]
  *     summary: 내가 작성한 댓글 목록 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: userId
  *         required: true
  *         schema: { type: integer, example: 5 }
  *     responses:
@@ -272,15 +272,15 @@ router.get(
 
 /**
  * @swagger
- * /users/{id}/favorites:
+ * /users/{userId}/favorites:
  *   get:
- *     tags: [Users]
+ *     tags: [users]
  *     summary: 내가 즐겨찾기한 도서 목록 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: userId
  *         required: true
  *         schema: { type: integer, example: 5 }
  *     responses:
@@ -314,4 +314,3 @@ router.get(
 );
 
 module.exports = router;
-

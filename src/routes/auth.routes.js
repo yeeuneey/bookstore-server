@@ -7,7 +7,7 @@ const { loginSchema, refreshSchema, logoutSchema } = require("../validators/auth
 /**
  * @swagger
  * tags:
- *   name: Auth
+ *   name: auth
  *   description: 인증/인가 및 토큰 발급
  */
 
@@ -15,7 +15,7 @@ const { loginSchema, refreshSchema, logoutSchema } = require("../validators/auth
  * @swagger
  * /auth/login:
  *   post:
- *     tags: [Auth]
+ *     tags: [auth]
  *     summary: 로그인
  *     requestBody:
  *       required: true
@@ -52,7 +52,7 @@ router.post("/login", validateBody(loginSchema), authController.login);
  * @swagger
  * /auth/refresh:
  *   post:
- *     tags: [Auth]
+ *     tags: [auth]
  *     summary: 토큰 재발급
  *     requestBody:
  *       required: true
@@ -95,7 +95,7 @@ router.post("/refresh", validateBody(refreshSchema), authController.refresh);
  * @swagger
  * /auth/logout:
  *   post:
- *     tags: [Auth]
+ *     tags: [auth]
  *     summary: 로그아웃
  *     requestBody:
  *       required: true

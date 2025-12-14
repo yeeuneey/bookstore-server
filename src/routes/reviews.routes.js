@@ -21,7 +21,7 @@ const { selfOrAdminByBody } = require("../middlewares/ownership");
 /**
  * @swagger
  * tags:
- *   name: Reviews
+ *   name: reviews
  *   description: 리뷰 작성 및 조회
  */
 
@@ -29,7 +29,7 @@ const { selfOrAdminByBody } = require("../middlewares/ownership");
  * @swagger
  * /reviews:
  *   post:
- *     tags: [Reviews]
+ *     tags: [reviews]
  *     summary: 리뷰 작성 (본인/관리자)
  *     security:
  *       - bearerAuth: []
@@ -71,7 +71,7 @@ router.post(
  * @swagger
  * /reviews:
  *   get:
- *     tags: [Reviews]
+ *     tags: [reviews]
  *     summary: 리뷰 목록 조회
  *     parameters:
  *       - in: query
@@ -121,15 +121,15 @@ router.get("/", validateQuery(reviewListQuerySchema), reviewsController.getRevie
 
 /**
  * @swagger
- * /reviews/{id}:
+ * /reviews/{reviewId}:
  *   patch:
- *     tags: [Reviews]
+ *     tags: [reviews]
  *     summary: 리뷰 수정
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: reviewId
  *         required: true
  *         schema: { type: integer, example: 5 }
  *     requestBody:
@@ -168,15 +168,15 @@ router.patch(
 
 /**
  * @swagger
- * /reviews/{id}:
+ * /reviews/{reviewId}:
  *   delete:
- *     tags: [Reviews]
+ *     tags: [reviews]
  *     summary: 리뷰 삭제
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: reviewId
  *         required: true
  *         schema: { type: integer, example: 5 }
  *     responses:
@@ -212,13 +212,13 @@ router.delete(
 
 /**
  * @swagger
- * /reviews/{id}/comments:
+ * /reviews/{reviewId}/comments:
  *   get:
- *     tags: [Reviews]
+ *     tags: [reviews]
  *     summary: 리뷰에 달린 댓글 조회
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: reviewId
  *         required: true
  *         schema: { type: integer, example: 5 }
  *     responses:

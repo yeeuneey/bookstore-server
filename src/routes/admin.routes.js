@@ -9,7 +9,7 @@ const { userIdParamSchema } = require("../validators/user.validators");
 /**
  * @swagger
  * tags:
- *   name: Admin
+ *   name: 관리자 전용
  *   description: 관리자 전용 API
  */
 
@@ -17,7 +17,7 @@ const { userIdParamSchema } = require("../validators/user.validators");
  * @swagger
  * /admin/users:
  *   get:
- *     tags: [Admin]
+ *     tags: [관리자 전용]
  *     summary: 전체 사용자 목록 조회 (관리자)
  *     security:
  *       - bearerAuth: []
@@ -81,7 +81,7 @@ router.get("/users", authMiddleware, adminOnly, adminController.getAllUsers);
  * @swagger
  * /admin/users/{id}/ban:
  *   patch:
- *     tags: [Admin]
+ *     tags: [관리자 전용]
  *     summary: 특정 사용자 차단 처리 (관리자)
  *     security:
  *       - bearerAuth: []
@@ -126,7 +126,7 @@ router.patch(
  * @swagger
  * /admin/statistics/orders:
  *   get:
- *     tags: [Admin]
+ *     tags: [관리자 전용]
  *     summary: 주문 통계 조회 (관리자)
  *     security:
  *       - bearerAuth: []
