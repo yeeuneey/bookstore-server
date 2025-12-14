@@ -40,6 +40,243 @@ const options = {
             details: { type: "object", nullable: true },
           },
         },
+        PaginationMeta: {
+          type: "object",
+          properties: {
+            page: { type: "integer", example: 1 },
+            size: { type: "integer", example: 20 },
+            total: { type: "integer", example: 120 },
+          },
+        },
+        User: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            email: { type: "string", example: "user1@example.com" },
+            name: { type: "string", example: "Hong Gil-dong" },
+            role: { type: "string", enum: ["USER", "ADMIN"], example: "USER" },
+            gender: { type: "string", enum: ["MALE", "FEMALE"], nullable: true },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        UserCreateInput: {
+          type: "object",
+          required: ["email", "password", "name"],
+          properties: {
+            email: { type: "string", format: "email" },
+            password: { type: "string", minLength: 6 },
+            name: { type: "string" },
+            gender: { type: "string", enum: ["MALE", "FEMALE"] },
+          },
+        },
+        UserUpdateInput: {
+          type: "object",
+          properties: {
+            email: { type: "string", format: "email" },
+            password: { type: "string", minLength: 6 },
+            name: { type: "string" },
+            gender: { type: "string", enum: ["MALE", "FEMALE"] },
+          },
+        },
+        LoginInput: {
+          type: "object",
+          required: ["email", "password"],
+          properties: {
+            email: { type: "string", format: "email" },
+            password: { type: "string", minLength: 6 },
+          },
+        },
+        RefreshInput: {
+          type: "object",
+          required: ["refreshToken"],
+          properties: {
+            refreshToken: { type: "string" },
+          },
+        },
+        LogoutInput: {
+          type: "object",
+          required: ["userId"],
+          properties: {
+            userId: { type: "integer", example: 3 },
+          },
+        },
+        AuthTokens: {
+          type: "object",
+          properties: {
+            accessToken: { type: "string" },
+            refreshToken: { type: "string" },
+          },
+        },
+        Book: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 101 },
+            title: { type: "string", example: "Clean Code" },
+            publisher: { type: "string", example: "Prentice Hall" },
+            summary: { type: "string", nullable: true },
+            isbn: { type: "string", example: "9780132350884" },
+            price: { type: "number", format: "float", example: 28000 },
+            publicationDate: { type: "string", format: "date-time", nullable: true },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        BookCreateInput: {
+          type: "object",
+          required: ["title", "isbn", "price", "publisher"],
+          properties: {
+            title: { type: "string" },
+            isbn: { type: "string" },
+            price: { type: "number", format: "float" },
+            publisher: { type: "string" },
+            summary: { type: "string" },
+            publicationDate: { type: "string", format: "date-time" },
+            categoryIds: { type: "array", items: { type: "integer" } },
+            authorIds: { type: "array", items: { type: "integer" } },
+          },
+        },
+        BookUpdateInput: {
+          type: "object",
+          properties: {
+            title: { type: "string" },
+            isbn: { type: "string" },
+            price: { type: "number", format: "float" },
+            publisher: { type: "string" },
+            summary: { type: "string" },
+            publicationDate: { type: "string", format: "date-time" },
+            categoryIds: { type: "array", items: { type: "integer" } },
+            authorIds: { type: "array", items: { type: "integer" } },
+          },
+        },
+        Review: {
+          type: "object",
+          properties: {
+            id: { type: "integer" },
+            rating: { type: "integer", minimum: 1, maximum: 5 },
+            comment: { type: "string", nullable: true },
+            userId: { type: "integer" },
+            bookId: { type: "integer" },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        ReviewCreateInput: {
+          type: "object",
+          required: ["userId", "bookId", "rating"],
+          properties: {
+            userId: { type: "integer" },
+            bookId: { type: "integer" },
+            rating: { type: "integer", minimum: 1, maximum: 5 },
+            comment: { type: "string" },
+          },
+        },
+        ReviewUpdateInput: {
+          type: "object",
+          properties: {
+            rating: { type: "integer", minimum: 1, maximum: 5 },
+            comment: { type: "string" },
+          },
+        },
+        Comment: {
+          type: "object",
+          properties: {
+            id: { type: "integer" },
+            comment: { type: "string" },
+            userId: { type: "integer" },
+            reviewId: { type: "integer" },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        CommentCreateInput: {
+          type: "object",
+          required: ["userId", "reviewId", "comment"],
+          properties: {
+            userId: { type: "integer" },
+            reviewId: { type: "integer" },
+            comment: { type: "string" },
+          },
+        },
+        CommentUpdateInput: {
+          type: "object",
+          required: ["comment"],
+          properties: {
+            comment: { type: "string" },
+          },
+        },
+        CartItem: {
+          type: "object",
+          properties: {
+            id: { type: "integer" },
+            userId: { type: "integer" },
+            bookId: { type: "integer" },
+            quantity: { type: "integer", example: 2 },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        CartCreateInput: {
+          type: "object",
+          required: ["userId", "bookId", "quantity"],
+          properties: {
+            userId: { type: "integer" },
+            bookId: { type: "integer" },
+            quantity: { type: "integer", minimum: 1 },
+          },
+        },
+        CartUpdateInput: {
+          type: "object",
+          required: ["quantity"],
+          properties: {
+            quantity: { type: "integer", minimum: 1 },
+          },
+        },
+        Order: {
+          type: "object",
+          properties: {
+            id: { type: "integer" },
+            userId: { type: "integer" },
+            totalPrice: { type: "number", format: "float" },
+            deliveryAddress: { type: "string" },
+            orderStatus: {
+              type: "string",
+              enum: ["PENDING", "SHIPPED", "DELIVERED", "CANCELLED"],
+            },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        OrderCreateInput: {
+          type: "object",
+          required: ["userId", "deliveryAddress", "items"],
+          properties: {
+            userId: { type: "integer" },
+            deliveryAddress: { type: "string" },
+            items: {
+              type: "array",
+              minItems: 1,
+              items: {
+                type: "object",
+                required: ["bookId", "quantity"],
+                properties: {
+                  bookId: { type: "integer" },
+                  quantity: { type: "integer", minimum: 1 },
+                },
+              },
+            },
+          },
+        },
+        OrderUpdateInput: {
+          type: "object",
+          required: ["orderStatus"],
+          properties: {
+            orderStatus: {
+              type: "string",
+              enum: ["PENDING", "SHIPPED", "DELIVERED", "CANCELLED"],
+            },
+          },
+        },
       },
       responses: {
         Error400: {
