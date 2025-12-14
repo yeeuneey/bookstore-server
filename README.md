@@ -42,8 +42,22 @@ npm run start   # 개발 중엔 npm run dev
 - Swagger: `http://localhost:8080/docs`
 - Health: `http://localhost:8080/health`, DB: `http://localhost:8080/health/db`
 
-## tests ??
-- tests/: ??? ?? ???(API ??/??) ???? ???? ?? ??? ????, Postman ?? ????? ??? `npm test` ? ??? ?????.
+
+
+## Automated Tests (Node test)
+- 러너: Node 내장 테스트 러너(`node --test`), 명령은 `npm test` (`node --test --test-concurrency=1 tests`).
+- 준비: `.env`에 `DATABASE_URL`, `JWT_*`, `PORT` 등 설정 후 `npx prisma migrate deploy` → `node prisma/seed.js`.
+- 실행: `npm test` (테스트 서버를 포트 0에서 띄워 내부 fetch로 API 호출).
+- DB 의존: MySQL이 열려 있어야 하고, 시드된 계정 비밀번호가 테스트 기대값과 일치해야 함.
+- CI: GitHub Actions 워크플로에서 install → migrate → generate → seed → lint/test/build 순으로 자동 실행.
+```bash
+# 사전 준비
+npx prisma migrate deploy
+node prisma/seed.js
+
+# 테스트 실행
+npm test
+```
 
 
 
