@@ -13,10 +13,12 @@ const SALT = 10;
 async function ensureUser(email, password, name, gender = "MALE", role = "USER") {
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
-    if (role && existing.Role !== role) {
-      return prisma.user.update({ where: { email }, data: { Role: role } });
-    }
-    return existing;
+    // Always refresh password and role to keep test credentials in sync
+    const hashed = await bcrypt.hash(password, SALT);
+    return prisma.user.update({
+      where: { email },
+      data: { Role: role, password: hashed },
+    });
   }
 
   const hashed = await bcrypt.hash(password, SALT);
