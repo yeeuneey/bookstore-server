@@ -10,58 +10,42 @@ jobs:
   test-lint-build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+
     services:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD || 'root' }}
-          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE || 'bookstore' }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER || 'book_user' }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD || 'book_password' }}
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: bookstore
+          MYSQL_USER: book_user
+          MYSQL_PASSWORD: password
         ports:
           - 3306:3306
         options: >-
-          --health-cmd "mysqladmin ping -h 127.0.0.1 -p$MYSQL_ROOT_PASSWORD"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL || 'mysql://book_user:book_pass@127.0.0.1:3306/bookstore' }}
-      MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD || 'root' }}
-      MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE || 'bookstore' }}
-      MYSQL_USER: ${{ secrets.MYSQL_USER || 'book_user' }}
-      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD || 'book_password' }}
+      DATABASE_URL: mysql://book_user:book_password@127.0.0.1:3306/bookstore
       MYSQL_PORT: 3306
       PORT: 8080
-      JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET || 'test_access_secret' }}
-      JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET || 'test_refresh_secret' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      JWT_ACCESS_SECRET: ci-access-secret
+      JWT_REFRESH_SECRET: ci-refresh-secret
+      NODE_ENV: test
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Prisma migrations
-        run: npx prisma migrate deploy
-
-      - name: Generate Prisma client
-        run: npm run prisma:generate
-
-      - name: Seed database
-        run: node prisma/seed.js
-
-      - name: Lint
-        run: npm run lint --if-present
-
-      - name: Test
-        run: npm test
-
-      - name: Build
-        run: npm run build --if-present
+      - run: npm ci
+      - run: npx prisma generate
+      - run: npx prisma migrate deploy
+      - run: node prisma/seed.js
+      - run: npm test
+      - run: npm run build --if-present
