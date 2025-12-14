@@ -22,7 +22,7 @@ const { createCartItemSchema, updateCartItemSchema, cartIdParamSchema, cartUserP
  * /carts:
  *   post:
  *     tags: [carts]
- *     summary: 장바구니에 상품 추가 (본인/관리자)
+ *     summary: 장바구니에 상품 추가
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -100,7 +100,7 @@ router.get("/", authMiddleware, adminOnly, validateQuery(cartListQuerySchema), c
  * /carts/user/{userId}:
  *   get:
  *     tags: [carts]
- *     summary: 내 장바구니 조회 (본인/관리자)
+ *     summary: 내 장바구니 조회
  *     security:
  *       - bearerAuth: []
  *     parameters:

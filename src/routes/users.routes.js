@@ -61,7 +61,7 @@ router.post("/", validateBody(createUserSchema), usersController.createUser);
  * /users/me:
  *   get:
  *     tags: [users]
- *     summary: 내 프로필 조회 (본인)
+ *     summary: 내 프로필 조회
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -91,7 +91,7 @@ router.get("/me", authMiddleware, usersController.getMe);
  * /users/{userId}:
  *   patch:
  *     tags: [users]
- *     summary: 내 프로필 정보 수정 (본인/관리자)
+ *     summary: 내 프로필 정보 수정
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -144,7 +144,7 @@ router.patch(
  * /users/{userId}:
  *   delete:
  *     tags: [users]
- *     summary: 사용자 삭제 (본인/관리자)
+ *     summary: 사용자 삭제
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -189,7 +189,7 @@ router.delete(
  * /users/{userId}/reviews:
  *   get:
  *     tags: [users]
- *     summary: 내가 작성한 리뷰 목록 (본인/관리자)
+ *     summary: 내가 작성한 리뷰 목록 
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -232,7 +232,7 @@ router.get(
  * /users/{userId}/comments:
  *   get:
  *     tags: [users]
- *     summary: 내가 작성한 댓글 목록 (본인/관리자)
+ *     summary: 내가 작성한 댓글 목록 
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -275,7 +275,7 @@ router.get(
  * /users/{userId}/favorites:
  *   get:
  *     tags: [users]
- *     summary: 내가 즐겨찾기한 도서 목록 (본인/관리자)
+ *     summary: 내가 즐겨찾기한 도서 목록
  *     security:
  *       - bearerAuth: []
  *     parameters:
