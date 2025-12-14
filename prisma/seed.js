@@ -61,9 +61,10 @@ async function main() {
   /* -----------------------------------------
       1) Users (20명 생성)
   ----------------------------------------- */
+  const adminPassword = "P@ssw0rd!";
   const admin = await ensureUser(
     "admin@example.com",
-    "P@ssw0rd!",
+    adminPassword,
     "관리자",
     "MALE",
     "ADMIN"
@@ -73,7 +74,7 @@ async function main() {
 
   for (let i = 1; i <= 20; i++) {
     const email = `user${i}@example.com`;
-    const password = i === 1 ? "P@ssw0rd!" : `P@ssw0rd${i}!`;
+    const password = "P@ssw0rd!";
     const user = await ensureUser(
       email,
       password,
