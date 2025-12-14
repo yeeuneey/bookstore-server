@@ -23,6 +23,12 @@ NODE_ENV=production PORT=8080 node src/server.js
 pm2 start src/server.js --name bookstore
 ```
 
+## jcloud 배포/접속 주소
+- Base URL: `http://113.198.66.68:10012`
+- Swagger: `http://113.198.66.68:10012/docs`
+- Health: `http://113.198.66.68:10012/health`
+![Health 체크 화면](docs/헬스체크200.png)
+
 ## 환경변수 설명 (.env.example 기준)
 - `DATABASE_URL` : Prisma에서 사용하는 DB URL (`mysql://USER:PASSWORD@HOST:PORT/DBNAME`).
 - `PORT` : 서버 포트(기본 8080).
@@ -31,12 +37,6 @@ pm2 start src/server.js --name bookstore
 - `SWAGGER_SERVER_URL`(선택) : Swagger 서버 표시용 URL. 미설정 시 `http://localhost:4000` 이므로 실제 포트에 맞게 설정 권장.
 - API Root: 루트(`/`) 기준.
 - Swagger 스키마 소스: `src/docs/swagger.js`
-
-## jcloud 배포/접속 주소
-- Base URL: `http://113.198.66.68:10012`
-- Swagger: `http://113.198.66.68:10012/docs`
-- Health: `http://113.198.66.68:10012/health`
-![Health 체크 화면](docs/헬스체크200.png)
 
 ## Automated Tests (Node test)
 - 러너: Node 내장 테스트 러너(`node --test`), 명령은 `npm test` (`node --test --test-concurrency=1 tests`).
