@@ -105,21 +105,17 @@ npm test
 - access 만료 시 `POST /auth/refresh` 로 갱신.
 - `POST /auth/logout` 은 사용자 존재 확인만 수행(현 구현상 서버측 토큰 무효화 없음).
 
-## 예제 계정 (prisma/seed.js)
+## 테스트 계정 (prisma/seed.js)
 - 관리자: `admin@example.com / P@ssw0rd!`
 - 기본 사용자: `user1@example.com / P@ssw0rd!`
 - 추가 사용자: `user2@example.com / P@ssw0rd!` … `user20@example.com / P@ssw0rd!`
 
 ## DB 연결 정보 (테스트용)
-- MySQL 8.0 (docker-compose): `host=localhost`, `port=${MYSQL_PORT}`(예: 3306), `db=${MYSQL_DATABASE}`.
-- 예시 .env 조합:
-```env
-DATABASE_URL="mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@localhost:${MYSQL_PORT}/${MYSQL_DATABASE}"
-MYSQL_DATABASE=bookstore
-MYSQL_USER=book_user
-MYSQL_PASSWORD=book_pass
-MYSQL_PORT=3306
-```
+- 호스트: `127.0.0.1` (localhost)
+- 포트: `3306`
+- DB명: `online_bookstore`
+- 계정: `bookstore_user / ****` (localhost 계정)
+- 권한: `bookstore_user@localhost` → `ALL PRIVILEGES` on `online_bookstore`.*, `SELECT` on `mysql`.*
 
 ## 에러 응답 표준 포맷
 ```json
