@@ -17,7 +17,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: bookstore
-          MYSQL_USER: book_user
+          MYSQL_USER: bookstore_user
           MYSQL_PASSWORD: password
         ports:
           - 3306:3306
@@ -28,7 +28,7 @@ jobs:
           --health-retries=10
 
     env:
-      DATABASE_URL: mysql://book_user:book_password@127.0.0.1:3306/bookstore
+      DATABASE_URL: mysql://book_user:bookstore_password@127.0.0.1:3306/bookstore
       MYSQL_PORT: 3306
       PORT: 8080
       JWT_ACCESS_SECRET: ci-access-secret
