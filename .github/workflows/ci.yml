@@ -15,24 +15,24 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: bookstore
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: online_bookstore
           MYSQL_USER: bookstore_user
           MYSQL_PASSWORD: password
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -ppassword"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
 
     env:
-      DATABASE_URL: mysql://book_user:bookstore_password@127.0.0.1:3306/bookstore
+      DATABASE_URL: mysql://bookstore_user:password@127.0.0.1:3306/online_bookstore
       MYSQL_PORT: 3306
       PORT: 8080
-      JWT_ACCESS_SECRET: ci-access-secret
-      JWT_REFRESH_SECRET: ci-refresh-secret
+      JWT_ACCESS_SECRET: jwtaccess
+      JWT_REFRESH_SECRET: jwtrefresh
       NODE_ENV: test
 
     steps:
