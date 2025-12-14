@@ -14515,13 +14515,19 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/books/popular",
+							"raw": "{{baseUrl}}/books/popular?limit=10",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"books",
 								"popular"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
