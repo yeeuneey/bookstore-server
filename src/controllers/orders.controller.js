@@ -174,9 +174,9 @@ exports.updateOrder = async (req, res, next) => {
     if (!exists) {
       throw new AppError("주문을 찾을 수 없습니다.", 404, ERROR_CODES.RESOURCE_NOT_FOUND);
     }
-    if (req.user.role !== "ADMIN" && exists.userId !== req.user.id) {
+    if (req.user.role !== "ADMIN") {
       throw new AppError(
-        "본인 또는 관리자만 수정할 수 있습니다.",
+        "관리자만 수정할 수 있습니다.",
         403,
         ERROR_CODES.FORBIDDEN
       );

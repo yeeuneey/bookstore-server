@@ -166,49 +166,9 @@ router.get(
 /**
  * @swagger
  * /orders/{id}:
- *   get:
- *     tags: [Orders]
- *     summary: 주문 상세 조회
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 10 }
- *     responses:
- *       200:
- *         description: 주문 상세
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Order'
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       422:
- *         $ref: '#/components/responses/Error400'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.get(
-  "/:id",
-  authMiddleware,
-  validateParams(orderIdParamSchema),
-  ordersController.getOrderById
-);
-
-/**
- * @swagger
- * /orders/{id}:
  *   patch:
  *     tags: [Orders]
- *     summary: 주문 상태 변경
+ *     summary: 주문 상태 변경 (관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -245,6 +205,7 @@ router.get(
 router.patch(
   "/:id",
   authMiddleware,
+  adminOnly,
   validateParams(orderIdParamSchema),
   validateBody(updateOrderSchema),
   ordersController.updateOrder

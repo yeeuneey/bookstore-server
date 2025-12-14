@@ -120,43 +120,6 @@ router.get(
 /**
  * @swagger
  * /comments/{id}:
- *   get:
- *     tags: [Comments]
- *     summary: 댓글 상세 조회
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 8 }
- *     responses:
- *       200:
- *         description: 댓글 상세
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Comment'
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       422:
- *         $ref: '#/components/responses/Error400'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.get(
-  "/:id",
-  validateParams(commentIdParamSchema),
-  commentsController.getCommentById
-);
-
-/**
- * @swagger
- * /comments/{id}:
  *   patch:
  *     tags: [Comments]
  *     summary: 댓글 수정

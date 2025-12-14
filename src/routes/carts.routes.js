@@ -5,20 +5,10 @@ const cartsController = require("../controllers/carts.controller");
 const { authMiddleware } = require("../middlewares/auth");
 const { adminOnly } = require("../middlewares/admin");
 const { selfOrAdminByParam, selfOrAdminByBody } = require("../middlewares/ownership");
+const { validateBody, validateParams, validateQuery } = require("../middlewares/validate");
 
-const {
-  validateBody,
-  validateParams,
-  validateQuery,
-} = require("../middlewares/validate");
-
-const {
-  createCartItemSchema,
-  updateCartItemSchema,
-  cartIdParamSchema,
-  cartUserParamSchema,
-  cartListQuerySchema,
-} = require("../validators/cart.validators");
+const { createCartItemSchema, updateCartItemSchema, cartIdParamSchema, cartUserParamSchema, cartListQuerySchema } =
+  require("../validators/cart.validators");
 
 /**
  * @swagger
@@ -61,13 +51,7 @@ const {
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
-router.post(
-  "/",
-  authMiddleware,
-  selfOrAdminByBody("userId"),
-  validateBody(createCartItemSchema),
-  cartsController.createCartItem
-);
+router.post("/", authMiddleware, selfOrAdminByBody("userId"), validateBody(createCartItemSchema), cartsController.createCartItem);
 
 /**
  * @swagger
@@ -87,24 +71,9 @@ router.post(
  *       - in: query
  *         name: sort
  *         schema: { type: string, example: "createdAt,DESC" }
- *       - in: query
- *         name: userName
- *         schema: { type: string, example: "홍길동" }
- *       - in: query
- *         name: userEmail
- *         schema: { type: string, example: "user1@example.com" }
- *       - in: query
- *         name: bookTitle
- *         schema: { type: string, example: "클린 코드" }
- *       - in: query
- *         name: dateFrom
- *         schema: { type: string, format: date-time, example: "2024-01-01T00:00:00.000Z" }
- *       - in: query
- *         name: dateTo
- *         schema: { type: string, format: date-time, example: "2024-12-31T23:59:59.000Z" }
  *     responses:
  *       200:
- *         description: 페이징된 장바구니 목록
+ *         description: 정렬된 장바구니 목록
  *         content:
  *           application/json:
  *             schema:
@@ -131,7 +100,7 @@ router.get("/", authMiddleware, adminOnly, validateQuery(cartListQuerySchema), c
  * /carts/user/{userId}:
  *   get:
  *     tags: [Carts]
- *     summary: 사용자의 장바구니 조회 (본인/관리자)
+ *     summary: 내 장바구니 조회 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -141,7 +110,7 @@ router.get("/", authMiddleware, adminOnly, validateQuery(cartListQuerySchema), c
  *         schema: { type: integer, example: 1 }
  *     responses:
  *       200:
- *         description: 사용자 장바구니
+ *         description: 사용자의 장바구니
  *         content:
  *           application/json:
  *             schema:
@@ -172,49 +141,9 @@ router.get(
 /**
  * @swagger
  * /carts/{id}:
- *   get:
- *     tags: [Carts]
- *     summary: 장바구니 아이템 단건 조회
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 10 }
- *     responses:
- *       200:
- *         description: 단일 장바구니 아이템
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/CartItem'
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       422:
- *         $ref: '#/components/responses/Error400'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.get(
-  "/:id",
-  authMiddleware,
-  validateParams(cartIdParamSchema),
-  cartsController.getCartItemById
-);
-
-/**
- * @swagger
- * /carts/{id}:
  *   patch:
  *     tags: [Carts]
- *     summary: 장바구니 수량 수정
+ *     summary: 내 장바구니 아이템 수량 수정
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -248,13 +177,7 @@ router.get(
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
-router.patch(
-  "/:id",
-  authMiddleware,
-  validateParams(cartIdParamSchema),
-  validateBody(updateCartItemSchema),
-  cartsController.updateCartItem
-);
+router.patch("/:id", authMiddleware, validateParams(cartIdParamSchema), validateBody(updateCartItemSchema), cartsController.updateCartItem);
 
 /**
  * @swagger
@@ -293,11 +216,7 @@ router.patch(
  *       500:
  *         $ref: '#/components/responses/Error500'
  */
-router.delete(
-  "/:id",
-  authMiddleware,
-  validateParams(cartIdParamSchema),
-  cartsController.deleteCartItem
-);
+router.delete("/:id", authMiddleware, validateParams(cartIdParamSchema), cartsController.deleteCartItem);
 
 module.exports = router;
+

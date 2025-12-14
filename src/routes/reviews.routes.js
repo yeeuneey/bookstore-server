@@ -122,43 +122,6 @@ router.get("/", validateQuery(reviewListQuerySchema), reviewsController.getRevie
 /**
  * @swagger
  * /reviews/{id}:
- *   get:
- *     tags: [Reviews]
- *     summary: 리뷰 상세 조회
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 5 }
- *     responses:
- *       200:
- *         description: 리뷰 상세
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Review'
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       422:
- *         $ref: '#/components/responses/Error400'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.get(
-  "/:id",
-  validateParams(reviewIdParamSchema),
-  reviewsController.getReviewById
-);
-
-/**
- * @swagger
- * /reviews/{id}:
  *   patch:
  *     tags: [Reviews]
  *     summary: 리뷰 수정

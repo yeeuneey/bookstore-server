@@ -2,26 +2,16 @@ const express = require("express");
 const router = express.Router();
 const usersController = require("../controllers/users.controller");
 const { authMiddleware } = require("../middlewares/auth");
-const { adminOnly } = require("../middlewares/admin");
 const { selfOrAdminByParam } = require("../middlewares/ownership");
-const {
-  validateBody,
-  validateQuery,
-  validateParams,
-} = require("../middlewares/validate");
+const { validateBody, validateParams } = require("../middlewares/validate");
 
-const {
-  createUserSchema,
-  updateUserSchema,
-  userIdParamSchema,
-  userListQuerySchema,
-} = require("../validators/user.validators");
+const { createUserSchema, updateUserSchema, userIdParamSchema } = require("../validators/user.validators");
 
 /**
  * @swagger
  * tags:
  *   name: Users
- *   description: 회원 정보 및 활동
+ *   description: 사용자 정보 및 내 리소스 조회
  */
 
 /**
@@ -98,119 +88,10 @@ router.get("/me", authMiddleware, usersController.getMe);
 
 /**
  * @swagger
- * /users:
- *   get:
- *     tags: [Users]
- *     summary: 전체 사용자 목록 조회 (관리자)
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: query
- *         name: page
- *         schema: { type: integer, example: 1, minimum: 1 }
- *       - in: query
- *         name: size
- *         schema: { type: integer, example: 20, minimum: 1, maximum: 100 }
- *       - in: query
- *         name: sort
- *         schema: { type: string, example: "id,ASC" }
- *       - in: query
- *         name: keyword
- *         schema: { type: string, example: "hong" }
- *       - in: query
- *         name: role
- *         schema: { type: string, enum: ["USER", "ADMIN"], example: "USER" }
- *       - in: query
- *         name: dateFrom
- *         schema: { type: string, format: date-time, example: "2024-01-01T00:00:00.000Z" }
- *       - in: query
- *         name: dateTo
- *         schema: { type: string, format: date-time, example: "2024-12-31T23:59:59.000Z" }
- *     responses:
- *       200:
- *         description: 페이징된 사용자 목록
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               allOf:
- *                 - $ref: '#/components/schemas/PaginationMeta'
- *               properties:
- *                 users:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/User'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       422:
- *         $ref: '#/components/responses/Error400'
- *       500:
- *         $ref: '#/components/responses/Error500'
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       404:
- *         $ref: '#/components/responses/Error404'
- */
-router.get(
-  "/",
-  authMiddleware,
-  adminOnly,
-  validateQuery(userListQuerySchema),
-  usersController.getUsers
-);
-
-/**
- * @swagger
- * /users/{id}:
- *   get:
- *     tags: [Users]
- *     summary: 사용자 상세 (본인/관리자)
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 5 }
- *     responses:
- *       200:
- *         description: 사용자 상세
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 user:
- *                   $ref: '#/components/schemas/User'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       422:
- *         $ref: '#/components/responses/Error400'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.get(
-  "/:id",
-  authMiddleware,
-  validateParams(userIdParamSchema),
-  selfOrAdminByParam("id"),
-  usersController.getUserById
-);
-
-/**
- * @swagger
  * /users/{id}:
  *   patch:
  *     tags: [Users]
- *     summary: 사용자 정보 수정 (본인/관리자)
+ *     summary: 내 프로필 정보 수정 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -308,7 +189,7 @@ router.delete(
  * /users/{id}/reviews:
  *   get:
  *     tags: [Users]
- *     summary: 사용자가 작성한 리뷰 목록 (본인/관리자)
+ *     summary: 내가 작성한 리뷰 목록 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -351,7 +232,7 @@ router.get(
  * /users/{id}/comments:
  *   get:
  *     tags: [Users]
- *     summary: 사용자가 작성한 댓글 목록 (본인/관리자)
+ *     summary: 내가 작성한 댓글 목록 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -394,7 +275,7 @@ router.get(
  * /users/{id}/favorites:
  *   get:
  *     tags: [Users]
- *     summary: 사용자의 즐겨찾기 도서 목록 (본인/관리자)
+ *     summary: 내가 즐겨찾기한 도서 목록 (본인/관리자)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -432,90 +313,5 @@ router.get(
   usersController.getUserFavorites
 );
 
-/**
- * @swagger
- * /users/{id}/carts:
- *   get:
- *     tags: [Users]
- *     summary: 사용자의 장바구니 목록 (본인/관리자)
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 5 }
- *     responses:
- *       200:
- *         description: 장바구니 아이템 배열
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/CartItem'
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       422:
- *         $ref: '#/components/responses/Error400'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.get(
-  "/:id/carts",
-  authMiddleware,
-  validateParams(userIdParamSchema),
-  selfOrAdminByParam("id"),
-  usersController.getUserCarts
-);
-
-/**
- * @swagger
- * /users/{id}/orders:
- *   get:
- *     tags: [Users]
- *     summary: 사용자의 주문 목록 (본인/관리자)
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer, example: 5 }
- *     responses:
- *       200:
- *         description: 주문 배열
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Order'
- *       400:
- *         $ref: '#/components/responses/Error400'
- *       401:
- *         $ref: '#/components/responses/Error401'
- *       403:
- *         $ref: '#/components/responses/Error403'
- *       404:
- *         $ref: '#/components/responses/Error404'
- *       422:
- *         $ref: '#/components/responses/Error400'
- *       500:
- *         $ref: '#/components/responses/Error500'
- */
-router.get(
-  "/:id/orders",
-  authMiddleware,
-  validateParams(userIdParamSchema),
-  selfOrAdminByParam("id"),
-  usersController.getUserOrders
-);
-
 module.exports = router;
+
