@@ -14487,6 +14487,978 @@
 					]
 				},
 				{
+					"name": "인기 도서 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"[도서 목록 조회 성공] 200\", () => pm.expect(pm.response.code).to.equal(200));\r",
+									"\r",
+									"pm.test(\"[도서 목록 조회 성공] 배열 응답\", () => {\r",
+									"    pm.expect(pm.response.json().content).to.be.an(\"array\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/books/popular",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"popular"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "도서 목록",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"page\": 4206,\n  \"size\": 6577,\n  \"total\": 2758,\n  \"books\": [\n    {\n      \"id\": 101,\n      \"title\": \"클린 코드\",\n      \"isbn\": \"9788966260959\",\n      \"price\": 18000,\n      \"publisher\": \"인사이트\",\n      \"summary\": \"좋은 코드를 작성하는 원칙\",\n      \"publicationDate\": \"1978-08-03T01:31:23.633Z\",\n      \"categories\": [\n        {\n          \"category\": {\n            \"id\": 6778,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"category\": {\n            \"id\": 6257,\n            \"name\": \"string\"\n          }\n        }\n      ],\n      \"authors\": [\n        {\n          \"author\": {\n            \"id\": 8997,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"author\": {\n            \"id\": 7743,\n            \"name\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"id\": 101,\n      \"title\": \"클린 코드\",\n      \"isbn\": \"9788966260959\",\n      \"price\": 18000,\n      \"publisher\": \"인사이트\",\n      \"summary\": \"좋은 코드를 작성하는 원칙\",\n      \"publicationDate\": \"1972-10-29T04:19:25.287Z\",\n      \"categories\": [\n        {\n          \"category\": {\n            \"id\": 2149,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"category\": {\n            \"id\": 8878,\n            \"name\": \"string\"\n          }\n        }\n      ],\n      \"authors\": [\n        {\n          \"author\": {\n            \"id\": 9035,\n            \"name\": \"string\"\n          }\n        },\n        {\n          \"author\": {\n            \"id\": 374,\n            \"name\": \"string\"\n          }\n        }\n      ]\n    }\n  ]\n}"
+						},
+						{
+							"name": "badRequest",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
+						},
+						{
+							"name": "validationFailed",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
+						},
+						{
+							"name": "invalidQueryParam",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
+						},
+						{
+							"name": "unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"인증 토큰이 없거나 잘못된 토큰입니다.\"\n}"
+						},
+						{
+							"name": "tokenExpired",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"TOKEN_EXPIRED\",\n  \"message\": \"토큰 만료\"\n}"
+						},
+						{
+							"name": "접근 권한 없음 (Role 불일치 등)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 403,\n  \"code\": \"FORBIDDEN\",\n  \"message\": \"접근 권한이 없습니다.\"\n}"
+						},
+						{
+							"name": "notFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"message\": \"요청한 리소스가 존재하지 않습니다.\"\n}"
+						},
+						{
+							"name": "userNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"USER_NOT_FOUND\",\n  \"message\": \"사용자 ID가 존재하지 않습니다.\"\n}"
+						},
+						{
+							"name": "badRequest",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
+						},
+						{
+							"name": "validationFailed",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
+						},
+						{
+							"name": "invalidQueryParam",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
+						},
+						{
+							"name": "internal",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"INTERNAL_SERVER_ERROR\",\n  \"message\": \"서버 내부 오류\"\n}"
+						},
+						{
+							"name": "databaseError",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"DATABASE_ERROR\",\n  \"message\": \"DB 연동 오류\"\n}"
+						},
+						{
+							"name": "unknownError",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/books?page=1&size=10&keyword=클린 코드&sort=createdAt,DESC&category=IT&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "클린 코드"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "category",
+											"value": "IT"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"알 수 없는 오류\"\n}"
+						}
+					]
+				},
+				{
 					"name": "도서 카테고리 목록",
 					"request": {
 						"method": "GET",
@@ -27676,989 +28648,6 @@
 					]
 				},
 				{
-					"name": "전체 리뷰 목록 조회",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=리뷰&rating=5&dateFrom=2025-01-01T00:00:00.000Z&dateTo=2025-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "리뷰"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2025-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2025-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "리뷰 목록",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\n  {\n    \"id\": 5,\n    \"rating\": 4,\n    \"comment\": \"재미있게 읽었습니다.\",\n    \"userId\": 1,\n    \"bookId\": 101,\n    \"createdAt\": \"2000-10-03T16:43:29.315Z\"\n  },\n  {\n    \"id\": 5,\n    \"rating\": 4,\n    \"comment\": \"재미있게 읽었습니다.\",\n    \"userId\": 1,\n    \"bookId\": 101,\n    \"createdAt\": \"1990-11-16T10:24:15.734Z\"\n  }\n]"
-						},
-						{
-							"name": "badRequest",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
-						},
-						{
-							"name": "validationFailed",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
-						},
-						{
-							"name": "invalidQueryParam",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
-						},
-						{
-							"name": "unauthorized",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"인증 토큰이 없거나 잘못된 토큰입니다.\"\n}"
-						},
-						{
-							"name": "tokenExpired",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"TOKEN_EXPIRED\",\n  \"message\": \"토큰 만료\"\n}"
-						},
-						{
-							"name": "접근 권한 없음 (Role 불일치 등)",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Forbidden",
-							"code": 403,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 403,\n  \"code\": \"FORBIDDEN\",\n  \"message\": \"접근 권한이 없습니다.\"\n}"
-						},
-						{
-							"name": "notFound",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"message\": \"요청한 리소스가 존재하지 않습니다.\"\n}"
-						},
-						{
-							"name": "userNotFound",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"USER_NOT_FOUND\",\n  \"message\": \"사용자 ID가 존재하지 않습니다.\"\n}"
-						},
-						{
-							"name": "badRequest",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-							"code": 422,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
-						},
-						{
-							"name": "validationFailed",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-							"code": 422,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
-						},
-						{
-							"name": "invalidQueryParam",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-							"code": 422,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
-						},
-						{
-							"name": "internal",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"INTERNAL_SERVER_ERROR\",\n  \"message\": \"서버 내부 오류\"\n}"
-						},
-						{
-							"name": "databaseError",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"DATABASE_ERROR\",\n  \"message\": \"DB 연동 오류\"\n}"
-						},
-						{
-							"name": "unknownError",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"reviews"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "rating",
-											"value": "5"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"알 수 없는 오류\"\n}"
-						}
-					]
-				},
-				{
 					"name": "리뷰 수정",
 					"event": [
 						{
@@ -29937,6 +29926,989 @@
 										{
 											"key": "id",
 											"value": "5"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"알 수 없는 오류\"\n}"
+						}
+					]
+				},
+				{
+					"name": "전체 리뷰 목록 조회",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=리뷰&rating=5&dateFrom=2025-01-01T00:00:00.000Z&dateTo=2025-12-31T23:59:59.000Z",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "20"
+								},
+								{
+									"key": "sort",
+									"value": "createdAt,DESC"
+								},
+								{
+									"key": "keyword",
+									"value": "리뷰"
+								},
+								{
+									"key": "rating",
+									"value": "5"
+								},
+								{
+									"key": "dateFrom",
+									"value": "2025-01-01T00:00:00.000Z"
+								},
+								{
+									"key": "dateTo",
+									"value": "2025-12-31T23:59:59.000Z"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "리뷰 목록",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 5,\n    \"rating\": 4,\n    \"comment\": \"재미있게 읽었습니다.\",\n    \"userId\": 1,\n    \"bookId\": 101,\n    \"createdAt\": \"2000-10-03T16:43:29.315Z\"\n  },\n  {\n    \"id\": 5,\n    \"rating\": 4,\n    \"comment\": \"재미있게 읽었습니다.\",\n    \"userId\": 1,\n    \"bookId\": 101,\n    \"createdAt\": \"1990-11-16T10:24:15.734Z\"\n  }\n]"
+						},
+						{
+							"name": "badRequest",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
+						},
+						{
+							"name": "validationFailed",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
+						},
+						{
+							"name": "invalidQueryParam",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
+						},
+						{
+							"name": "unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"인증 토큰이 없거나 잘못된 토큰입니다.\"\n}"
+						},
+						{
+							"name": "tokenExpired",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"TOKEN_EXPIRED\",\n  \"message\": \"토큰 만료\"\n}"
+						},
+						{
+							"name": "접근 권한 없음 (Role 불일치 등)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 403,\n  \"code\": \"FORBIDDEN\",\n  \"message\": \"접근 권한이 없습니다.\"\n}"
+						},
+						{
+							"name": "notFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"message\": \"요청한 리소스가 존재하지 않습니다.\"\n}"
+						},
+						{
+							"name": "userNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"USER_NOT_FOUND\",\n  \"message\": \"사용자 ID가 존재하지 않습니다.\"\n}"
+						},
+						{
+							"name": "badRequest",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
+						},
+						{
+							"name": "validationFailed",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
+						},
+						{
+							"name": "invalidQueryParam",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
+						},
+						{
+							"name": "internal",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"INTERNAL_SERVER_ERROR\",\n  \"message\": \"서버 내부 오류\"\n}"
+						},
+						{
+							"name": "databaseError",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"DATABASE_ERROR\",\n  \"message\": \"DB 연동 오류\"\n}"
+						},
+						{
+							"name": "unknownError",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"reviews"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "rating",
+											"value": "5"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
 										}
 									]
 								}
@@ -31461,921 +32433,6 @@
 										{
 											"key": "id",
 											"value": "5"
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"알 수 없는 오류\"\n}"
-						}
-					]
-				},
-				{
-					"name": "전체 댓글 목록 조회",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=댓글&dateFrom=2025-01-01T00:00:00.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "댓글"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2025-01-01T00:00:00.000Z"
-								}
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "댓글 목록",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\n  {\n    \"id\": 8,\n    \"comment\": \"동의합니다!\",\n    \"reviewId\": 5,\n    \"userId\": 2,\n    \"createdAt\": \"1954-05-09T03:48:33.772Z\"\n  },\n  {\n    \"id\": 8,\n    \"comment\": \"동의합니다!\",\n    \"reviewId\": 5,\n    \"userId\": 2,\n    \"createdAt\": \"1977-12-01T06:43:00.697Z\"\n  }\n]"
-						},
-						{
-							"name": "badRequest",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
-						},
-						{
-							"name": "validationFailed",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
-						},
-						{
-							"name": "invalidQueryParam",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
-						},
-						{
-							"name": "unauthorized",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"인증 토큰이 없거나 잘못된 토큰입니다.\"\n}"
-						},
-						{
-							"name": "tokenExpired",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"TOKEN_EXPIRED\",\n  \"message\": \"토큰 만료\"\n}"
-						},
-						{
-							"name": "접근 권한 없음 (Role 불일치 등)",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Forbidden",
-							"code": 403,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 403,\n  \"code\": \"FORBIDDEN\",\n  \"message\": \"접근 권한이 없습니다.\"\n}"
-						},
-						{
-							"name": "notFound",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"message\": \"요청한 리소스가 존재하지 않습니다.\"\n}"
-						},
-						{
-							"name": "userNotFound",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"USER_NOT_FOUND\",\n  \"message\": \"사용자 ID가 존재하지 않습니다.\"\n}"
-						},
-						{
-							"name": "badRequest",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-							"code": 422,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
-						},
-						{
-							"name": "validationFailed",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-							"code": 422,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
-						},
-						{
-							"name": "invalidQueryParam",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-							"code": 422,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
-						},
-						{
-							"name": "internal",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"INTERNAL_SERVER_ERROR\",\n  \"message\": \"서버 내부 오류\"\n}"
-						},
-						{
-							"name": "databaseError",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"DATABASE_ERROR\",\n  \"message\": \"DB 연동 오류\"\n}"
-						},
-						{
-							"name": "unknownError",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"comments"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "20"
-										},
-										{
-											"key": "sort",
-											"value": "createdAt,DESC"
-										},
-										{
-											"key": "keyword",
-											"value": "좋아요"
-										},
-										{
-											"key": "dateFrom",
-											"value": "2024-01-01T00:00:00.000Z"
-										},
-										{
-											"key": "dateTo",
-											"value": "2024-12-31T23:59:59.000Z"
 										}
 									]
 								}
@@ -34008,6 +34065,921 @@
 										{
 											"key": "id",
 											"value": "8"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"알 수 없는 오류\"\n}"
+						}
+					]
+				},
+				{
+					"name": "전체 댓글 목록 조회",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=댓글&dateFrom=2025-01-01T00:00:00.000Z",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comments"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "20"
+								},
+								{
+									"key": "sort",
+									"value": "createdAt,DESC"
+								},
+								{
+									"key": "keyword",
+									"value": "댓글"
+								},
+								{
+									"key": "dateFrom",
+									"value": "2025-01-01T00:00:00.000Z"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "댓글 목록",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 8,\n    \"comment\": \"동의합니다!\",\n    \"reviewId\": 5,\n    \"userId\": 2,\n    \"createdAt\": \"1954-05-09T03:48:33.772Z\"\n  },\n  {\n    \"id\": 8,\n    \"comment\": \"동의합니다!\",\n    \"reviewId\": 5,\n    \"userId\": 2,\n    \"createdAt\": \"1977-12-01T06:43:00.697Z\"\n  }\n]"
+						},
+						{
+							"name": "badRequest",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
+						},
+						{
+							"name": "validationFailed",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
+						},
+						{
+							"name": "invalidQueryParam",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
+						},
+						{
+							"name": "unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"인증 토큰이 없거나 잘못된 토큰입니다.\"\n}"
+						},
+						{
+							"name": "tokenExpired",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"TOKEN_EXPIRED\",\n  \"message\": \"토큰 만료\"\n}"
+						},
+						{
+							"name": "접근 권한 없음 (Role 불일치 등)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 403,\n  \"code\": \"FORBIDDEN\",\n  \"message\": \"접근 권한이 없습니다.\"\n}"
+						},
+						{
+							"name": "notFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"message\": \"요청한 리소스가 존재하지 않습니다.\"\n}"
+						},
+						{
+							"name": "userNotFound",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"USER_NOT_FOUND\",\n  \"message\": \"사용자 ID가 존재하지 않습니다.\"\n}"
+						},
+						{
+							"name": "badRequest",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
+						},
+						{
+							"name": "validationFailed",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
+						},
+						{
+							"name": "invalidQueryParam",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
+						},
+						{
+							"name": "internal",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"INTERNAL_SERVER_ERROR\",\n  \"message\": \"서버 내부 오류\"\n}"
+						},
+						{
+							"name": "databaseError",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"DATABASE_ERROR\",\n  \"message\": \"DB 연동 오류\"\n}"
+						},
+						{
+							"name": "unknownError",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "20"
+										},
+										{
+											"key": "sort",
+											"value": "createdAt,DESC"
+										},
+										{
+											"key": "keyword",
+											"value": "좋아요"
+										},
+										{
+											"key": "dateFrom",
+											"value": "2024-01-01T00:00:00.000Z"
+										},
+										{
+											"key": "dateTo",
+											"value": "2024-12-31T23:59:59.000Z"
 										}
 									]
 								}
@@ -36668,1904 +37640,6 @@
 							"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"알 수 없는 오류\"\n}"
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "전체 리뷰 목록 조회",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json"
-					}
-				],
-				"url": {
-					"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=리뷰&rating=5&dateFrom=2025-01-01T00:00:00.000Z&dateTo=2025-12-31T23:59:59.000Z",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"reviews"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1"
-						},
-						{
-							"key": "size",
-							"value": "20"
-						},
-						{
-							"key": "sort",
-							"value": "createdAt,DESC"
-						},
-						{
-							"key": "keyword",
-							"value": "리뷰"
-						},
-						{
-							"key": "rating",
-							"value": "5"
-						},
-						{
-							"key": "dateFrom",
-							"value": "2025-01-01T00:00:00.000Z"
-						},
-						{
-							"key": "dateTo",
-							"value": "2025-12-31T23:59:59.000Z"
-						}
-					]
-				}
-			},
-			"response": [
-				{
-					"name": "리뷰 목록",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "[\n  {\n    \"id\": 5,\n    \"rating\": 4,\n    \"comment\": \"재미있게 읽었습니다.\",\n    \"userId\": 1,\n    \"bookId\": 101,\n    \"createdAt\": \"2000-10-03T16:43:29.315Z\"\n  },\n  {\n    \"id\": 5,\n    \"rating\": 4,\n    \"comment\": \"재미있게 읽었습니다.\",\n    \"userId\": 1,\n    \"bookId\": 101,\n    \"createdAt\": \"1990-11-16T10:24:15.734Z\"\n  }\n]"
-				},
-				{
-					"name": "badRequest",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Bad Request",
-					"code": 400,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
-				},
-				{
-					"name": "validationFailed",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Bad Request",
-					"code": 400,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
-				},
-				{
-					"name": "invalidQueryParam",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Bad Request",
-					"code": 400,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
-				},
-				{
-					"name": "unauthorized",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Unauthorized",
-					"code": 401,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"인증 토큰이 없거나 잘못된 토큰입니다.\"\n}"
-				},
-				{
-					"name": "tokenExpired",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Unauthorized",
-					"code": 401,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"TOKEN_EXPIRED\",\n  \"message\": \"토큰 만료\"\n}"
-				},
-				{
-					"name": "접근 권한 없음 (Role 불일치 등)",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Forbidden",
-					"code": 403,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 403,\n  \"code\": \"FORBIDDEN\",\n  \"message\": \"접근 권한이 없습니다.\"\n}"
-				},
-				{
-					"name": "notFound",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Not Found",
-					"code": 404,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"message\": \"요청한 리소스가 존재하지 않습니다.\"\n}"
-				},
-				{
-					"name": "userNotFound",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Not Found",
-					"code": 404,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"USER_NOT_FOUND\",\n  \"message\": \"사용자 ID가 존재하지 않습니다.\"\n}"
-				},
-				{
-					"name": "badRequest",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-					"code": 422,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
-				},
-				{
-					"name": "validationFailed",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-					"code": 422,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
-				},
-				{
-					"name": "invalidQueryParam",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-					"code": 422,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
-				},
-				{
-					"name": "internal",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Internal Server Error",
-					"code": 500,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"INTERNAL_SERVER_ERROR\",\n  \"message\": \"서버 내부 오류\"\n}"
-				},
-				{
-					"name": "databaseError",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Internal Server Error",
-					"code": 500,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"DATABASE_ERROR\",\n  \"message\": \"DB 연동 오류\"\n}"
-				},
-				{
-					"name": "unknownError",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/reviews?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&rating=5&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"reviews"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "rating",
-									"value": "5"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Internal Server Error",
-					"code": 500,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"알 수 없는 오류\"\n}"
-				}
-			]
-		},
-		{
-			"name": "전체 댓글 목록 조회",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json"
-					}
-				],
-				"url": {
-					"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=댓글&dateFrom=2025-01-01T00:00:00.000Z",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"comments"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1"
-						},
-						{
-							"key": "size",
-							"value": "20"
-						},
-						{
-							"key": "sort",
-							"value": "createdAt,DESC"
-						},
-						{
-							"key": "keyword",
-							"value": "댓글"
-						},
-						{
-							"key": "dateFrom",
-							"value": "2025-01-01T00:00:00.000Z"
-						}
-					]
-				}
-			},
-			"response": [
-				{
-					"name": "댓글 목록",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "[\n  {\n    \"id\": 8,\n    \"comment\": \"동의합니다!\",\n    \"reviewId\": 5,\n    \"userId\": 2,\n    \"createdAt\": \"1954-05-09T03:48:33.772Z\"\n  },\n  {\n    \"id\": 8,\n    \"comment\": \"동의합니다!\",\n    \"reviewId\": 5,\n    \"userId\": 2,\n    \"createdAt\": \"1977-12-01T06:43:00.697Z\"\n  }\n]"
-				},
-				{
-					"name": "badRequest",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Bad Request",
-					"code": 400,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
-				},
-				{
-					"name": "validationFailed",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Bad Request",
-					"code": 400,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
-				},
-				{
-					"name": "invalidQueryParam",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Bad Request",
-					"code": 400,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
-				},
-				{
-					"name": "unauthorized",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Unauthorized",
-					"code": 401,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"인증 토큰이 없거나 잘못된 토큰입니다.\"\n}"
-				},
-				{
-					"name": "tokenExpired",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Unauthorized",
-					"code": 401,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 401,\n  \"code\": \"TOKEN_EXPIRED\",\n  \"message\": \"토큰 만료\"\n}"
-				},
-				{
-					"name": "접근 권한 없음 (Role 불일치 등)",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Forbidden",
-					"code": 403,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 403,\n  \"code\": \"FORBIDDEN\",\n  \"message\": \"접근 권한이 없습니다.\"\n}"
-				},
-				{
-					"name": "notFound",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Not Found",
-					"code": 404,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"message\": \"요청한 리소스가 존재하지 않습니다.\"\n}"
-				},
-				{
-					"name": "userNotFound",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Not Found",
-					"code": 404,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 404,\n  \"code\": \"USER_NOT_FOUND\",\n  \"message\": \"사용자 ID가 존재하지 않습니다.\"\n}"
-				},
-				{
-					"name": "badRequest",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-					"code": 422,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"요청 형식이 올바르지 않습니다.\"\n}"
-				},
-				{
-					"name": "validationFailed",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-					"code": 422,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"VALIDATION_FAILED\",\n  \"message\": \"필드 유효성 검사 실패하였습니다.\"\n}"
-				},
-				{
-					"name": "invalidQueryParam",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-					"code": 422,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 400,\n  \"code\": \"INVALID_QUERY_PARAM\",\n  \"message\": \"쿼리 파라미터 값이 잘못되었습니다.\"\n}"
-				},
-				{
-					"name": "internal",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Internal Server Error",
-					"code": 500,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"INTERNAL_SERVER_ERROR\",\n  \"message\": \"서버 내부 오류\"\n}"
-				},
-				{
-					"name": "databaseError",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Internal Server Error",
-					"code": 500,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"DATABASE_ERROR\",\n  \"message\": \"DB 연동 오류\"\n}"
-				},
-				{
-					"name": "unknownError",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/comments?page=1&size=20&sort=createdAt,DESC&keyword=좋아요&dateFrom=2024-01-01T00:00:00.000Z&dateTo=2024-12-31T23:59:59.000Z",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"comments"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "size",
-									"value": "20"
-								},
-								{
-									"key": "sort",
-									"value": "createdAt,DESC"
-								},
-								{
-									"key": "keyword",
-									"value": "좋아요"
-								},
-								{
-									"key": "dateFrom",
-									"value": "2024-01-01T00:00:00.000Z"
-								},
-								{
-									"key": "dateTo",
-									"value": "2024-12-31T23:59:59.000Z"
-								}
-							]
-						}
-					},
-					"status": "Internal Server Error",
-					"code": 500,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"timestamp\": \"2025-03-05T12:34:56Z\",\n  \"path\": \"/api/example\",\n  \"status\": 500,\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"알 수 없는 오류\"\n}"
 				}
 			]
 		}
