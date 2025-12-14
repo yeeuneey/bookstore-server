@@ -4,7 +4,9 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
+    "lint": "eslint .",
     "test": "node --test --test-concurrency=1 tests",
+    "build": "echo \"no build step\"",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "prisma:migrate": "npx prisma migrate dev",
@@ -38,6 +40,7 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
+    "eslint": "^9.39.2",
     "nodemon": "^3.1.11",
     "prisma": "^7.1.0"
   },
