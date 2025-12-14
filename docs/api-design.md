@@ -47,6 +47,7 @@
 | Method | Path | Auth/권한 | 요청 | 응답/비고 |
 | --- | --- | --- | --- | --- |
 | GET | `/books` | 공개 | `page,size,sort,keyword,category,dateFrom,dateTo` | 도서 목록(+저자/카테고리/리뷰 포함). |
+| GET | `/books/popular` | 공개 | `limit?`(기본 10, 최대 50) | 즐겨찾기/리뷰 수 기준 상위 도서(캐시). |
 | GET | `/books/:id` | 공개 | Path `id` | 도서 상세(+저자, 카테고리, 리뷰). |
 | POST | `/books` | USER/ADMIN (토큰 필요) | `{ title, isbn, price, publisher?, summary?, publicationDate?, categoryIds?, authorIds? }` | ISBN 중복 시 409. |
 | PATCH | `/books/:id` | USER/ADMIN (토큰 필요) | 위 필드 부분 업데이트 | 저자/카테고리는 전체 재설정. |

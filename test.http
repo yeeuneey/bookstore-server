@@ -107,6 +107,7 @@ GET {{base}}/users/{{userId}}/orders
 Authorization: Bearer {{accessToken}}
 
 ### Books - list with filters
+GET {{base}}/books/popular?limit=10
 GET {{base}}/books?page=1&size=10&sort=createdAt,DESC&keyword=code
 
 ### Books - list with sort example (seed-friendly)

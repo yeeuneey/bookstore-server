@@ -96,6 +96,7 @@ MYSQL_PORT=3306
 - Auth: `POST /auth/login`, `POST /auth/refresh`, `POST /auth/logout`
 - Users: `POST /users`, `GET /users/me`, `GET|PATCH|DELETE /users/:id`, `GET /users`(admin)
 - Books: `GET /books`, `GET /books/popular`, `GET /books/:id`, `POST|PATCH|DELETE /books`, `GET /books/:id/reviews|categories|authors`
+  - 인기 도서: `GET /books/popular?limit=10` (limit 기본 10, 최대 50)
 - Reviews: `POST /reviews`, `GET /reviews`, `GET|PATCH|DELETE /reviews/:id`, `GET /reviews/:id/comments`
 - Comments: `POST /comments`, `GET /comments`, `GET|PATCH|DELETE /comments/:id`
 - Carts: `POST /carts`, `GET /carts`(admin), `GET /carts/user/:userId`, `GET|PATCH|DELETE /carts/:id`
