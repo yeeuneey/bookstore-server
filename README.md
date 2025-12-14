@@ -148,7 +148,6 @@ npm test
 - 전체 API 자동화 테스트 스크립트 포함, Pre-request Script로 Access Token 자동 주입, Tests Script로 성공/에러 검증.
 - Postman 컬렉션에는 최소 5개 이상의 Tests 스크립트가 포함되어 있으며, 성공/실패/권한/검증 오류 등 대표 에러 케이스를 실제 요청으로 검증하도록 구성했습니다.
 - 컬렉션 파일: `postman/bookstore.postman_collection.json`
-- VS Code REST 예제: `test.http` (토큰/ID 변수 포함)
 
 ## 기타 참고
 - DB 시드 데이터: 사용자 20+, 카테고리 10, 저자 20, 도서 50, 리뷰/댓글/좋아요/장바구니/주문 등 포함(200건 이상).
