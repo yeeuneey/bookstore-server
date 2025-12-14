@@ -75,7 +75,8 @@ async function main() {
 
   for (let i = 1; i <= 20; i++) {
     const email = `user${i}@example.com`;
-    const password = "P@ssw0rd!";
+    // user2만 P@ssw0rd2!, 나머지 P@ssw0rd!
+    const password = i === 2 ? "P@ssw0rd2!" : "P@ssw0rd!";
     const user = await ensureUser(
       email,
       password,
