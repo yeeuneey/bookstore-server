@@ -41,7 +41,7 @@ npm run start   # 개발 중엔 npm run dev
 - Base URL: `http://113.198.66.68:10012`
 - Swagger: `http://113.198.66.68:10012/docs`
 - Health: `http://113.198.66.68:10012/health`
-![Health 체크 화면](docs/health-check.png)
+![Health 체크 화면](docs/헬스체크200.png)
 
 
 
